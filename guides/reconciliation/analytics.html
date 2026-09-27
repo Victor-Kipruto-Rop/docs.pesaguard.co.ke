@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reconciliation guides · Analytics &amp; reporting - PesaGuard docs</title>
+<meta name="description" content="Five read-only endpoints computed live from the discrepancy table: SLA metrics, resolution times, operator stats, incident trends and the reconciliation report.">
+<link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/guides/reconciliation/analytics.html">
+<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Reconciliation guides · Analytics &amp; reporting - PesaGuard docs">
+<meta property="og:description" content="Five read-only endpoints computed live from the discrepancy table: SLA metrics, resolution times, operator stats, incident trends and the reconciliation report.">
+<meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/guides/reconciliation/analytics.html">
+<meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reconciliation guides · Analytics &amp; reporting - PesaGuard docs">
+<meta name="twitter:description" content="Five read-only endpoints computed live from the discrepancy table: SLA metrics, resolution times, operator stats, incident trends and the reconciliation report.">
+<meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/navigation.css">
+<link rel="stylesheet" href="../../css/content.css">
+<link rel="stylesheet" href="../../css/code.css">
+<link rel="stylesheet" href="../../css/search.css">
+<link rel="stylesheet" href="../../css/animations.css">
+<link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body data-path="/guides/reconciliation/analytics.html">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+  <a class="docs-brand" href="../../index.html"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+  <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../../getting-started/">Getting started</a>
+    <a href="../../concepts/">Concepts</a>
+    <a href="../../api/">API</a>
+    <a href="../../webhooks/">Webhooks</a>
+    <a href="../../security/">Security</a>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+
+<main id="main">
+<div class="docs-shell">
+  <article class="docs-article docs-content-wide api-page">
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Reconciliation guides</a><span aria-hidden="true">/</span>
+          <span>Analytics &amp; reporting</span></nav>
+    <p class="docs-eyebrow">Reconciliation guides</p>
+    <h1>Analytics &amp; reporting</h1>
+    <p class="docs-lede">Five endpoints, all <code>GET</code>, all <code>read:discrepancies</code>, all computed live from the discrepancy table on every call &mdash; there is no separate reporting store or nightly rollup. A discrepancy resolved a second ago is already reflected.</p>
+    <div class="api-hero"><div><strong>Numbers agree with the queue</strong><p>Because every figure here is a live aggregate over the same rows the discrepancy list reads, a report and the underlying record can never drift out of sync the way a batch export can.</p></div><div class="api-hero-meta"><span>SLA</span><span>TRENDS</span><span>REPORT</span></div></div>
+
+    <h2 id="sla-metrics">SLA metrics</h2>
+    <p>How many <strong>critical</strong> discrepancies are on track, in warning or breaching their SLA right now &mdash; the same <code>sla_status</code> calculation the discrepancy list exposes per row, pre-aggregated into counts. Non-critical discrepancies are not counted at all: <code>total</code> here is the critical count, not every open discrepancy.</p>
+    <div class="callout" data-tone="warn"><strong>The three buckets may not sum to <code>total</code>.</strong> <code>total</code> is every critical discrepancy, resolved or not. A resolved one gets an internal status of <code>resolved</code>, which this endpoint doesn't add to any of <code>on_track</code>, <code>warning</code> or <code>breaching</code> &mdash; so on a tenant with resolved critical history, <code>on_track + warning + breaching &lt; total</code> is expected, not a bug to chase.</div>
+    <div class="code-head"><span class="method">GET</span><code>/analytics/sla-metrics</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /analytics/sla-metrics
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <pre class="docs-code" data-lang="json"><code>{ "on_track": 14, "warning": 2, "breaching": 1, "total": 17 }</code></pre>
+
+    <h2>Resolution times</h2>
+    <p>Average, median and 95th-percentile resolution time in minutes, over every discrepancy that has both a <code>detected_at</code> and a <code>resolved_at</code> &mdash; unresolved discrepancies are excluded, not counted as infinite. With no resolved discrepancies yet, every field is <code>0</code>, not <code>null</code>.</p>
+    <div class="code-head"><span class="method">GET</span><code>/analytics/resolution-times</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /analytics/resolution-times
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <pre class="docs-code" data-lang="json"><code>{ "average_resolution_time": 182, "median_resolution_time": 96, "p95_resolution_time": 890 }</code></pre>
+
+    <h2>Operator stats</h2>
+    <p>Per-assignee counts: how many discrepancies each operator has, how many they've resolved, and their average resolution time. Unassigned discrepancies are grouped under the literal string <code>"Unassigned"</code> as if it were an operator. Sorted by <code>resolved_count</code>, most first.</p>
+    <div class="code-head"><span class="method">GET</span><code>/analytics/operator-stats</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /analytics/operator-stats
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <div class="callout" data-tone="warn"><strong>Response shape.</strong> This route returns a bare JSON array, not an object with an <code>items</code> or similar wrapper key &mdash; different from every other list-shaped endpoint on this API.</div>
+    <pre class="docs-code" data-lang="json"><code>[
+  { "operator": "amina@yourcompany.com", "assigned_count": 12, "resolved_count": 9, "average_resolution_time": 145 },
+  { "operator": "Unassigned", "assigned_count": 3, "resolved_count": 0, "average_resolution_time": 0 }
+]</code></pre>
+
+    <h2>Incident trends</h2>
+    <p>Two fixed-size time series: the last 4 calendar weeks and the last 12 calendar months, each bucket giving total, resolved and open (<code>open</code> is <code>incidents - resolved</code> for that bucket, not a separate query). Months are 30-day-wide buckets labelled by short month name, so two buckets can share a label in edge cases around month boundaries.</p>
+    <div class="code-head"><span class="method">GET</span><code>/analytics/incident-trends</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /analytics/incident-trends
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <pre class="docs-code" data-lang="json"><code>{
+  "weekly": [
+    { "week": "W1", "incidents": 5, "resolved": 4, "open": 1 },
+    { "week": "W2", "incidents": 8, "resolved": 6, "open": 2 },
+    { "week": "W3", "incidents": 3, "resolved": 3, "open": 0 },
+    { "week": "W4", "incidents": 6, "resolved": 2, "open": 4 }
+  ],
+  "monthly": [ { "month": "Jun", "incidents": 21, "resolved": 18, "open": 3 } ]
+}</code></pre>
+    <p>Neither window is configurable &mdash; there is no query parameter to ask for 8 weeks or 6 months. If you need a different range, use <a href="#report"><code>GET /analytics/reconciliation-report</code></a>'s <code>days</code> parameter, or aggregate from <a href="discrepancy-actions.html#export">the CSV export</a> yourself.</p>
+
+    <h2 id="report">Reconciliation report</h2>
+    <p>The one report endpoint with a configurable window, and the most complete single snapshot: totals, resolution rate, a breakdown by severity and by status, and two derived percentages.</p>
+    <div class="code-head"><span class="method">GET</span><code>/analytics/reconciliation-report</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /analytics/reconciliation-report?days=30
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <table><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><code>days</code></td><td>Lookback window by <code>detected_at</code>. Integer, 1&ndash;3650, default 7.</td></tr>
+    </tbody></table>
+    <pre class="docs-code" data-lang="json"><code>{
+  "report_period_days": 30,
+  "generated_at": "2026-09-26T10:00:00+00:00",
+  "summary": {
+    "total_incidents": 42,
+    "resolved": 35,
+    "open": 7,
+    "resolution_rate": 0.833,
+    "average_resolution_minutes": 210
+  },
+  "by_severity": { "critical": 6, "warning": 20, "info": 16 },
+  "by_status": { "resolved": 35, "needs_review": 4, "missing_payment": 3 },
+  "critical_count": 6,
+  "sla_compliant_percentage": 83.3
+}</code></pre>
+    <div class="callout" data-tone="warn"><strong>Read <code>sla_compliant_percentage</code> carefully.</strong> It is computed as <code>resolved / total</code>, identical to <code>resolution_rate</code> expressed as a percentage &mdash; it is not derived from the same on-track/warning/breaching SLA calculation that <a href="#sla-metrics">SLA metrics</a> and the discrepancy list use. A tenant with a low resolution rate but no active SLA breaches will still show a low number here.</div>
+
+    <h2>Related</h2>
+    <ul>
+      <li><a href="index.html">Reconciliation guides</a></li>
+      <li><a href="incident-management.html">Incident management</a></li>
+      <li><a href="discrepancy-actions.html">Discrepancy actions</a></li>
+    </ul>
+  </article>
+</div>
+</main>
+
+<footer class="docs-footer"><div class="docs-footer-inner">
+  <span>© 2026 PesaGuard</span>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+</div></footer>
+
+<script src="../../js/app.js" defer></script>
+</body>
+</html>

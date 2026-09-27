@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reconciliation guides · Incident management - PesaGuard docs</title>
+<meta name="description" content="Search, bulk-assign, auto-escalate and filter presets: the operational endpoints for running a queue of many discrepancies rather than one at a time.">
+<link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/guides/reconciliation/incident-management.html">
+<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Reconciliation guides · Incident management - PesaGuard docs">
+<meta property="og:description" content="Search, bulk-assign, auto-escalate and filter presets: the operational endpoints for running a queue of many discrepancies rather than one at a time.">
+<meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/guides/reconciliation/incident-management.html">
+<meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reconciliation guides · Incident management - PesaGuard docs">
+<meta name="twitter:description" content="Search, bulk-assign, auto-escalate and filter presets: the operational endpoints for running a queue of many discrepancies rather than one at a time.">
+<meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/navigation.css">
+<link rel="stylesheet" href="../../css/content.css">
+<link rel="stylesheet" href="../../css/code.css">
+<link rel="stylesheet" href="../../css/search.css">
+<link rel="stylesheet" href="../../css/animations.css">
+<link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body data-path="/guides/reconciliation/incident-management.html">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+  <a class="docs-brand" href="../../index.html"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+  <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../../getting-started/">Getting started</a>
+    <a href="../../concepts/">Concepts</a>
+    <a href="../../api/">API</a>
+    <a href="../../webhooks/">Webhooks</a>
+    <a href="../../security/">Security</a>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+
+<main id="main">
+<div class="docs-shell">
+  <article class="docs-article docs-content-wide api-page">
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Reconciliation guides</a><span aria-hidden="true">/</span>
+          <span>Incident management</span></nav>
+    <p class="docs-eyebrow">Reconciliation guides</p>
+    <h1>Incident management</h1>
+    <p class="docs-lede">Discrepancies are called "incidents" on this set of endpoints &mdash; same underlying record, four operations for working a queue rather than one row: full-text search, bulk assignment, time-based auto-escalation, and saved filter presets.</p>
+    <div class="api-hero"><div><strong>All four require bulk:operations or read:discrepancies</strong><p>None of these use write:discrepancies, the permission the single-item actions need &mdash; a role built for triage doesn't need per-item write access.</p></div><div class="api-hero-meta"><span>SEARCH</span><span>ASSIGN</span><span>ESCALATE</span></div></div>
+
+    <h2>Search incidents</h2>
+    <p>Full-text-ish search across <code>trans_id</code>, <code>anomaly_type</code> and <code>notes</code> (a SQL <code>LIKE</code> match, not a search index), with severity and assignee filters and real pagination. This is the one to use for "find the incident I'm thinking of" &mdash; the plain discrepancy list only filters on exact fields.</p>
+    <div class="code-head"><span class="method">GET</span><code>/incidents/search</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /incidents/search?q=QGH7X&amp;severity=critical&amp;page=1&amp;per_page=20
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <table><thead><tr><th>Parameter</th><th>Notes</th></tr></thead><tbody>
+      <tr><td><code>q</code></td><td>Matched against <code>trans_id</code>, <code>anomaly_type</code>, <code>notes</code>. Max 200 characters.</td></tr>
+      <tr><td><code>severity</code></td><td><code>critical</code>, <code>warning</code> or <code>info</code>.</td></tr>
+      <tr><td><code>assignee</code></td><td>Exact match, not a substring search. Max 200 characters.</td></tr>
+      <tr><td><code>page</code> / <code>per_page</code></td><td>Default 1 / 20; <code>per_page</code> caps at 100.</td></tr>
+    </tbody></table>
+    <pre class="docs-code" data-lang="json"><code>{
+  "query": "QGH7X",
+  "page": 1,
+  "per_page": 20,
+  "total": 1,
+  "items": [
+    { "id": "disc-8f2c...", "trans_id": "QGH7XABC12", "anomaly_type": "missing_payment", "severity": "critical", "assignee": "Unassigned", "detected_at": "2026-09-20T09:00:11+00:00" }
+  ]
+}</code></pre>
+    <p>Unlike <code>GET /discrepancies</code>, this route requires a resolved tenant context and returns <code>403</code> without one.</p>
+
+    <h2>Bulk assign</h2>
+    <p>Assigns many incidents to one owner in one call, the assignment equivalent of <a href="discrepancy-actions.html">bulk-resolve</a>: same <code>ids</code> / <code>skipped_ids</code> shape, one timeline entry per incident (not one audit event per batch &mdash; this route does not call the audit trail the way resolve and bulk-resolve do).</p>
+    <div class="code-head"><span class="method">POST</span><code>/incidents/bulk-assign</code></div>
+    <pre class="docs-code" data-lang="http"><code>POST /incidents/bulk-assign
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  "ids": ["disc-8f2c...", "disc-91ab..."],
+  "assignee": "amina@yourcompany.com",
+  "note": "Reassigning after amina's shift handover"
+}</code></pre>
+    <table><thead><tr><th>Field</th><th>Required</th></tr></thead><tbody>
+      <tr><td><code>ids</code></td><td>Yes</td></tr>
+      <tr><td><code>assignee</code></td><td>Yes</td></tr>
+      <tr><td><code>note</code></td><td>No &mdash; defaults to <code>"Bulk assigned"</code>. Folded into each timeline entry's message, not stored as a separate field.</td></tr>
+    </tbody></table>
+    <pre class="docs-code" data-lang="json"><code>{ "status": "assigned", "updated": 2, "skipped_ids": [] }</code></pre>
+
+    <h2>Auto-escalate</h2>
+    <p>A sweep, not a per-item action: finds every <strong>unresolved, critical, currently unassigned</strong> incident older than a threshold and assigns it to a fixed literal owner, <code>"On-Call Lead"</code> &mdash; there is no way to configure who that is per tenant today. An incident that already has an assignee is left alone even if it is old and critical.</p>
+    <div class="code-head"><span class="method">POST</span><code>/incidents/auto-escalate</code></div>
+    <pre class="docs-code" data-lang="http"><code>POST /incidents/auto-escalate?escalation_minutes=45
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <table><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><code>escalation_minutes</code></td><td>Age threshold. Integer, 1&ndash;10080 (one week), default 45.</td></tr>
+    </tbody></table>
+    <pre class="docs-code" data-lang="json"><code>{ "status": "escalated", "count": 3, "threshold_minutes": 45 }</code></pre>
+    <p>This is a synchronous sweep triggered by the caller, not a background job &mdash; call it on a schedule (a cron hitting this endpoint every few minutes) if you want continuous auto-escalation rather than a one-off catch-up run.</p>
+
+    <h2>Filter presets</h2>
+    <div class="callout" data-tone="warn"><strong>Not durable.</strong> <code>POST</code> here does not write to a database or any other store. The preset dictionary is a local variable rebuilt fresh on every single request, so a preset "saved" by one call is gone by the next &mdash; including the next call from the same client. Do not build a "my saved filters" feature on this endpoint; it always returns to the three built-in presets. For filters that actually persist, see the communications module's <code>saved-filters</code> endpoints, which are backed by a real table.</div>
+    <div class="code-head"><span class="method">GET</span><code>/incidents/filters/presets</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /incidents/filters/presets
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <pre class="docs-code" data-lang="json"><code>{
+  "presets": {
+    "critical_open": { "severity": "critical", "resolved": "open" },
+    "needs_review": { "status": "needs_review" },
+    "all": {}
+  }
+}</code></pre>
+    <div class="code-head"><span class="method">POST</span><code>/incidents/filters/presets</code></div>
+    <pre class="docs-code" data-lang="http"><code>POST /incidents/filters/presets
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{ "name": "my_view", "filters": { "severity": "warning" } }</code></pre>
+    <p>Returns <code>201</code> with the (still request-local) preset dictionary including the one just added. <code>GET</code> only needs <code>read:discrepancies</code>, but <code>POST</code> additionally checks for <code>write:discrepancies</code> in the handler itself rather than in the route decorator &mdash; the two methods on this one route do not share a single permission requirement.</p>
+
+    <h2>Related</h2>
+    <ul>
+      <li><a href="index.html">Reconciliation guides</a></li>
+      <li><a href="discrepancy-actions.html">Discrepancy actions</a></li>
+      <li><a href="analytics.html">Analytics &amp; reporting</a></li>
+    </ul>
+  </article>
+</div>
+</main>
+
+<footer class="docs-footer"><div class="docs-footer-inner">
+  <span>© 2026 PesaGuard</span>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+</div></footer>
+
+<script src="../../js/app.js" defer></script>
+</body>
+</html>

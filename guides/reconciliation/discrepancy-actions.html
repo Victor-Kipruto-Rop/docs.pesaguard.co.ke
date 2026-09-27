@@ -167,7 +167,7 @@ Content-Type: application/json
     <pre class="docs-code" data-lang="json"><code>{ "status": "saved", "notes": "- Provider confirms the reversal posted at 14:02." }</code></pre>
     <p>An empty or whitespace-only <code>note</code> is accepted by validation but has no effect: nothing is appended and <code>notes</code> is returned unchanged. Send a non-empty string to actually record something.</p>
 
-    <h2>Export as CSV</h2>
+    <h2 id="export">Export as CSV</h2>
     <p>The same filters as the discrepancy list, returned as a CSV file instead of a paginated JSON envelope &mdash; every matching row in one response, capped only by how many discrepancies the tenant has.</p>
     <div class="code-head"><span class="method">GET</span><code>/discrepancies/export/csv</code></div>
     <pre class="docs-code" data-lang="http"><code>GET /discrepancies/export/csv?status=missing_payment&severity=critical
