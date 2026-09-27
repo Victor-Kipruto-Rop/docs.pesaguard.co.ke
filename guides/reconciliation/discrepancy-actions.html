@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reconciliation guides · Discrepancy actions - PesaGuard docs</title>
+<meta name="description" content="The seven endpoints that move a discrepancy from detected to resolved: activity feed, assignment queue, resolve, bulk-resolve, assign, notes and CSV export.">
+<link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/guides/reconciliation/discrepancy-actions.html">
+<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Reconciliation guides · Discrepancy actions - PesaGuard docs">
+<meta property="og:description" content="The seven endpoints that move a discrepancy from detected to resolved: activity feed, assignment queue, resolve, bulk-resolve, assign, notes and CSV export.">
+<meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/guides/reconciliation/discrepancy-actions.html">
+<meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reconciliation guides · Discrepancy actions - PesaGuard docs">
+<meta name="twitter:description" content="The seven endpoints that move a discrepancy from detected to resolved: activity feed, assignment queue, resolve, bulk-resolve, assign, notes and CSV export.">
+<meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/navigation.css">
+<link rel="stylesheet" href="../../css/content.css">
+<link rel="stylesheet" href="../../css/code.css">
+<link rel="stylesheet" href="../../css/search.css">
+<link rel="stylesheet" href="../../css/animations.css">
+<link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body data-path="/guides/reconciliation/discrepancy-actions.html">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+  <a class="docs-brand" href="../../index.html"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+  <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../../getting-started/">Getting started</a>
+    <a href="../../concepts/">Concepts</a>
+    <a href="../../api/">API</a>
+    <a href="../../webhooks/">Webhooks</a>
+    <a href="../../security/">Security</a>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+
+<main id="main">
+<div class="docs-shell">
+  <article class="docs-article docs-content-wide api-page">
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Reconciliation guides</a><span aria-hidden="true">/</span>
+          <span>Discrepancy actions</span></nav>
+    <p class="docs-eyebrow">Reconciliation guides</p>
+    <h1>Discrepancy actions</h1>
+    <p class="docs-lede">A discrepancy is created automatically by the reconciliation engine. These seven endpoints are how a reviewer takes it from detected to resolved: read the queue, assign an owner, leave notes, resolve one or many, and export the current view.</p>
+    <div class="api-hero"><div><strong>The discrepancy record is the audit trail</strong><p>Every action below appends to the same timeline and, for resolve and bulk-resolve, writes an audit event. There is no separate "actions log" to keep in sync.</p></div><div class="api-hero-meta"><span>TRIAGE</span><span>ASSIGN</span><span>RESOLVE</span></div></div>
+
+    <h2>Permissions</h2>
+    <table>
+      <thead><tr><th>Endpoint</th><th>Permission</th></tr></thead>
+      <tbody>
+        <tr><td>Activity feed, assignment queue, CSV export</td><td><code>read:discrepancies</code></td></tr>
+        <tr><td>Resolve, assign, notes</td><td><code>write:discrepancies</code></td></tr>
+        <tr><td>Bulk-resolve</td><td><code>bulk:operations</code></td></tr>
+      </tbody>
+    </table>
+    <p>All seven are scoped to the caller's tenant. A path parameter naming a discrepancy from a different tenant returns <code>404</code>, not <code>403</code> &mdash; the record is not disclosed to exist.</p>
+
+    <h2>Activity feed</h2>
+    <p>The most recent discrepancies for the tenant, newest first, each reduced to its latest timeline entry. Read-only; nothing here is derived on the fly from an audit log, it is the record's own <code>timeline</code> field.</p>
+    <div class="code-head"><span class="method">GET</span><code>/activity-feed</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /activity-feed?limit=5
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <table><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td><code>limit</code></td><td>Integer, 1&ndash;100, default 5.</td></tr>
+    </tbody></table>
+    <pre class="docs-code" data-lang="json"><code>{
+  "items": [
+    {
+      "id": "disc-8f2c...",
+      "event": "note_added",
+      "message": "Waiting on the provider's own investigation.",
+      "severity": "warning",
+      "timestamp": "2026-09-20T09:14:02+00:00",
+      "trans_id": "QGH7XABC12"
+    }
+  ]
+}</code></pre>
+    <p><code>event</code> is whichever of <code>created</code>, <code>note_added</code>, <code>resolved</code> or <code>bulk_resolved</code> was appended most recently by the actions below. A discrepancy with an empty timeline (never happens through normal use, but possible on old data) is reported as <code>created</code>.</p>
+
+    <h2>Assignment queue</h2>
+    <p>Every open (unresolved) discrepancy for the tenant, newest first &mdash; the working list for a reviewer deciding what to pick up next.</p>
+    <div class="code-head"><span class="method">GET</span><code>/assignment-queue</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /assignment-queue
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <pre class="docs-code" data-lang="json"><code>{
+  "items": [
+    {
+      "id": "disc-8f2c...",
+      "trans_id": "QGH7XABC12",
+      "severity": "critical",
+      "assignee": "Unassigned",
+      "queue_status": "needs_assignment",
+      "anomaly_type": "missing_payment",
+      "detected_at": "2026-09-20T09:00:11+00:00"
+    }
+  ]
+}</code></pre>
+    <p><code>queue_status</code> is derived, not stored: it is <code>assigned</code> when the record has an <code>assignee</code> and <code>needs_assignment</code> otherwise. There is no separate "unassign" endpoint &mdash; assigning to an empty string is rejected by <a href="#assign"><code>POST /discrepancies/{id}/assign</code></a>, which requires a non-empty <code>assignee</code>.</p>
+
+    <h2 id="resolve">Resolve one discrepancy</h2>
+    <p>Marks a single discrepancy resolved, stamps <code>resolved_at</code>, and records an audit event for it.</p>
+    <div class="code-head"><span class="method">POST</span><code>/discrepancies/{discrepancy_id}/resolve</code></div>
+    <pre class="docs-code" data-lang="http"><code>POST /discrepancies/{discrepancy_id}/resolve
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  "note": "Confirmed with the provider: late settlement, now posted."
+}</code></pre>
+    <p><code>note</code> is optional; when given, it replaces <code>resolution_note</code> on the record (it does not append to the running <code>notes</code> field the way <a href="#notes"><code>POST /discrepancies/{id}/notes</code></a> does). Response:</p>
+    <pre class="docs-code" data-lang="json"><code>{ "status": "resolved", "id": "disc-8f2c..." }</code></pre>
+    <table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>404</td><td>No discrepancy with that id in the caller's tenant.</td></tr>
+      <tr><td>415</td><td>Body was not sent as <code>application/json</code>.</td></tr>
+    </tbody></table>
+
+    <h2>Bulk resolve</h2>
+    <p>Resolves several discrepancies in one call with a shared note, and writes <strong>one</strong> audit event for the whole batch listing every id it touched &mdash; not one event per row, since a bulk action is one operator decision.</p>
+    <div class="code-head"><span class="method">POST</span><code>/discrepancies/bulk-resolve</code></div>
+    <pre class="docs-code" data-lang="http"><code>POST /discrepancies/bulk-resolve
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  "ids": ["disc-8f2c...", "disc-91ab..."],
+  "note": "Batch cleared after the provider's settlement replay."
+}</code></pre>
+    <table><thead><tr><th>Field</th><th>Required</th><th>Notes</th></tr></thead><tbody>
+      <tr><td><code>ids</code></td><td>Yes</td><td>Array of discrepancy ids.</td></tr>
+      <tr><td><code>note</code></td><td>No</td><td>Defaults to <code>"Bulk resolved"</code>.</td></tr>
+    </tbody></table>
+    <pre class="docs-code" data-lang="json"><code>{ "status": "resolved", "updated": 2, "skipped_ids": [] }</code></pre>
+    <p>An id that does not exist in the caller's tenant is not an error for the batch: it is added to <code>skipped_ids</code> and everything else in the request still resolves. Requires <code>bulk:operations</code>, a distinct, broader permission from the <code>write:discrepancies</code> the single-item endpoints use &mdash; a role can have one without the other.</p>
+
+    <h2 id="assign">Assign</h2>
+    <p>Sets who owns a discrepancy. There is one field, and it is required.</p>
+    <div class="code-head"><span class="method">POST</span><code>/discrepancies/{discrepancy_id}/assign</code></div>
+    <pre class="docs-code" data-lang="http"><code>POST /discrepancies/{discrepancy_id}/assign
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{ "assignee": "amina@yourcompany.com" }</code></pre>
+    <pre class="docs-code" data-lang="json"><code>{ "status": "assigned", "assignee": "amina@yourcompany.com" }</code></pre>
+    <p><code>assignee</code> is a free-text string on this record; it is not validated against a user or team directory. If you need assignment restricted to real accounts, enforce that in the caller before sending the request.</p>
+
+    <h2 id="notes">Add a note</h2>
+    <p>Appends one line to the discrepancy's running <code>notes</code> field and to its timeline. Unlike <code>resolve</code>'s optional note, this one is required and additive &mdash; it never overwrites what's already there.</p>
+    <div class="code-head"><span class="method">POST</span><code>/discrepancies/{discrepancy_id}/notes</code></div>
+    <pre class="docs-code" data-lang="http"><code>POST /discrepancies/{discrepancy_id}/notes
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{ "note": "Provider confirms the reversal posted at 14:02." }</code></pre>
+    <pre class="docs-code" data-lang="json"><code>{ "status": "saved", "notes": "- Provider confirms the reversal posted at 14:02." }</code></pre>
+    <p>An empty or whitespace-only <code>note</code> is accepted by validation but has no effect: nothing is appended and <code>notes</code> is returned unchanged. Send a non-empty string to actually record something.</p>
+
+    <h2>Export as CSV</h2>
+    <p>The same filters as the discrepancy list, returned as a CSV file instead of a paginated JSON envelope &mdash; every matching row in one response, capped only by how many discrepancies the tenant has.</p>
+    <div class="code-head"><span class="method">GET</span><code>/discrepancies/export/csv</code></div>
+    <pre class="docs-code" data-lang="http"><code>GET /discrepancies/export/csv?status=missing_payment&severity=critical
+Authorization: Bearer &lt;token&gt;</code></pre>
+    <table><thead><tr><th>Parameter</th><th>Values</th></tr></thead><tbody>
+      <tr><td><code>status</code></td><td><code>needs_review</code>, <code>assigned</code>, <code>resolved</code>, <code>open</code>, <code>closed</code>, <code>pending</code>, <code>missing_payment</code>, <code>missing_transaction</code>, <code>amount_mismatch</code>, <code>duplicate</code></td></tr>
+      <tr><td><code>severity</code></td><td><code>critical</code>, <code>warning</code>, <code>info</code></td></tr>
+      <tr><td><code>resolved</code></td><td><code>open</code> or <code>resolved</code></td></tr>
+    </tbody></table>
+    <p>Columns: <code>id, trans_id, anomaly_type, severity, status, resolved, tenant_id, assignee, detected_at, resolved_at, notes</code>. <code>resolved</code> is written as <code>Yes</code>/<code>No</code>; empty <code>assignee</code> and <code>tenant_id</code> are written as <code>Unassigned</code> and <code>N/A</code> rather than left blank. This route needs an authenticated tenant context and returns <code>403</code> without one &mdash; unlike the JSON list and activity feed, which fall back to an unscoped query when no tenant is resolved.</p>
+
+    <h2>Related</h2>
+    <ul>
+      <li><a href="index.html">Reconciliation guides</a></li>
+      <li><a href="exceptions.html">Exceptions</a></li>
+      <li><a href="../../api/pagination.html">Pagination</a> &mdash; the envelope <code>GET /discrepancies</code> itself returns</li>
+      <li><a href="../../api/errors.html">Errors</a></li>
+    </ul>
+  </article>
+</div>
+</main>
+
+<footer class="docs-footer"><div class="docs-footer-inner">
+  <span>© 2026 PesaGuard</span>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+</div></footer>
+
+<script src="../../js/app.js" defer></script>
+</body>
+</html>
