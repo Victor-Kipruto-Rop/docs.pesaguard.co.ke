@@ -80,7 +80,7 @@ Authorization: Bearer &lt;token&gt;</code></pre>
     <p>Unlike <code>GET /discrepancies</code>, this route requires a resolved tenant context and returns <code>403</code> without one.</p>
 
     <h2>Bulk assign</h2>
-    <p>Assigns many incidents to one owner in one call, the assignment equivalent of <a href="discrepancy-actions.html">bulk-resolve</a>: same <code>ids</code> / <code>skipped_ids</code> shape, one timeline entry per incident (not one audit event per batch &mdash; this route does not call the audit trail the way resolve and bulk-resolve do).</p>
+    <p>Assigns many incidents to one owner in one call, the assignment equivalent of <a href="discrepancy-actions.html">bulk-resolve</a>: same <code>ids</code> / <code>skipped_ids</code> shape, one timeline entry per incident, and one audit event for the whole batch (not one per incident), the same convention <a href="discrepancy-actions.html">bulk-resolve</a> uses.</p>
     <div class="code-head"><span class="method">POST</span><code>/incidents/bulk-assign</code></div>
     <pre class="docs-code" data-lang="http"><code>POST /incidents/bulk-assign
 Authorization: Bearer &lt;token&gt;
@@ -110,7 +110,7 @@ Authorization: Bearer &lt;token&gt;</code></pre>
     <p>This is a synchronous sweep triggered by the caller, not a background job &mdash; call it on a schedule (a cron hitting this endpoint every few minutes) if you want continuous auto-escalation rather than a one-off catch-up run.</p>
 
     <h2>Filter presets</h2>
-    <div class="callout" data-tone="warn"><strong>Not durable.</strong> <code>POST</code> here does not write to a database or any other store. The preset dictionary is a local variable rebuilt fresh on every single request, so a preset "saved" by one call is gone by the next &mdash; including the next call from the same client. Do not build a "my saved filters" feature on this endpoint; it always returns to the three built-in presets. For filters that actually persist, see the communications module's <code>saved-filters</code> endpoints, which are backed by a real table.</div>
+    <p>Three built-in presets always exist: <code>critical_open</code>, <code>needs_review</code> and <code>all</code>. <code>POST</code> adds or replaces one more, scoped to your tenant and persisted in its own table &mdash; a fresh <code>GET</code>, even from a different session, sees it.</p>
     <div class="code-head"><span class="method">GET</span><code>/incidents/filters/presets</code></div>
     <pre class="docs-code" data-lang="http"><code>GET /incidents/filters/presets
 Authorization: Bearer &lt;token&gt;</code></pre>
@@ -127,7 +127,7 @@ Authorization: Bearer &lt;token&gt;
 Content-Type: application/json
 
 { "name": "my_view", "filters": { "severity": "warning" } }</code></pre>
-    <p>Returns <code>201</code> with the (still request-local) preset dictionary including the one just added. <code>GET</code> only needs <code>read:discrepancies</code>, but <code>POST</code> additionally checks for <code>write:discrepancies</code> in the handler itself rather than in the route decorator &mdash; the two methods on this one route do not share a single permission requirement.</p>
+    <p>Returns <code>201</code> with the full preset dictionary, including the one just added, merged over the three built-in presets. Posting the same <code>name</code> again for the same tenant replaces its filters rather than creating a duplicate &mdash; it's an upsert keyed on tenant and name. <code>GET</code> only needs <code>read:discrepancies</code>, but <code>POST</code> additionally checks for <code>write:discrepancies</code> in the handler itself rather than in the route decorator &mdash; the two methods on this one route do not share a single permission requirement.</p>
 
     <h2>Related</h2>
     <ul>
