@@ -7,7 +7,7 @@
     "x-documentation": "https://docs.pesaguard.victorkipruto.com/api/",
     "x-generated-from": {
       "backend": "Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com",
-      "commit": "8c50cad38e5176aec2513a6ef4584493364a1d42",
+      "commit": "78f5d84fe4db00c9fb4c7c16179c9971a0008296",
       "generator": "scripts/generate-openapi.py"
     }
   },
@@ -5169,7 +5169,8 @@
         "tags": [
           "Incidents"
         ],
-        "summary": "Return and persist a minimal set of dashboard filter presets",
+        "summary": "Return the tenant's discrepancy/incident search filter presets",
+        "description": "Return the tenant's discrepancy/incident search filter presets. Three presets (critical_open, needs_review, all) always exist. POST adds or replaces one more, scoped to the caller's tenant, persisted in discrepancy_filter_presets -- it used to return 201 without saving anything at all.",
         "responses": {
           "200": {
             "description": "Success. This handler serves several methods on one route; per-method responses are not documented yet."
@@ -5187,7 +5188,8 @@
         "tags": [
           "Incidents"
         ],
-        "summary": "Return and persist a minimal set of dashboard filter presets",
+        "summary": "Return the tenant's discrepancy/incident search filter presets",
+        "description": "Return the tenant's discrepancy/incident search filter presets. Three presets (critical_open, needs_review, all) always exist. POST adds or replaces one more, scoped to the caller's tenant, persisted in discrepancy_filter_presets -- it used to return 201 without saving anything at all.",
         "responses": {
           "200": {
             "description": "Success. This handler serves several methods on one route; per-method responses are not documented yet."
