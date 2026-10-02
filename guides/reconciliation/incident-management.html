@@ -74,10 +74,10 @@ Authorization: Bearer &lt;token&gt;</code></pre>
   "per_page": 20,
   "total": 1,
   "items": [
-    { "id": "disc-8f2c...", "trans_id": "QGH7XABC12", "anomaly_type": "missing_payment", "severity": "critical", "assignee": "Unassigned", "detected_at": "2026-09-20T09:00:11+00:00" }
+    { "id": "disc-8f2c...", "trans_id": "QGH7XABC12", "anomaly_type": "missing_payment", "severity": "critical", "assignee": null, "detected_at": "2026-09-20T09:00:11+00:00" }
   ]
 }</code></pre>
-    <p>Unlike <code>GET /discrepancies</code>, this route requires a resolved tenant context and returns <code>403</code> without one.</p>
+    <p>Unlike <code>GET /discrepancies</code>, this route requires a resolved tenant context and returns <code>403</code> without one. Note <code>assignee</code> here is the raw column value &mdash; <code>null</code> when nothing is assigned &mdash; not the <code>"Unassigned"</code> placeholder string the <a href="discrepancy-actions.html#assignment-queue">assignment queue</a> and CSV export substitute in.</p>
 
     <h2>Bulk assign</h2>
     <p>Assigns many incidents to one owner in one call, the assignment equivalent of <a href="discrepancy-actions.html">bulk-resolve</a>: same <code>ids</code> / <code>skipped_ids</code> shape, one timeline entry per incident, and one audit event for the whole batch (not one per incident), the same convention <a href="discrepancy-actions.html">bulk-resolve</a> uses.</p>

@@ -84,7 +84,7 @@ Authorization: Bearer &lt;token&gt;</code></pre>
 ]</code></pre>
 
     <h2>Incident trends</h2>
-    <p>Two fixed-size time series: the last 4 calendar weeks and the last 12 calendar months, each bucket giving total, resolved and open (<code>open</code> is <code>incidents - resolved</code> for that bucket, not a separate query). Months are 30-day-wide buckets labelled by short month name, so two buckets can share a label in edge cases around month boundaries.</p>
+    <p>Two fixed-size time series: the last 4 weeks and the last 12 months, each bucket giving total, resolved and open (<code>open</code> is <code>incidents - resolved</code> for that bucket, not a separate query).</p>
     <div class="code-head"><span class="method">GET</span><code>/analytics/incident-trends</code></div>
     <pre class="docs-code" data-lang="http"><code>GET /analytics/incident-trends
 Authorization: Bearer &lt;token&gt;</code></pre>
@@ -95,8 +95,14 @@ Authorization: Bearer &lt;token&gt;</code></pre>
     { "week": "W3", "incidents": 3, "resolved": 3, "open": 0 },
     { "week": "W4", "incidents": 6, "resolved": 2, "open": 4 }
   ],
-  "monthly": [ { "month": "Jun", "incidents": 21, "resolved": 18, "open": 3 } ]
+  "monthly": [
+    { "month": "Nov", "incidents": 14, "resolved": 12, "open": 2 },
+    { "month": "Dec", "incidents": 19, "resolved": 17, "open": 2 },
+    "... 10 more, always 12 entries total ...",
+    { "month": "Oct", "incidents": 21, "resolved": 18, "open": 3 }
+  ]
 }</code></pre>
+    <div class="callout" data-tone="warn"><strong>Month boundaries are approximate.</strong> <code>monthly</code> always has exactly 12 entries, but they are not guaranteed to be 12 distinct, consecutive calendar months: each entry is "30 &times; months-ago days before today, snapped to the 1st of that month," and that 30-day step is only an approximation of a real month. Stepping back across a 31-day month can land two entries on the same month (its label appears twice in the array); stepping across a 28-day February can instead step clean over it (its label never appears at all that year). Both are the same approximation showing up two ways, not separate bugs.</div>
     <p>Neither window is configurable &mdash; there is no query parameter to ask for 8 weeks or 6 months. If you need a different range, use <a href="#report"><code>GET /analytics/reconciliation-report</code></a>'s <code>days</code> parameter, or aggregate from <a href="discrepancy-actions.html#export">the CSV export</a> yourself.</p>
 
     <h2 id="report">Reconciliation report</h2>

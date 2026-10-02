@@ -90,7 +90,7 @@ Authorization: Bearer &lt;token&gt;</code></pre>
 }</code></pre>
     <p><code>event</code> is whichever of <code>created</code>, <code>note_added</code>, <code>resolved</code> or <code>bulk_resolved</code> was appended most recently by the actions below. A discrepancy with an empty timeline (never happens through normal use, but possible on old data) is reported as <code>created</code>.</p>
 
-    <h2>Assignment queue</h2>
+    <h2 id="assignment-queue">Assignment queue</h2>
     <p>Every open (unresolved) discrepancy for the tenant, newest first &mdash; the working list for a reviewer deciding what to pick up next.</p>
     <div class="code-head"><span class="method">GET</span><code>/assignment-queue</code></div>
     <pre class="docs-code" data-lang="http"><code>GET /assignment-queue
@@ -108,7 +108,7 @@ Authorization: Bearer &lt;token&gt;</code></pre>
     }
   ]
 }</code></pre>
-    <p><code>queue_status</code> is derived, not stored: it is <code>assigned</code> when the record has an <code>assignee</code> and <code>needs_assignment</code> otherwise. There is no separate "unassign" endpoint &mdash; assigning to an empty string is rejected by <a href="#assign"><code>POST /discrepancies/{id}/assign</code></a>, which requires a non-empty <code>assignee</code>.</p>
+    <p><code>queue_status</code> is derived, not stored: it is <code>assigned</code> when the record has an <code>assignee</code> and <code>needs_assignment</code> otherwise. There is no separate "unassign" endpoint &mdash; <a href="#assign"><code>POST /discrepancies/{id}/assign</code></a> with an empty <code>assignee</code> string is how you clear one; the route logs that explicitly as <code>"Assignment cleared"</code> rather than <code>"Assigned to "</code>.</p>
 
     <h2 id="resolve">Resolve one discrepancy</h2>
     <p>Marks a single discrepancy resolved, stamps <code>resolved_at</code>, and records an audit event for it.</p>
@@ -154,7 +154,7 @@ Content-Type: application/json
 
 { "assignee": "amina@yourcompany.com" }</code></pre>
     <pre class="docs-code" data-lang="json"><code>{ "status": "assigned", "assignee": "amina@yourcompany.com" }</code></pre>
-    <p><code>assignee</code> is a free-text string on this record; it is not validated against a user or team directory. If you need assignment restricted to real accounts, enforce that in the caller before sending the request.</p>
+    <p><code>assignee</code> is a free-text string on this record; it is not validated against a user or team directory. If you need assignment restricted to real accounts, enforce that in the caller before sending the request. <code>assignee</code> is required as a field, but an empty string is a valid value and is how you unassign &mdash; the timeline records it as <code>"Assignment cleared"</code> rather than <code>"Assigned to "</code>.</p>
 
     <h2 id="notes">Add a note</h2>
     <p>Appends one line to the discrepancy's running <code>notes</code> field and to its timeline. Unlike <code>resolve</code>'s optional note, this one is required and additive &mdash; it never overwrites what's already there.</p>
