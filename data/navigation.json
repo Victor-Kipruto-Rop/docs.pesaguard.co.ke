@@ -1,0 +1,109 @@
+{
+  "sections": [
+    { "title": "Getting started", "href": "getting-started/", "pages": [
+      "getting-started/quickstart.html",
+      "getting-started/create-account.html",
+      "getting-started/create-api-key.html",
+      "getting-started/first-request.html",
+      "getting-started/first-transaction.html",
+      "getting-started/test-environment.html",
+      "getting-started/production-checklist.html"
+    ]},
+    { "title": "Concepts", "href": "concepts/", "pages": [
+      "concepts/architecture.html",
+      "concepts/reconciliation.html",
+      "concepts/transaction-lifecycle.html",
+      "concepts/idempotency.html",
+      "concepts/tenants.html",
+      "concepts/anomalies.html",
+      "concepts/fraud-detection.html",
+      "concepts/audit-trails.html"
+    ]},
+    { "title": "Guides", "href": "guides/", "pages": [
+      "guides/authentication/",
+      "guides/transactions/",
+      "guides/reconciliation/",
+      "guides/anomalies/",
+      "guides/webhooks/",
+      "guides/integrations/"
+    ]},
+    { "title": "API", "href": "api/", "pages": [
+      "api/reference.html",
+      "api/authentication.html",
+      "api/pagination.html",
+      "api/filtering.html",
+      "api/sorting.html",
+      "api/versioning.html",
+      "api/rate-limits.html",
+      "api/idempotency.html",
+      "api/request-validation.html",
+      "api/errors.html"
+    ]},
+    { "title": "Webhooks", "href": "webhooks/", "pages": [
+      "webhooks/event-catalog.html",
+      "webhooks/verification.html",
+      "webhooks/retries.html",
+      "webhooks/transaction-created.html",
+      "webhooks/transaction-matched.html",
+      "webhooks/transaction-unmatched.html",
+      "webhooks/anomaly-detected.html",
+      "webhooks/reconciliation-completed.html"
+    ]},
+    { "title": "Errors", "href": "errors/", "pages": [
+      "errors/error-codes.html",
+      "errors/authentication.html",
+      "errors/authorization.html",
+      "errors/validation.html",
+      "errors/rate-limit.html",
+      "errors/conflict.html",
+      "errors/not-found.html",
+      "errors/server-errors.html"
+    ]},
+    { "title": "Security", "href": "security/", "pages": [
+      "security/authentication.html",
+      "security/authorization.html",
+      "security/api-key-security.html",
+      "security/webhook-security.html",
+      "security/encryption.html",
+      "security/tenant-isolation.html",
+      "security/data-protection.html",
+      "security/responsible-disclosure.html"
+    ]},
+    { "title": "Environments", "href": "environments/", "pages": [
+      "environments/sandbox.html",
+      "environments/staging.html",
+      "environments/production.html",
+      "environments/environment-variables.html"
+    ]},
+    { "title": "Testing", "href": "testing/", "pages": [
+      "testing/sandbox-testing.html",
+      "testing/test-transactions.html",
+      "testing/webhook-testing.html",
+      "testing/failure-scenarios.html",
+      "testing/integration-testing.html"
+    ]},
+    { "title": "SDKs", "href": "sdks/", "pages": [
+      "sdks/python.html",
+      "sdks/javascript.html",
+      "sdks/typescript.html",
+      "sdks/java.html",
+      "sdks/curl.html"
+    ]},
+    { "title": "Migration", "href": "migration/", "pages": [
+      "migration/api-v1-to-v2.html",
+      "migration/webhook-migrations.html",
+      "migration/deprecated-endpoints.html"
+    ]},
+    { "title": "Changelog", "href": "changelog/", "pages": [
+      "changelog/2026/september.html",
+      "changelog/2026/august.html",
+      "changelog/2026/july.html",
+      "changelog/breaking-changes.html"
+    ]},
+    { "title": "Support", "href": "support/", "pages": [
+      "support/troubleshooting.html",
+      "support/faq.html",
+      "support/contact.html"
+    ]}
+  ]
+}

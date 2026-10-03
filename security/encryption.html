@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Encryption - PesaGuard docs</title>
-<meta name="description" content="Service traffic is encrypted in transit and sensitive data at rest. Keys live outside source and rotate.">
+<meta name="description" content="Application-level encryption for provider secrets and selected sensitive payload fields, plus TLS deployment guidance and key rotation limits.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/encryption.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Encryption - PesaGuard docs">
-<meta property="og:description" content="Service traffic is encrypted in transit and sensitive data at rest. Keys live outside source and rotate.">
+<meta property="og:description" content="Application-level encryption for provider secrets and selected sensitive payload fields, plus TLS deployment guidance and key rotation limits.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/encryption.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Encryption - PesaGuard docs">
-<meta name="twitter:description" content="Service traffic is encrypted in transit and sensitive data at rest. Keys live outside source and rotate.">
+<meta name="twitter:description" content="Application-level encryption for provider secrets and selected sensitive payload fields, plus TLS deployment guidance and key rotation limits.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -50,9 +48,38 @@
   <article class="docs-article">
     <p class="docs-eyebrow">Security</p>
     <h1>Encryption <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Service traffic is encrypted in transit and sensitive data at rest. Keys live outside source and rotate.</p>
+    <p class="docs-lede">The backend contains application-level encryption for provider configuration and selected sensitive payload values. This is distinct from TLS in transit and from storage- or backup-level encryption, which must be configured and verified in the deployment infrastructure.</p>
+    <h2>Application-level field encryption</h2>
+    <p>Provider configuration uses Fernet authenticated encryption for credential-bearing values, stored with an <code>enc:v1:</code> prefix. Sensitive payload handling encrypts configured keys such as phone numbers, account numbers, customer names, national identifiers, and authorization codes while preserving the surrounding JSON structure. Identifier tokenization uses a keyed HMAC-SHA-256 digest for equality lookup without putting the original identifier in the token value.</p>
+    <p>These helpers protect selected values in application-managed records; they do not establish that every database column, log, exported file, message, database volume, or backup is encrypted. Inspect the actual data path and hosting controls for the data category you use.</p>
+    <h2>Key configuration and rotation</h2>
+    <ul>
+      <li>Production provider configuration requires <code>PROVIDER_ENCRYPTION_KEY</code>; do not rely on the development fallback.</li>
+      <li>Payload encryption uses <code>PESAGUARD_PAYLOAD_ENCRYPTION_KEY</code> (or the compatibility provider key setting) and can accept a previous key during a rotation window.</li>
+      <li>Keep encryption keys in a managed secret store, restrict read access to the workloads that need them, and never commit them to source or copy them into support tickets.</li>
+      <li>For rotation, deploy the new active key and the previous key together, re-encrypt stored values with the provided rotation operation, verify that all protected data can be read with the new key, and only then remove the previous key.</li>
+      <li>Keep a separately controlled recovery plan for key loss. Ciphertext that cannot be decrypted with any configured key is not recoverable by the application.</li>
+    </ul>
+    <h2>Encryption in transit</h2>
+    <p>Use HTTPS for all API, administrative, webhook, and operator traffic. The dashboard API emits HSTS when its request context is recognized as HTTPS. When TLS terminates at a reverse proxy or load balancer, configure trusted proxy behavior correctly and verify the external response headers at the public endpoint; application code cannot prove that every network hop is encrypted.</p>
+    <h2>What this page does not claim</h2>
+    <ul>
+      <li>It does not claim universal database, disk, object-storage, Kafka, or backup encryption; configure and verify each service's native encryption controls.</li>
+      <li>It does not claim customer-managed keys, a hardware security module, or a centralized vault integration.</li>
+      <li>It does not claim that the same encryption key can safely be reused for JWT signing, field encryption, and unrelated integrations. Use separate secrets for separate purposes.</li>
+      <li>It does not replace access control, data minimization, redaction, retention, or secure key custody.</li>
+    </ul>
+    <h2>Verification checklist</h2>
+    <ol>
+      <li>In production configuration, confirm the required encryption keys exist and meet the deployment's entropy and custody standards.</li>
+      <li>Write a test value through the provider/payload path and confirm the persisted sensitive value is ciphertext rather than plaintext.</li>
+      <li>Confirm the application can decrypt existing records during a planned key rotation, then verify re-encryption and removal of the previous key.</li>
+      <li>Check the public API endpoint for HTTPS and HSTS, and independently verify encryption for the database, object storage, queues, and backups.</li>
+      <li>Test restore and decryption from backup using controlled recovery procedures; a backup is not useful if its required keys are unavailable.</li>
+    </ol>
     <h2>Related</h2>
     <ul>
+      <li><a href="data-protection.html">Data protection and retention</a></li>
       <li><a href="../security/index.html">Security overview</a></li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
     </ul>

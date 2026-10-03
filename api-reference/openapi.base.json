@@ -6,6 +6,12 @@
     "description": "Enterprise-grade operational telemetry and reconciliation endpoints. This file mirrors the specification served at /openapi.json by a running deployment; the live deployment is authoritative.",
     "x-documentation": "https://docs.pesaguard.victorkipruto.com/api/"
   },
+  "servers": [
+    {
+      "url": "https://api.pesaguard.victorkipruto.com",
+      "description": "PesaGuard API"
+    }
+  ],
   "security": [
     {
       "bearerAuth": []

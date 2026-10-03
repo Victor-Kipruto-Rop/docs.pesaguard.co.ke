@@ -56,7 +56,7 @@ a.card:hover .go .arrow, a.card:focus-visible .go .arrow { transform: translateX
 
 .code-copy.is-copied {
   color: var(--lime-ink);
-  border-color: rgba(110, 131, 29, 0.45);
+  border-color: rgba(11, 93, 59, 0.45);
   background: var(--lime-veil);
   animation: copy-pop 260ms var(--ease-out);
 }

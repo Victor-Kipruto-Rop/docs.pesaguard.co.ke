@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Webhook security - PesaGuard docs</title>
-<meta name="description" content="Outbound deliveries are signed. Consumers verify the sender and reject on mismatch before parsing.">
+<meta name="description" content="Detailed security guidance for outbound webhook HMAC signatures, SSRF defenses, delivery retries, and inbound provider callback verification.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/webhook-security.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Webhook security - PesaGuard docs">
-<meta property="og:description" content="Outbound deliveries are signed. Consumers verify the sender and reject on mismatch before parsing.">
+<meta property="og:description" content="Detailed security guidance for outbound webhook HMAC signatures, SSRF defenses, delivery retries, and inbound provider callback verification.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/webhook-security.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Webhook security - PesaGuard docs">
-<meta name="twitter:description" content="Outbound deliveries are signed. Consumers verify the sender and reject on mismatch before parsing.">
+<meta name="twitter:description" content="Detailed security guidance for outbound webhook HMAC signatures, SSRF defenses, delivery retries, and inbound provider callback verification.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -50,9 +48,35 @@
   <article class="docs-article">
     <p class="docs-eyebrow">Security</p>
     <h1>Webhook security <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Outbound deliveries are signed. Consumers verify the sender and reject on mismatch before parsing.</p>
+    <p class="docs-lede">PesaGuard has separate controls for outbound webhook delivery and inbound provider callbacks. The sender signs outbound deliveries and validates destination URLs; inbound flows authenticate the provider according to the integration. Apply the matching verification procedure at each boundary.</p>
+    <h2>Outbound deliveries</h2>
+    <p>Webhook registration requires an HTTPS URL. The backend resolves the host and rejects private, loopback, link-local, reserved, multicast, unspecified, and selected metadata destinations. It repeats URL validation before each delivery to reduce risk from a hostname whose DNS answer changes after registration. HTTP redirects are not followed; a redirect response aborts that delivery attempt rather than forwarding the event to another host.</p>
+    <p>Each webhook receives a generated signing secret when registered. The signature is HMAC-SHA-256 over the timestamp, a dot, and canonical JSON (JSON keys sorted recursively with compact separators), encoded in the header as <code>t=&lt;unix-seconds&gt;,v1=&lt;hex-digest&gt;</code>. The request also includes <code>X-Webhook-Event</code> and <code>X-Webhook-Timestamp</code>. The delivery implementation uses a 10-second default timeout and three default attempts, caps configured timeout and retry counts, and backs off between retries.</p>
+    <h3>Receiver verification sequence</h3>
+    <ol>
+      <li>Read the exact <code>X-Webhook-Timestamp</code> and signature values; reject missing or malformed headers.</li>
+      <li>Parse the event JSON, serialize it with the same canonical rules (recursively sorted keys and compact separators), and reconstruct <code>timestamp + "." + canonical_json</code>.</li>
+      <li>Compute HMAC-SHA-256 using the signing secret provisioned for that endpoint and compare the supplied digest in constant time.</li>
+      <li>Enforce an acceptable timestamp window using your receiver's clock, then record the event ID and reject duplicate processing idempotently.</li>
+      <li>Only after successful verification, validate the event schema and apply the business action. Keep the signing secret and received payload out of logs.</li>
+    </ol>
+    <p>Do not assume a generic raw-body signature example matches the outbound canonical-JSON format. Use the exact verification contract for your deployment and test against a real non-production delivery. See <a href="../webhooks/verification.html">Webhook signature verification</a>.</p>
+    <h2>Inbound callbacks</h2>
+    <p>Inbound providers do not all use the outbound signing scheme. The communications delivery callback path verifies an HMAC-SHA-256 digest of the raw request bytes, accepts a provider-specific signature header format, and checks timestamps when supplied. Its default maximum age is five minutes. Duplicate provider event IDs are detected before the event is applied again.</p>
+    <p>The Daraja callback guard can require a configured shared-secret header, an IP/CIDR allowlist, or both. If neither is configured, it rejects the callback by default. If forwarded client addresses are used, configure <code>PESAGUARD_TRUSTED_PROXY_COUNT</code> to match the actual proxy chain; otherwise the code uses the direct peer address. Never trust a client-supplied forwarded-for header from an untrusted network.</p>
+    <h2>Operator controls and limitations</h2>
+    <ul>
+      <li>Keep secrets unique per webhook/integration, restrict who can read them, and rotate them after a suspected disclosure.</li>
+      <li>Ensure egress policy independently restricts destinations. URL validation is an application control and should not replace network-level egress controls.</li>
+      <li>Use idempotent event handling: retries are expected, and a sender cannot know whether a receiver committed an action before a connection failed.</li>
+      <li>Monitor failed deliveries and replay queues without exposing full payloads or authentication headers in logs.</li>
+      <li>Do not treat DNS revalidation alone as a complete guarantee against every DNS rebinding or network-path threat; validate behavior in the deployed network.</li>
+    </ul>
+    <p>Implementation evidence includes <code>webhook_manager.py</code> for outbound delivery and <code>communications/webhooks.py</code> plus <code>security_helpers.py</code> for inbound verification paths. These flows use different formats and must not be conflated.</p>
     <h2>Related</h2>
     <ul>
+      <li><a href="../webhooks/verification.html">Webhook signature verification</a></li>
+      <li><a href="../webhooks/retries.html">Webhook retries</a></li>
       <li><a href="../security/index.html">Security overview</a></li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
     </ul>

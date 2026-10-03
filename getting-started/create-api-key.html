@@ -6,8 +6,9 @@
 <title>Create an API key - PesaGuard docs</title>
 <meta name="description" content="What a PesaGuard credential carries: explicit scopes, expiry, rotation metadata, and hashed storage.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/getting-started/create-api-key.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Create an API key - PesaGuard docs">
@@ -19,9 +20,6 @@
 <meta name="twitter:description" content="What a PesaGuard credential carries: explicit scopes, expiry, rotation metadata, and hashed storage.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -74,28 +72,28 @@
     <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span><a href="index.html">Getting started</a><span aria-hidden="true">/</span><span>Create an API key</span></nav>
     <p class="docs-eyebrow">Getting started</p>
     <h1>Create an API key</h1>
-    <p class="docs-lede">Credentials are issued with the pilot team, scoped to the integration that needs them. A key is never "full access": it is a scope, an expiry and a tenant, nothing more.</p>
+    <p class="docs-lede">API keys are provisioned through the deployment's authorized operator workflow, not a public self-serve endpoint in the canonical dashboard API. A key record is tenant-bound and carries a role, explicit scopes, active/revocation state, optional expiry, and last-used metadata.</p>
     <div class="api-hero"><div><strong>One integration, one credential</strong><p>Separate keys make ownership, rotation, incident response and usage review possible.</p></div><div class="api-hero-meta"><span>SCOPED</span><span>EXPIRING</span><span>AUDITABLE</span></div></div>
 
     <h2>What a credential carries</h2>
     <table>
       <thead><tr><th>Property</th><th>Behaviour</th></tr></thead>
       <tbody>
-        <tr><td><code>scopes</code></td><td>Explicit resource scopes, e.g. <code>reconciliation:read</code>, <code>transactions:export</code>. Access outside the scope returns <code>403</code>.</td></tr>
-        <tr><td><code>tenant</code></td><td>Every query the key runs is bounded by this tenant at the database layer.</td></tr>
-        <tr><td><code>expiry</code></td><td>Short-lived by default, with rotation metadata.</td></tr>
+        <tr><td><code>scopes</code></td><td>The allowed scope list is intersected with permissions granted to the key's role. An authenticated request without the required permission is denied.</td></tr>
+        <tr><td><code>tenant</code></td><td>The key principal is associated with its stored tenant. Routes must still apply that tenant context to the requested resource.</td></tr>
+        <tr><td><code>expiry</code></td><td>Expiry is optional in the key record. Set a finite expiration as an issuance policy and record the rotation date.</td></tr>
         <tr><td><code>last_used</code></td><td>Recorded, so dormant credentials are visible in review.</td></tr>
-        <tr><td>Storage</td><td>Hashed at rest. The raw value is shown once at issuance.</td></tr>
+        <tr><td>Storage</td><td>The verifier looks up a SHA-256 digest rather than the submitted plaintext key. Protect the secret in transit and in operator tooling.</td></tr>
       </tbody>
     </table>
-    <h2>Issuance procedure</h2><ol><li>Describe the integration, owner, environment and required operations.</li><li>Choose the smallest scope set that supports the workflow.</li><li>Set expiry and rotation dates before issuance.</li><li>Store the secret server-side and verify one authenticated read.</li><li>Record the key id and owner, never the raw secret.</li></ol>
+    <h2>Issuance procedure</h2><ol><li>Ask the deployment operator to provision the key; the canonical dashboard API does not expose a public API-key creation route.</li><li>Document the integration owner, tenant, environment, required operations, and least-privilege role/scopes.</li><li>Set a finite expiry and rotation date in the provisioning policy; expiry is not mandatory in the underlying record.</li><li>Transfer the value through an approved secret-sharing or secret-management workflow and store it server-side.</li><li>Record the key identifier and owner, never the raw secret. Validate it with a read-only request in the intended tenant.</li></ol>
 
     <h2>Handling rules</h2>
     <ul>
       <li>Keep credentials out of source control. The infra README requires the deployment's <code>.env</code> to be ignored: the same rule applies to your integration's secrets.</li>
-      <li>One credential per integration. A shared "team key" makes rotation pointless.</li>
-      <li>Rotate on a schedule and immediately on suspicion. Revocation takes effect at once; there is no grace window to exploit.</li>
-      <li>Audit entries never contain secret material: tokens are excluded from logs by design.</li>
+      <li>Use a distinct credential for each integration and environment so revocation has a contained impact.</li>
+      <li>Rotate on a schedule and immediately on suspicion. Verify the old credential is rejected after revocation.</li>
+      <li>Do not include keys in audit details or logs; inspect the actual logging path before handling any sensitive value.</li>
     </ul>
     <h2>Rotation procedure</h2><p>Issue the replacement before revoking the current key, deploy it, observe successful traffic, then revoke the old key and verify failure. If compromise is suspected, revoke immediately and accept a controlled interruption rather than leaving an exposed key active.</p>
 
@@ -108,6 +106,7 @@
     <ul>
       <li><a href="first-request.html">First request</a>: put the credential to work.</li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a>: what your key's tenant bounds.</li>
+      <li><a href="../security/api-key-security.html">API key security</a>: verification, rotation, and incident response in detail.</li>
     </ul>
   </article>
 </div>

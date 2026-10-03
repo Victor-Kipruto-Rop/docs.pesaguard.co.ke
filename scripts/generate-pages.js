@@ -51,8 +51,9 @@ function chrome(file, page, sidebarHtml) {
 <title>${titleText}</title>
 <meta name="description" content="${page.description}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="${titleText}">
@@ -64,9 +65,6 @@ function chrome(file, page, sidebarHtml) {
 <meta name="twitter:description" content="${page.description}">
 <meta name="twitter:image" content="${ogImage}">
 <link rel="icon" type="image/svg+xml" href="${fav}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${up}css/variables.css">
 <link rel="stylesheet" href="${up}css/layout.css">
 <link rel="stylesheet" href="${up}css/navigation.css">
@@ -75,7 +73,6 @@ function chrome(file, page, sidebarHtml) {
 <link rel="stylesheet" href="${up}css/search.css">
 <link rel="stylesheet" href="${up}css/animations.css">
 <link rel="stylesheet" href="${up}css/responsive.css">
-<script>(function(){try{var t=localStorage.getItem("pg-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 </head>
 <body data-path="${page.path}">
 <a class="visually-hidden" href="#main">Skip to content</a>
@@ -83,7 +80,6 @@ function chrome(file, page, sidebarHtml) {
   <a class="docs-brand" href="${up}index.html"><img src="${fav}" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav">${sectionLinks}</nav>
-  <button class="docs-theme-toggle" type="button" aria-label="Toggle dark mode"><span class="icon-light">☀</span><span class="icon-dark">☾</span></button>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -613,17 +609,27 @@ const pages = [
     path: "/api/authentication.html",
     section: "API",
     title: "Authentication",
-    description: "Bearer JWT authentication, the scope model, and what login returns in the design contract.",
-    status: "Draft",
-    lede: "Server access uses bearer JWTs carrying issuer, audience and tenant claims; session access uses the dashboard's authenticated session. Tokens are scoped, expiring and rotatable.",
+    description: "Bearer JWT authentication, tenant-bound API-key support on guarded routes, token validation, and operator provisioning boundaries.",
+    status: "Live",
+    lede: "Protected API routes use verified bearer JWTs; route guards that support it can also accept tenant-bound API keys. Authentication, authorization, and provider callback verification are distinct controls.",
     sidebar: sidebarFor("API", "api/authentication.html", API_SIDEBAR),
     crumbs: crumb(["Docs", "index.html"], ["API", "index.html"], ["Authentication"], null),
     blocks: [
-      { code: { method: "POST", label: "/api/v1/auth/login", lang: "json", text: '{\n  "email": "user@example.com",\n  "password": "secret"\n}' } },
-      { p: "The design contract returns an access token, a refresh token, the token type, expiry, the user record and the caller's permission set (for example <code>dashboard:read</code>, <code>transactions:read</code>). Login failures return <code>401</code>; a locked account returns <code>423</code>; excessive attempts return <code>429</code>." },
-      { note: ["Why draft", "This login contract is the documented public contract in the repository, not a behaviour this docs build has exercised against a live deployment. Confirm field names against /openapi.json on your deployment before integrating."], noteTone: "warn" },
+      { h2: "Bearer JWT validation" },
+      { p: "The backend pins HS256, verifies the signature, configured issuer and audience, required time and identity claims, tenant format, token type, authorization version, scope, and token ID. Token IDs are checked against revocation state; user sessions and accounts are checked against persisted state." },
+      { p: "Access-token lifetime is configurable from 1 to 15 minutes and defaults to 15 minutes. Signing key IDs can support a controlled key-ring rotation. Refresh-token behavior depends on the application flow; the canonical dashboard API does not expose public login, refresh, or logout routes." },
+      { h2: "API-key authentication" },
+      { p: "Where a route uses the compatible authentication guard, send a tenant-bound key in <code>X-API-Key</code>. Verification matches a SHA-256 digest, checks active/revoked/optional-expiry state, and intersects the role's permissions with explicit key scopes. Expiry is optional in the record, so provisioning policy should require a finite lifetime." },
+      { h2: "Credential and deployment responsibilities" },
+      { ul: [
+        "Set a unique production <code>JWT_SECRET_KEY</code> of at least 32 bytes and keep signing keys in managed secret storage.",
+        "Send credentials only over HTTPS; never put them in URLs, browser bundles, source control, screenshots, or logs.",
+        "Obtain API keys through the authorized deployment operator workflow; the canonical dashboard API does not expose a public key-creation route.",
+        "Use tenant and permission checks for each protected route. Health, documentation, and provider callback endpoints may have separate exposure rules.",
+      ] },
+      { p: "Missing, invalid, expired, or revoked credentials are rejected. If authentication state cannot be checked, protected operations fail unavailable rather than accepting an unverified identity. Confirm route-specific requirements against the deployment's <code>/openapi.json</code>." },
     ],
-    related: [["Tenants", "concepts/tenants.html"], ["Errors", "api/errors.html"]],
+    related: [["Security overview", "security/index.html"], ["API-key security", "security/api-key-security.html"], ["Tenant isolation", "security/tenant-isolation.html"]],
   },
 
   {
@@ -757,19 +763,30 @@ const pages = [
     path: "/webhooks/verification.html",
     section: "Webhooks",
     title: "Verification",
-    description: "Verify the sender before you trust the payload: signature checks on every delivery.",
-    status: "Draft",
-    lede: "Every outbound delivery is signed. Your consumer should reject any delivery whose signature does not verify: the signature is what turns an HTTP POST into a trustworthy event.",
+    description: "Verify outbound webhooks with timestamped HMAC-SHA-256 over canonical JSON, enforce replay protection, and process event IDs idempotently.",
+    status: "Live",
+    lede: "PesaGuard outbound webhooks use a timestamped HMAC-SHA-256 signature over canonical JSON. Parse bounded input only to reconstruct that representation; do not persist or act on the event until its signature and freshness have been verified. Inbound provider callbacks may use different formats.",
     sidebar: sidebarFor("Webhooks", "webhooks/verification.html", WEBHOOKS_SIDEBAR),
     crumbs: crumb(["Docs", "index.html"], ["Webhooks", "index.html"], ["Verification"], null),
     blocks: [
-      { ol: [
-        "Read the signature header from the delivery.",
-        "Recompute the signature over the raw body using your shared secret.",
-        "Compare with a constant-time comparison; reject on mismatch with 401.",
-        "Only then parse the body and act: and act idempotently.",
+      { h2: "Signature components" },
+      { table: [
+        ["Item", "Value"],
+        ["Algorithm", "HMAC-SHA-256, lowercase hexadecimal digest."],
+        ["Signed bytes", "<code>&lt;timestamp&gt;.&lt;canonical_json&gt;</code> encoded as UTF-8."],
+        ["Canonical JSON", "Recursively sorted object keys and compact JSON separators."],
+        ["Headers", "<code>X-Webhook-Signature: t=&lt;unix-seconds&gt;,v1=&lt;digest&gt;</code> and <code>X-Webhook-Timestamp</code>."],
       ] },
-      { note: ["Why draft", "The signing scheme (header name, algorithm, key rotation) is finalized with each pilot integration. Confirm the exact mechanism with the operator before shipping a consumer."], noteTone: "warn" },
+      { h2: "Receiver verification sequence" },
+      { ol: [
+        "Apply a body-size limit and parse the JSON as untrusted input without side effects.",
+        "Re-serialize the parsed value with recursively sorted keys and compact separators.",
+        "Compute HMAC-SHA-256 over <code>timestamp + \".\" + canonical_json</code> using the endpoint's secret.",
+        "Compare the digest in constant time and reject malformed signatures or timestamps.",
+        "Reject timestamps outside a short acceptance window; use a synchronized clock.",
+        "Only after verification, persist the event ID and process it idempotently.",
+      ] },
+      { p: "This outbound format is distinct from inbound provider callbacks, which can sign raw request bytes or use source validation. See <a href=\"../security/webhook-security.html\">Security · Webhook security</a> for the separation." },
     ],
     related: [["Retries", "webhooks/retries.html"], ["Idempotency", "concepts/idempotency.html"]],
   },
@@ -801,23 +818,39 @@ const pages = [
     path: "/security/",
     section: "Security",
     title: "Security",
-    description: "The layers between a request and a record: authentication, authorization, tenant isolation, encryption and evidence.",
+    description: "Implemented PesaGuard backend security controls, repository evidence, and deployment responsibilities for authentication, authorization, tenant isolation, encryption, and audit.",
     status: "Live",
-    lede: "Security is part of the product. Controls sit at every layer between the caller and the data, and isolation is enforced in the database so application mistakes cannot become leaks.",
+    lede: "This section describes security controls visible in the PesaGuard backend, the evidence available in its code and tests, and deployment responsibilities that cannot be verified from source alone. A control marked live is not a certification or a guarantee about every customer deployment.",
     sidebar: sidebarFor("Security", "security/index.html", SECURITY_SIDEBAR),
     crumbs: crumb(["Docs", "index.html"], ["Security"], null),
     blocks: [
       {
         table: [
           ["Layer", "Guarantee"],
-          ["<a href=\"../api/authentication.html\">Authentication</a>", "Every request has a verified identity; no anonymous path to data."],
-          ["Authorization", "Role-based, least-privilege; grants and revocations are recorded."],
-          ["<a href=\"tenant-isolation.html\">Tenant isolation</a>", "Database-enforced predicates; 100-tenant load test, zero leakage."],
-          ["Encryption", "In transit and at rest; secrets excluded from logs and audit."],
-          ["Evidence", "Append-only audit trail; no secret material in entries."],
+          ["<a href=\"authentication.html\">Authentication</a>", "JWT verification checks signature, issuer, audience, time claims, token ID, tenant, and current account/session state; API keys are resolved by digest."],
+          ["<a href=\"authorization.html\">Authorization</a>", "Protected routes can enforce named permissions, tenant access, and resource-specific permissions server-side."],
+          ["<a href=\"api-key-security.html\">API keys</a>", "Tenant-bound records carry role, scopes, optional expiry, active/revocation state, and a SHA-256 digest."],
+          ["<a href=\"webhook-security.html\">Webhooks</a>", "Outbound destinations are checked for HTTPS and unsafe addresses; inbound callback checks are provider-specific."],
+          ["<a href=\"encryption.html\">Encryption</a>", "Application helpers encrypt selected sensitive payload values and provider configuration; storage and backup encryption depend on infrastructure."],
+          ["<a href=\"data-protection.html\">Data protection</a>", "Audit and provider redaction paths plus a versioned retention policy; deployment enforcement must be verified."],
+          ["<a href=\"tenant-isolation.html\">Tenant isolation</a>", "Authenticated tenant context and route/query helpers can enforce tenant- and resource-scoped access."],
+          ["Audit evidence", "Entries can be append-only, hash-linked, integrity-checked, and optionally signed."],
         ],
       },
-      { note: ["Certifications, stated once", "No third-party security certifications are held today. These pages describe implemented controls and their evidence directly instead of borrowing credibility from badges."], noteTone: "warn" },
+      { h2: "Deployment boundary" },
+      { ul: [
+        "Use HTTPS, configure trusted-proxy handling deliberately, and store production secrets in a protected secret-management system.",
+        "Restrict CORS to intended origins, keep production authentication enabled, and do not enable development-only bypasses in production.",
+        "Database-volume, object-storage, queue and backup encryption; network segmentation; host patching; key custody; monitoring; and operational retention enforcement depend on the deployment and are not proven by application source alone.",
+        "No third-party security certification is represented here. Request deployment-specific assurance information before treating these pages as contractual commitments.",
+      ] },
+      { h2: "Repository evidence" },
+      { ul: [
+        "JWT lifecycle and refresh-token behavior: <code>tests/test_auth_lifecycle.py</code>.",
+        "Authorization enforcement: <code>tests/test_rbac_enforcement.py</code>.",
+        "Audit redaction and append-only behavior: <code>tests/test_action_audit.py</code>.",
+        "Payload encryption and identifier tokenization: <code>tests/test_data_protection.py</code>.",
+      ] },
     ],
     related: [["Tenant isolation", "security/tenant-isolation.html"], ["Responsible disclosure", "security/responsible-disclosure.html"], ["Authentication", "api/authentication.html"]],
   },
@@ -827,18 +860,32 @@ const pages = [
     path: "/security/tenant-isolation.html",
     section: "Security",
     title: "Tenant isolation",
-    description: "Isolation enforced at the database layer: measured across 100 tenants with zero cross-tenant rows.",
+    description: "How authenticated tenant context, tenant/resource permission checks, and operator tests help keep PesaGuard customer data isolated.",
     status: "Live",
-    lede: "Every tenant-owned resource is evaluated against the authenticated tenant context, down to the query predicate. A query without an authorized tenant resolves to nothing.",
+    lede: "Tenant isolation binds an authenticated principal to an authorized tenant and requires that context to constrain every tenant-owned operation. The application provides tenant and resource authorization helpers, but isolation must be preserved across each route, query, asynchronous job, export, cache, and administrative workflow.",
     sidebar: sidebarFor("Security", "security/tenant-isolation.html", SECURITY_SIDEBAR),
     crumbs: crumb(["Docs", "index.html"], ["Security", "index.html"], ["Tenant isolation"], null),
     blocks: [
+      { h2: "Identity and tenant context" },
+      { p: "Verified user and machine identities carry a tenant identifier. API-key records are tenant-bound, and machine-principal records are resolved with both identity and tenant. A tenant ID supplied in a URL, query parameter, or JSON body is an object of authorization to check, not sufficient evidence of permission by itself." },
+      { p: "Protected routes can compare the requested tenant with the principal's tenant. Cross-tenant access requires a separately granted permission such as <code>manage:all_tenants</code>; resource-scoped guards also bind a permission to the exact resource identifier." },
+      { h2: "Apply the boundary end to end" },
       { ul: [
-        "Covers queries, mutations, exports, cache keys, events and replays.",
-        "No undocumented administrative bypasses; scoped admin paths are themselves recorded.",
-        "Committed load test: 100 tenants, zero cross-tenant rows observed.",
+        "<strong>Reads and writes:</strong> include the authorized tenant in database predicates for both lookup and mutation; do not fetch globally and filter only in the response layer.",
+        "<strong>Related records:</strong> verify referenced providers, webhooks, transactions, users, and organizations belong to the authorized tenant.",
+        "<strong>Background work:</strong> preserve tenant context in queued jobs and events, then re-check it during consumption, retry, replay, and dead-letter operations.",
+        "<strong>Derived data:</strong> include tenant scope in caches, aggregates, reports, exports, search indexes, and replay identifiers.",
+        "<strong>Administration:</strong> require explicit cross-tenant authorization, record the actor and reason, constrain the operation, and review its result.",
       ] },
-      { p: "Full concept treatment: <a href=\"../concepts/tenants.html\">Concepts · Tenants</a>." },
+      { h2: "Failure behavior and verification" },
+      { ol: [
+        "Create at least two test tenants with distinct data and principals.",
+        "Test every read, write, list, export, and replay route for both allowed and denied access, including cross-tenant references.",
+        "Exercise tenant IDs in paths, query strings, and bodies, including missing or conflicting values.",
+        "Repeat the tests for asynchronous consumers, retries, webhooks, caches, and generated reports.",
+        "Verify cross-tenant administration requires an explicit permission and is auditable.",
+      ] },
+      { p: "Depending on the route contract, denied cross-tenant requests can return 403 or a non-disclosing 404. No database row-level security guarantee is claimed here unless it is separately configured and verified in the deployment. Full concept treatment: <a href=\"../concepts/tenants.html\">Concepts · Tenants</a>." },
     ],
     related: [["Concepts: Tenants", "concepts/tenants.html"], ["Authentication", "api/authentication.html"]],
   },
@@ -848,19 +895,38 @@ const pages = [
     path: "/security/responsible-disclosure.html",
     section: "Security",
     title: "Responsible disclosure",
-    description: "How to report a suspected security issue in PesaGuard, and what happens next.",
+    description: "Private security reporting instructions, safe testing boundaries, report details, and the response process.",
     status: "Draft",
-    lede: "If you believe you have found a security issue, tell us privately and we will treat it seriously: acknowledge, reproduce, fix, and credit you if you want.",
+    lede: "If you believe you have found a vulnerability in PesaGuard, report it privately so it can be assessed without exposing customers or service data. Do not publish exploit details or customer information before coordinating with us.",
     sidebar: sidebarFor("Security", "security/responsible-disclosure.html", SECURITY_SIDEBAR),
     crumbs: crumb(["Docs", "index.html"], ["Security", "index.html"], ["Responsible disclosure"], null),
     blocks: [
-      { ol: [
-        "Open a private security advisory or issue on the <a href=\"https://github.com/Victor-Kipruto-Rop/pesaguard\">source repository</a>: do not include exploit details in a public issue.",
-        "Include reproduction steps and the request id or timestamp if the issue involves API behaviour.",
-        "We acknowledge receipt, then confirm or decline with reasoning.",
-        "Fixes are released with a note; you may be credited unless you prefer otherwise.",
+      { h2: "Report privately" },
+      { p: "Send a report to <a href=\"mailto:pesaguard@gmail.com?subject=PesaGuard%20security%20report\">pesaguard@gmail.com</a> with the subject <code>PesaGuard security report</code>. This address is also published in <a href=\"../security.txt\">security.txt</a>. If GitHub private vulnerability reporting is enabled for the relevant repository, a private advisory is an alternative; do not open a public issue with reproduction details." },
+      { h2: "Include enough detail to reproduce safely" },
+      { ul: [
+        "Affected service, endpoint, component, and the security property that appears to fail.",
+        "Minimal reproduction steps using synthetic data and a non-production tenant, plus expected and observed behavior.",
+        "Sanitized response codes, request/correlation IDs, approximate UTC timestamps, and relevant deployment/version details.",
+        "Potential impact, prerequisites, mitigations, and a safe contact method.",
+        "Whether you consent to public credit if the issue is resolved.",
       ] },
-      { note: ["Why draft", "A dedicated security contact address is pending. Until it exists, the repository's private advisory flow is the intended channel."], noteTone: "warn" },
+      { p: "Do not send passwords, API keys, signing secrets, private keys, full payment payloads, personal data, or screenshots containing live customer information. Redact sensitive values and share only minimum evidence." },
+      { h2: "Testing boundaries" },
+      { ul: [
+        "Do not access, modify, delete, or retain another person's or tenant's data. Stop if testing unexpectedly exposes it.",
+        "Do not perform denial-of-service testing, high-volume scans, destructive actions, social engineering, credential attacks against real users, or tests against third-party providers.",
+        "Test only accounts and systems you own or have explicit authorization to assess; do not persist access or move laterally.",
+      ] },
+      { h2: "What happens after a report" },
+      { ol: [
+        "We review the report and may ask for clarification before assessing reproducibility and impact.",
+        "We coordinate a safe investigation and remediation plan; please keep details confidential while we investigate and agree on disclosure timing.",
+        "We may ask you to validate a fix under a controlled scope.",
+        "When appropriate, we publish a security note that avoids exposing exploit details or affected users.",
+        "We can credit a reporter who consents to recognition.",
+      ] },
+      { note: ["Scope and expectations", "This process does not promise a bug bounty, a fixed response or remediation deadline, or immunity from legal claims. Good-faith reports are handled responsibly within the testing boundaries above."], noteTone: "warn" },
     ],
     related: [["Security overview", "security/index.html"], ["Status", "status/index.html"]],
   },
@@ -1075,7 +1141,7 @@ const pages = [
         "<strong>Documentation feedback</strong>: open an issue on the <a href=\"https://github.com/Victor-Kipruto-Rop/pesaguard\">source repository</a>.",
         "<strong>Production issues</strong>: quote the <code>request_id</code> from the error response; it is the correlation key operators search for.",
         "<strong>Security issues</strong>: follow <a href=\"../security/responsible-disclosure.html\">responsible disclosure</a>; use private advisories, not public issues.",
-        "<strong>Status questions</strong>: check <a href=\"../status/\">status</a> first; incidents carry scope and duration.",
+        "<strong>Status questions</strong>: check <a href=\"https://status.pesaguard.victorkipruto.com/\">status</a> first; incidents carry scope and duration.",
       ] },
     ],
     related: [["Errors", "api/errors.html"], ["Responsible disclosure", "security/responsible-disclosure.html"], ["Status", "status/index.html"]],

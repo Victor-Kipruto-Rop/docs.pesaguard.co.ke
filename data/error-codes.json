@@ -1,0 +1,19 @@
+{
+  "envelope": {
+    "error": {
+      "code": "TRANSACTION_NOT_FOUND",
+      "message": "Transaction could not be found.",
+      "request_id": "<uuid>"
+    }
+  },
+  "note": "Codes are part of the public contract; message copy is not. Match on codes.",
+  "codes": [
+    { "code": "UNAUTHORIZED", "status": 401, "meaning": "Authentication failed. No degraded mode serves data without a verified identity." },
+    { "code": "FORBIDDEN", "status": 403, "meaning": "Authenticated, but the scope or tenant does not permit this action." },
+    { "code": "VALIDATION_FAILED", "status": 422, "meaning": "Request failed validation; the response names the offending field." },
+    { "code": "TRANSACTION_NOT_FOUND", "status": 404, "meaning": "No such resource within the caller's tenant scope." },
+    { "code": "DUPLICATE_EVENT", "status": 409, "meaning": "Duplicate under idempotency; the original record stays authoritative." },
+    { "code": "RATE_LIMITED", "status": 429, "meaning": "Too many requests. Back off and retry; writes are idempotent." },
+    { "code": "INTERNAL_ERROR", "status": 500, "meaning": "Unhandled server error. Retry with backoff and quote the request id." }
+  ]
+}

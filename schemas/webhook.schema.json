@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/webhook.schema.json",
+  "title": "Outbound webhook delivery",
+  "description": "The delivery record the ops API exposes for outbound events, including attempt history and dead-letter state.",
+  "type": "object",
+  "required": ["event_id", "event_type", "status"],
+  "properties": {
+    "event_id": { "type": "string" },
+    "event_type": { "type": "string", "examples": ["transaction.created", "transaction.matched", "transaction.unmatched", "anomaly.detected", "reconciliation.completed"] },
+    "source": { "type": "string", "description": "Which subsystem produced the event." },
+    "received_time": { "type": "string", "format": "date-time" },
+    "processing_time": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["pending", "delivered", "retrying", "dead_letter"] },
+    "http_status": { "type": "integer", "description": "Consumer response code on the last attempt." },
+    "retry_count": { "type": "integer", "minimum": 0, "description": "Bounded: retries stop and the delivery is dead-lettered." },
+    "error": { "type": ["string", "null"] },
+    "transaction_id": { "type": ["string", "null"] },
+    "signature": { "type": "string", "description": "Present on delivery; consumers verify before trusting." }
+  },
+  "additionalProperties": true
+}

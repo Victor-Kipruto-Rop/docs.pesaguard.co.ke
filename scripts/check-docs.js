@@ -34,8 +34,9 @@ function normalize(href) {
 const files = walk(ROOT);
 
 for (const file of files.filter((f) => f.endsWith(".html"))) {
-  pagesChecked += 1;
   const html = fs.readFileSync(file, "utf8");
+  if (!/<html(?:\s|>)/i.test(html)) continue;
+  pagesChecked += 1;
   const dir = path.dirname(file);
   const attrs = html.match(/(?:href|src)="([^"#]+)(?:#[^"]*)?"/g) || [];
 
@@ -54,6 +55,21 @@ for (const file of files.filter((f) => f.endsWith(".html"))) {
   }
   if (!/<meta name="description" content="[^"]+"/.test(html)) {
     problems.push(`${rel(file)} -> missing meta description`);
+  }
+  if (!/<meta name="theme-color" content="#ffffff" media="\(prefers-color-scheme: light\)">/.test(html) ||
+      !/<meta name="theme-color" content="#061a12" media="\(prefers-color-scheme: dark\)">/.test(html) ||
+      !/<meta name="color-scheme" content="light dark">/.test(html)) {
+    problems.push(`${rel(file)} -> missing device-based light/dark theme metadata`);
+  }
+  if (/fonts\.googleapis\.com|pg-theme|docs-theme-toggle|data-theme=/.test(html)) {
+    problems.push(`${rel(file)} -> contains an external font or manual theme override`);
+  }
+}
+
+for (const source of ["scripts/generate-pages.js", "scripts/engine.js"]) {
+  const contents = fs.readFileSync(path.join(ROOT, source), "utf8");
+  if (/fonts\.googleapis\.com|pg-theme|docs-theme-toggle|data-theme=/.test(contents)) {
+    problems.push(`${rel(path.join(ROOT, source))} -> can reintroduce an external font or manual theme override`);
   }
 }
 

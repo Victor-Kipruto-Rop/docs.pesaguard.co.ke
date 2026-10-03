@@ -1,0 +1,20 @@
+/* ==========================================================================
+   PesaGuard docs — stylesheet entry point
+   --------------------------------------------------------------------------
+   Pages link this one file. Import order matters: tokens and reset first,
+   layout before components, responsive last so its overrides win.
+   ========================================================================== */
+
+@import url("variables.css");
+@import url("reset.css");
+@import url("typography.css");
+@import url("layout.css");
+@import url("navigation.css");
+@import url("content.css");
+@import url("tables.css");
+@import url("callouts.css");
+@import url("code.css");
+@import url("api-reference.css");
+@import url("search.css");
+@import url("animations.css");
+@import url("responsive.css");

@@ -1,0 +1,13 @@
+{
+  "name": "PesaGuard docs",
+  "short_name": "PesaGuard docs",
+  "description": "Developer documentation for PesaGuard reconciliation of M-Pesa payments.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b5d3b",
+  "icons": [
+    { "src": "assets/brand/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "current": "v1",
+  "versions": [
+    {
+      "id": "v1",
+      "label": "API v1",
+      "status": "current",
+      "note": "The public contract. All routes live under /api/v1.",
+      "deprecation": null
+    },
+    {
+      "id": "v2",
+      "label": "Dashboard spec 2.0.0",
+      "status": "internal",
+      "note": "The dashboard OpenAPI document is versioned 2.0.0; the public contract remains v1.",
+      "deprecation": null
+    }
+  ],
+  "deprecationPolicy": {
+    "supportWindowDays": 90,
+    "note": "A version remains supported for at least 90 days after a deprecation notice is published. Breaking changes require a new versioned prefix."
+  }
+}

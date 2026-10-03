@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · API key security - PesaGuard docs</title>
-<meta name="description" content="Credentials are scoped, expiring and hashed at rest, shown once at issuance. One credential per integration.">
+<meta name="description" content="How tenant-scoped API keys are verified, scoped, expired and revoked, with operational guidance for secure storage and rotation.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/api-key-security.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · API key security - PesaGuard docs">
-<meta property="og:description" content="Credentials are scoped, expiring and hashed at rest, shown once at issuance. One credential per integration.">
+<meta property="og:description" content="How tenant-scoped API keys are verified, scoped, expired and revoked, with operational guidance for secure storage and rotation.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/api-key-security.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · API key security - PesaGuard docs">
-<meta name="twitter:description" content="Credentials are scoped, expiring and hashed at rest, shown once at issuance. One credential per integration.">
+<meta name="twitter:description" content="How tenant-scoped API keys are verified, scoped, expired and revoked, with operational guidance for secure storage and rotation.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -50,9 +48,42 @@
   <article class="docs-article">
     <p class="docs-eyebrow">Security</p>
     <h1>API key security <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Credentials are scoped, expiring and hashed at rest, shown once at issuance. One credential per integration.</p>
+    <p class="docs-lede">PesaGuard API keys authenticate machine requests through tenant-bound records. The verifier compares a SHA-256 digest, checks the record's active, revoked and optional expiry state, then limits effective permissions to the intersection of role grants and the key's configured scopes.</p>
+    <h2>How a key is checked</h2>
+    <ol>
+      <li>The client sends the key in the <code>X-API-Key</code> request header over HTTPS. Do not put it in a query string or request body.</li>
+      <li>The API accepts the expected <code>pk_</code> key prefix, hashes the supplied value with SHA-256, and looks up the matching key record; the plaintext key is not used as the database lookup value.</li>
+      <li>The record must be active, not revoked, and not expired. A key may have no expiry date if one was not configured, so set an expiry as part of your own issuance policy.</li>
+      <li>The API derives permissions from the stored role and intersects those with the record's scope list. It updates the last-used time after successful record validation.</li>
+      <li>The resulting principal remains bound to the tenant recorded for that key. A client cannot change its tenant by adding a different tenant ID to a request.</li>
+    </ol>
+    <pre><code>curl --fail-with-body \
+  -H "X-API-Key: $PESAGUARD_API_KEY" \
+  -H "Accept: application/json" \
+  "https://api.pesaguard.victorkipruto.com/api/v1/transactions"</code></pre>
+    <h2>Issue and store keys safely</h2>
+    <ul>
+      <li>Create a distinct credential for each environment, application, and integration so an incident can be contained without taking unrelated clients offline.</li>
+      <li>Grant only the scopes required by that integration. Prefer read-only access where writes are unnecessary, and avoid cross-tenant privileges.</li>
+      <li>Store the key in a managed secret store or protected runtime configuration. Limit who and which workloads can read it; do not put it in source control, build logs, screenshots, browser code, tickets, or telemetry.</li>
+      <li>Transmit keys only to the documented API host over HTTPS. Never include a key in a URL, where it can leak through browser history, proxies, analytics, and server access logs.</li>
+      <li>Track the key owner, purpose, tenant, environment, scopes, approver, creation time, expiry, and planned rotation date in your own credential inventory.</li>
+    </ul>
+    <h2>Rotation and suspected exposure</h2>
+    <ol>
+      <li>Create a replacement key with the same or narrower scopes and an explicit expiry, if the key-management workflow supports parallel credentials.</li>
+      <li>Update the integration's secret store and deploy the replacement without printing the value.</li>
+      <li>Confirm successful requests using the replacement, then revoke the old key. Do not leave both credentials active longer than the migration requires.</li>
+      <li>If a key is exposed, revoke it immediately, identify its tenant and permissions, review recent use and audit/security events, then issue a replacement after containment.</li>
+    </ol>
+    <p>The key record supports active/revoked status, optional expiry, and a rotation predecessor reference in the data model. Exact key-creation routes and available overlap behavior depend on the deployed API version; consult the API reference rather than assuming a management endpoint or automatic rotation schedule.</p>
+    <h2>Failure handling and verification</h2>
+    <p>Invalid, expired, and revoked keys are rejected as authentication failures. If the API cannot safely read the key/revocation state, it returns an authentication-unavailable response rather than authorizing from a cache-free fallback. Test a valid key, an expired key, a revoked key, and a key whose scope excludes the requested operation in a non-production tenant.</p>
+    <p>Backend implementation evidence includes the <code>ApiKeyRecord</code> model, the tenant-key hardening migration, and API-key verification in <code>auth_rbac.py</code>. The SHA-256 hash is an identifier for a high-entropy generated key; it is not a substitute for limiting access to the record store or protecting the key in transit.</p>
     <h2>Related</h2>
     <ul>
+      <li><a href="authentication.html">Authentication</a></li>
+      <li><a href="authorization.html">Authorization</a></li>
       <li><a href="../security/index.html">Security overview</a></li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
     </ul>

@@ -1,0 +1,49 @@
+/* Callouts: scope warnings, status notes, design-contract caveats. */
+
+.callout {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--lime-deep);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  background: var(--paper-raised);
+  padding: 14px 18px;
+  margin: 18px 0 26px;
+  font-size: 13.5px;
+}
+
+.callout[data-tone="warn"] { border-left-color: var(--signal-amber); }
+.callout[data-tone="danger"] { border-left-color: var(--signal-red); }
+.callout[data-tone="info"] { border-left-color: var(--forest); }
+
+.callout strong:first-child {
+  display: block;
+  font: 600 11px / 1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+
+.callout p:last-child { margin-bottom: 0; }
+.callout a { color: var(--forest); }
+
+/* Status pills used beside headings. */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  font: 600 11px / 1.5 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  vertical-align: middle;
+}
+
+.status-pill i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; }
+.status-pill[data-tone="live"] { color: var(--lime-ink); border-color: rgba(11, 93, 59, 0.35); background: var(--lime-veil); }
+.status-pill[data-tone="live"] i { background: var(--signal-green); }
+.status-pill[data-tone="draft"] { color: var(--text-muted); border-color: var(--line-strong); }
+.status-pill[data-tone="planned"] { color: var(--signal-amber); border-color: var(--signal-amber); }

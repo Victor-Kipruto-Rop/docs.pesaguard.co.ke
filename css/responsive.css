@@ -65,13 +65,65 @@
     background: var(--paper-deep);
   }
 
+  /* Collapsed to an icon-only button. Tapping it reveals the input as a
+     full-width overlay row (see .is-active below) instead of hiding the
+     search away with no way to open it again. */
+  .docs-search {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    padding: 8px 10px;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .docs-search kbd { display: none; }
+  .docs-search input { display: none; }
+  .docs-search-close { display: none; }
+
+  .docs-search.is-active {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: var(--header-h);
+    margin: 0;
+    padding: 0 clamp(20px, 4vw, 44px);
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    cursor: default;
+  }
+
+  .docs-search.is-active input { display: block; }
+
+  .docs-search.is-active .docs-search-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: var(--r-sm);
+    background: var(--paper-sunken);
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .docs-search.is-active .docs-search-close:hover {
+    color: var(--text);
+    background: var(--paper-deep);
+  }
+
   .docs-brand small { display: none; }
 
   .docs-nav-toggle { display: flex; }
 
   /* Larger touch targets in the compact header. */
-  .docs-nav-toggle { width: 40px; height: 40px; }
+  .docs-nav-toggle { width: 44px; height: 44px; }
 
+  /* Hidden state transitions to .is-open (and back): opacity/transform for
   /* Hidden state transitions to .is-open (and back): opacity/transform for
      the panel, a staggered cascade for the links, with visibility delayed so
      the close animation can play before the panel stops hit-testing. */

@@ -1,0 +1,33 @@
+{
+  "$comment": "Illustrative request/response pair for the write path. Field names follow the canonical transaction schema; confirm against your deployment's OpenAPI document before use.",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/transactions",
+    "headers": { "Authorization": "Bearer <token>", "Content-Type": "application/json" },
+    "body": {
+      "reference": "TXN-8F3A",
+      "amount": 5000,
+      "currency": "KES",
+      "channel": "mpesa",
+      "occurred_at": "2026-09-19T10:21:28Z"
+    }
+  },
+  "responses": {
+    "202": {
+      "status": "accepted",
+      "transaction_id": "txn_8f31",
+      "idempotent": false
+    },
+    "409": {
+      "error": { "code": "DUPLICATE_EVENT", "message": "Duplicate under idempotency.", "request_id": "<uuid>" }
+    },
+    "422": {
+      "error": {
+        "code": "VALIDATION_FAILED",
+        "message": "Request failed validation.",
+        "request_id": "<uuid>",
+        "details": [{ "field": "currency", "reason": "unsupported currency" }]
+      }
+    }
+  }
+}

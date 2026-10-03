@@ -6,8 +6,9 @@
 <title>Authentication guides · API keys - PesaGuard docs</title>
 <meta name="description" content="Scopes, expiry, rotation metadata, and one credential per integration.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/guides/authentication/api-keys.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Authentication guides · API keys - PesaGuard docs">
@@ -19,9 +20,6 @@
 <meta name="twitter:description" content="Scopes, expiry, rotation metadata, and one credential per integration.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../css/variables.css">
 <link rel="stylesheet" href="../../css/layout.css">
 <link rel="stylesheet" href="../../css/navigation.css">
@@ -54,12 +52,14 @@
           <span>API keys</span></nav>
     <p class="docs-eyebrow">Authentication guides</p>
     <h1>API keys</h1>
-    <p class="docs-lede">Use one scoped, expiring API key per integration or service account. Keys identify a workload; tenant membership and scopes determine what that workload may do.</p>
-    <div class="api-hero"><div><strong>Credential rule</strong><p>Separate ownership makes least privilege, rotation and compromise response measurable.</p></div><div class="api-hero-meta"><span>SCOPED</span><span>EXPIRING</span><span>SERVER-SIDE</span></div></div>
-    <h2>Before issuance</h2><ul><li>Name the integration and owner.</li><li>Select environment and tenant.</li><li>List required read, write or export operations.</li><li>Set expiry, rotation date and emergency contact.</li></ul>
-    <h2>Use the key safely</h2><pre class="docs-code" data-lang="http"><code>Authorization: Bearer &lt;api-key&gt;
-  Accept: application/json</code></pre><p>Store the raw value only in an approved secret manager. Log the key id and request id, never the secret.</p>
-    <h2>Verify access</h2><ol><li>Make a read-only staging request.</li><li>Confirm the response belongs to the intended tenant.</li><li>Test an out-of-scope route and expect <code>403</code>.</li><li>Record the result before enabling writes.</li></ol>
+    <p class="docs-lede">Request API keys through the deployment's authorized operator workflow. Keys identify a workload; their stored tenant, role, explicit scopes, active/revoked state, and optional expiry determine whether the API accepts and authorizes them.</p>
+    <div class="api-hero"><div><strong>Credential rule</strong><p>Separate ownership limits blast radius and makes rotation and compromise response measurable.</p></div><div class="api-hero-meta"><span>TENANT-BOUND</span><span>SCOPED</span><span>SERVER-SIDE</span></div></div>
+    <h2>Before provisioning</h2><ul><li>Name the integration and owner.</li><li>Select environment and tenant.</li><li>List required actions and request the narrowest supported role/scopes.</li><li>Set an expiry and rotation policy, even though expiry is optional in the record.</li></ul>
+    <h2>Use the key safely</h2><pre class="docs-code" data-lang="http"><code>X-API-Key: $PESAGUARD_API_KEY
+Accept: application/json</code></pre><p>Send the key only over HTTPS. Store it in an approved server-side secret manager, and log the key identifier and request ID rather than the key value.</p>
+    <h2>Verify access</h2><ol><li>Make a read-only request in the intended non-production tenant.</li><li>Confirm the response belongs to that tenant.</li><li>Test an operation outside the key's effective permissions and confirm it is denied.</li><li>Record the request ID and result before enabling writes.</li></ol>
+    <h2>Rotation and revocation</h2><p>Coordinate replacement with the deployment operator; the canonical dashboard API does not expose a public key-issuance route. For planned rotation, deploy and verify the replacement before revoking the old key when overlap is supported. If exposure is suspected, request revocation immediately, then review recent use and issue a replacement through the approved workflow.</p>
+    <p>See <a href="../../security/api-key-security.html">API key security</a> for verifier behavior, scope intersection, key-record fields, and incident-response steps.</p>
     <p>Scopes, expiry, rotation metadata, and one credential per integration.</p>
     <h2>Related</h2>
     <ul>

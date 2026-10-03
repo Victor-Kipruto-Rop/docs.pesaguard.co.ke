@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Webhooks · Verification - PesaGuard docs</title>
-<meta name="description" content="Verify the sender before you trust the payload: signature checks on every delivery.">
+<meta name="description" content="Verify outbound webhook signatures using PesaGuard's timestamped HMAC-SHA-256 and canonical JSON format; enforce replay checks and idempotent processing.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/webhooks/verification.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Webhooks · Verification - PesaGuard docs">
-<meta property="og:description" content="Verify the sender before you trust the payload: signature checks on every delivery.">
+<meta property="og:description" content="Verify outbound webhook signatures using PesaGuard's timestamped HMAC-SHA-256 and canonical JSON format; enforce replay checks and idempotent processing.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/webhooks/verification.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Webhooks · Verification - PesaGuard docs">
-<meta name="twitter:description" content="Verify the sender before you trust the payload: signature checks on every delivery.">
+<meta name="twitter:description" content="Verify outbound webhook signatures using PesaGuard's timestamped HMAC-SHA-256 and canonical JSON format; enforce replay checks and idempotent processing.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -59,16 +57,28 @@
           <span>Verification</span></nav>
     <p class="docs-eyebrow">Webhooks</p>
     <h1>Verification</h1>
-    <p class="docs-lede">Every outbound delivery is signed. Your consumer should reject any delivery whose signature does not verify: the signature is what turns an HTTP POST into a trustworthy event.</p>
+    <p class="docs-lede">PesaGuard outbound webhooks use a timestamped HMAC-SHA-256 signature over canonical JSON. Verify the sender before business processing, enforce a freshness window, and deduplicate accepted event IDs. This format is for PesaGuard outbound webhooks; inbound provider callbacks can use different formats.</p>
     <ol>
-      <li>Read the signature header from the delivery.</li>
-      <li>Recompute the signature over the raw body using your shared secret.</li>
-      <li>Compare with a constant-time comparison; reject on mismatch with 401.</li>
-      <li>Only then parse the body and act: and act idempotently.</li>
+      <li>Read the timestamp and <code>X-Webhook-Signature</code> header; reject missing or malformed values.</li>
+      <li>Parse the body as untrusted JSON under a strict size limit and serialize it with recursively sorted keys and compact separators.</li>
+      <li>Compute HMAC-SHA-256 over <code>timestamp + "." + canonical_json</code> using the endpoint's signing secret.</li>
+      <li>Compare the hexadecimal digest in constant time, enforce the timestamp window, and process the event idempotently only after verification.</li>
     </ol>
-    <div class="api-hero"><div><strong>Trust boundary</strong><p>Signature verification must happen before parsing, persistence or business logic.</p></div><div class="api-hero-meta"><span>RAW BODY</span><span>CONSTANT TIME</span><span>FAIL CLOSED</span></div></div>
-    <h2>Verification checklist</h2><table><thead><tr><th>Step</th><th>Requirement</th></tr></thead><tbody><tr><td>Read raw bytes</td><td>Do not reserialize JSON before calculating the digest.</td></tr><tr><td>Resolve secret</td><td>Use the environment-specific signing secret from protected storage.</td></tr><tr><td>Calculate</td><td>Apply the documented algorithm and canonicalization exactly.</td></tr><tr><td>Compare</td><td>Use constant-time comparison and reject malformed headers.</td></tr><tr><td>Process</td><td>Parse and act only after verification; retain delivery identity.</td></tr></tbody></table>
-    <h2>Failure response</h2><p>Reject an invalid signature before parsing or invoking business logic. Record a safe delivery id and verification outcome, but never log the shared secret, full signature or sensitive payload.</p>
+    <div class="api-hero"><div><strong>Trust boundary</strong><p>Parsing is permitted only to reconstruct the documented canonical representation; do not persist, forward, or act on the event until its signature and freshness have been verified.</p></div><div class="api-hero-meta"><span>CANONICAL JSON</span><span>CONSTANT TIME</span><span>REPLAY CHECK</span></div></div>
+    <h2>Signature format</h2>
+    <table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>
+      <tr><td>Algorithm</td><td>HMAC-SHA-256, represented as lowercase hexadecimal.</td></tr>
+      <tr><td>Signed bytes</td><td>UTF-8 encoding of <code>&lt;timestamp&gt;.&lt;canonical_json&gt;</code>.</td></tr>
+      <tr><td>Canonical JSON</td><td>JSON serialization with keys sorted recursively and compact separators (no spaces after separators).</td></tr>
+      <tr><td>Signature header</td><td><code>X-Webhook-Signature: t=&lt;unix-seconds&gt;,v1=&lt;hex-digest&gt;</code>.</td></tr>
+      <tr><td>Timestamp header</td><td><code>X-Webhook-Timestamp</code>; the same Unix timestamp is included in the signed input.</td></tr>
+      <tr><td>Secret</td><td>The per-endpoint secret provisioned for this webhook. Keep it private and out of logs.</td></tr>
+    </tbody></table>
+    <h2>Verification checklist</h2><table><thead><tr><th>Step</th><th>Requirement</th></tr></thead><tbody><tr><td>Bound input</td><td>Enforce a request-size limit and parse JSON as untrusted input without side effects.</td></tr><tr><td>Resolve secret</td><td>Use the environment-specific endpoint signing secret from protected storage.</td></tr><tr><td>Canonicalize</td><td>Serialize parsed JSON using recursively sorted keys and compact separators, then sign timestamp, dot, and canonical JSON.</td></tr><tr><td>Compare</td><td>Use constant-time digest comparison; reject malformed headers and stale timestamps.</td></tr><tr><td>Process</td><td>Only after verification, deduplicate the event and perform business processing idempotently.</td></tr></tbody></table>
+    <h2>Freshness, duplicates, and failures</h2>
+    <p>Compare the timestamp against the receiver's clock and reject values outside a short configured window (five minutes is a reasonable default if your integration has no stricter agreement). Use synchronized clocks. Store an event identifier or stable deduplication key with the processing result so sender retries do not repeat business effects.</p>
+    <p>Reject invalid signatures and stale timestamps before persistence or business actions. Record a safe delivery identifier and verification outcome, but never log the shared secret, full authorization material, or sensitive payload. Return a non-success response when verification fails; use the <a href="retries.html">retry guidance</a> to decide receiver behavior for transient failures.</p>
+    <p><strong>Do not use this procedure for incoming provider callbacks.</strong> For example, the communications callback path authenticates the raw request bytes, while Daraja callbacks have separate source-validation settings. See <a href="../security/webhook-security.html">Webhook security</a> for the distinction.</p>
     <h2>Related</h2>
     <ul>
       <li><a href="../webhooks/retries.html">Retries</a></li>

@@ -1,0 +1,782 @@
+[
+  {
+    "href": "api-reference/index.html",
+    "title": "OpenAPI reference",
+    "description": "The PesaGuard API contract: an embedded viewer for openapi.json, with a link to the live specification on your deployment.",
+    "section": "API reference"
+  },
+  {
+    "href": "api/authentication.html",
+    "title": "API · Authentication - PesaGuard docs",
+    "description": "Bearer JWT authentication, the scope model, and what login returns in the design contract.",
+    "section": "API / Security boundary"
+  },
+  {
+    "href": "api/errors.html",
+    "title": "API · Errors - PesaGuard docs",
+    "description": "The normalized error envelope, status codes, and how clients should react to each class.",
+    "section": "API"
+  },
+  {
+    "href": "api/filtering.html",
+    "title": "API · Filtering - PesaGuard docs",
+    "description": "Query parameters narrow list endpoints; exact names come from the endpoint contract.",
+    "section": "API"
+  },
+  {
+    "href": "api/idempotency.html",
+    "title": "API · Idempotency - PesaGuard docs",
+    "description": "Safe retries for every write: the same logical event delivered twice produces one record.",
+    "section": "API"
+  },
+  {
+    "href": "api/index.html",
+    "title": "API · API reference - PesaGuard docs",
+    "description": "The operations API surface: bearer auth, pagination, versioning, rate limits, idempotency and the error envelope.",
+    "section": "API"
+  },
+  {
+    "href": "api/pagination.html",
+    "title": "API · Pagination - PesaGuard docs",
+    "description": "Page and limit parameters with list metadata on every paginated response.",
+    "section": "API"
+  },
+  {
+    "href": "api/rate-limits.html",
+    "title": "API · Rate limits - PesaGuard docs",
+    "description": "Bounded request rates, 429 handling, and why limits protect the reconciliation pipeline.",
+    "section": "API"
+  },
+  {
+    "href": "api/reference.html",
+    "title": "API · Reference - PesaGuard docs",
+    "description": "The authoritative contract is the deployment's own /openapi.json; this site mirrors it.",
+    "section": "API"
+  },
+  {
+    "href": "api/request-validation.html",
+    "title": "API · Request validation - PesaGuard docs",
+    "description": "Schema, currency, amount and reference are validated before anything is trusted.",
+    "section": "API"
+  },
+  {
+    "href": "api/sorting.html",
+    "title": "API · Sorting - PesaGuard docs",
+    "description": "Where an endpoint supports ordering it is documented in its OpenAPI entry.",
+    "section": "API"
+  },
+  {
+    "href": "api/versioning.html",
+    "title": "API · Versioning - PesaGuard docs",
+    "description": "The /v1 namespace, the 90-day deprecation policy, and how breaking changes are introduced.",
+    "section": "API"
+  },
+  {
+    "href": "changelog/2026/august.html",
+    "title": "Changelog · August 2026 - PesaGuard docs",
+    "description": "August 2026 API documentation foundation and operational guidance for PesaGuard integrations.",
+    "section": "Changelog"
+  },
+  {
+    "href": "changelog/2026/july.html",
+    "title": "Changelog · July 2026 - PesaGuard docs",
+    "description": "July 2026 documentation baseline for PesaGuard integrations, API behavior, security and versioning.",
+    "section": "Changelog"
+  },
+  {
+    "href": "changelog/2026/september.html",
+    "title": "Changelog · September 2026 - PesaGuard docs",
+    "description": "This documentation site was published. No API breaking changes.",
+    "section": "Changelog"
+  },
+  {
+    "href": "changelog/breaking-changes.html",
+    "title": "Changelog · Breaking changes - PesaGuard docs",
+    "description": "Any breaking change ships behind a new versioned prefix, with at least 90 days of notice for the previous version.",
+    "section": "Changelog"
+  },
+  {
+    "href": "changelog/index.html",
+    "title": "Changelog - PesaGuard docs",
+    "description": "Where changes are announced while the public changelog matures.",
+    "section": "Changelog"
+  },
+  {
+    "href": "concepts/anomalies.html",
+    "title": "Concepts · Anomalies - PesaGuard docs",
+    "description": "Rule-based and statistical signals scored in context: a prompt to review, never an automatic verdict.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/architecture.html",
+    "title": "Concepts · Architecture - PesaGuard docs",
+    "description": "The services behind PesaGuard: Flask and SQLAlchemy API, Postgres store, Redis and RQ workers, Kafka transport, Alembic migrations.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/audit-trails.html",
+    "title": "Concepts · Audit trails - PesaGuard docs",
+    "description": "Append-only evidence for every match, review and configuration change: with secrets excluded by design.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/fraud-detection.html",
+    "title": "Concepts · Fraud detection - PesaGuard docs",
+    "description": "How signals become investigations, and why the platform never declares fraud on its own.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/glossary.html",
+    "title": "Glossary",
+    "description": "Shared vocabulary for the PesaGuard documentation: tenants, transactions, reconciliation, evidence, idempotency, webhooks and the environments they run in.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/idempotency.html",
+    "title": "Concepts · Idempotency - PesaGuard docs",
+    "description": "Why a retried callback, a replayed webhook or a manual reprocess never creates a second financial record.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/index.html",
+    "title": "Concepts - PesaGuard docs",
+    "description": "The ideas PesaGuard is built on: deterministic matching, idempotent writes, enforced tenants and append-only evidence.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/reconciliation.html",
+    "title": "Concepts · Reconciliation - PesaGuard docs",
+    "description": "How deterministic matching pairs provider events with internal records, and what happens to a difference.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/tenants.html",
+    "title": "Concepts · Tenants - PesaGuard docs",
+    "description": "Database-enforced isolation between organizations, measured across 100 tenants with zero cross-tenant rows.",
+    "section": "Concepts"
+  },
+  {
+    "href": "concepts/transaction-lifecycle.html",
+    "title": "Concepts · Transaction lifecycle - PesaGuard docs",
+    "description": "The states a payment moves through from callback to reconciled record, and what each state tells your team.",
+    "section": "Concepts"
+  },
+  {
+    "href": "environments/environment-variables.html",
+    "title": "Environments · Environment variables - PesaGuard docs",
+    "description": "Deployment settings PesaGuard reads: database, Redis, Kafka, JWT and the public API URL.",
+    "section": "Environments"
+  },
+  {
+    "href": "environments/index.html",
+    "title": "Environments - PesaGuard docs",
+    "description": "Staging and production deployment variants, and the settings each one requires.",
+    "section": "Environments"
+  },
+  {
+    "href": "environments/production.html",
+    "title": "Environments · Production - PesaGuard docs",
+    "description": "The live deployment: production credentials, backups, reviewed exposure and the strictest change discipline.",
+    "section": "Environments"
+  },
+  {
+    "href": "environments/sandbox.html",
+    "title": "Environments · Sandbox - PesaGuard docs",
+    "description": "There is no mocked sandbox. Staging runs the same reconciliation behaviour, which is what makes testing meaningful.",
+    "section": "Environments"
+  },
+  {
+    "href": "environments/staging.html",
+    "title": "Environments · Staging - PesaGuard docs",
+    "description": "A real deployment with its own database and Kafka listeners, used for integration testing.",
+    "section": "Environments"
+  },
+  {
+    "href": "errors/authentication.html",
+    "title": "Errors · 401 · Authentication - PesaGuard docs",
+    "description": "The caller was not authenticated. Refresh or reissue the credential.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/authorization.html",
+    "title": "Errors · 403 · Authorization - PesaGuard docs",
+    "description": "Authenticated, but the scope or tenant does not permit this action.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/conflict.html",
+    "title": "Errors · 409 · Conflict - PesaGuard docs",
+    "description": "Usually a duplicate under idempotency. Read the existing record instead of re-sending.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/error-codes.html",
+    "title": "Errors · Error codes - PesaGuard docs",
+    "description": "Stable codes are part of the public contract; message copy is not. Match on codes, never on prose.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/index.html",
+    "title": "Errors · Errors and error codes - PesaGuard docs",
+    "description": "The normalized error envelope, status classes, and how to react to each.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/not-found.html",
+    "title": "Errors · 404 · Not found - PesaGuard docs",
+    "description": "No such resource within the caller's tenant scope.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/rate-limit.html",
+    "title": "Errors · 429 · Rate limit - PesaGuard docs",
+    "description": "Too many requests. Back off and retry: writes are idempotent, so a retry is safe.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/server-errors.html",
+    "title": "Errors · 5xx · Server errors - PesaGuard docs",
+    "description": "Server or gateway failure. Retry with backoff and quote the request id to the operator.",
+    "section": "Errors"
+  },
+  {
+    "href": "errors/validation.html",
+    "title": "Errors · 400 / 422 · Validation - PesaGuard docs",
+    "description": "The request failed validation; the response names the offending field.",
+    "section": "Errors"
+  },
+  {
+    "href": "getting-started/create-account.html",
+    "title": "Create an account - PesaGuard docs",
+    "description": "How access to a PesaGuard deployment is provisioned: with the pilot team, not through public signup.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/create-api-key.html",
+    "title": "Create an API key - PesaGuard docs",
+    "description": "What a PesaGuard credential carries: explicit scopes, expiry, rotation metadata, and hashed storage.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/first-reconciliation.html",
+    "title": "First reconciliation",
+    "description": "Follow one staging payment through matching into a reconciliation outcome, inspect a discrepancy and resolve it with an auditable operator decision.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/first-request.html",
+    "title": "First authenticated request - PesaGuard docs",
+    "description": "The bearer-token pattern PesaGuard uses, the scope model behind it, and what an unauthenticated call returns.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/first-transaction.html",
+    "title": "Getting started · First transaction - PesaGuard docs",
+    "description": "Follow one M-Pesa payment from callback to matched record, and what each state means on the way.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/first-webhook.html",
+    "title": "First webhook",
+    "description": "Receive, verify and idempotently process your first signed webhook in the staging environment.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/index.html",
+    "title": "Getting started - PesaGuard docs",
+    "description": "Provisioning, first requests, the staging deployment and what changes for production.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/production-checklist.html",
+    "title": "Production checklist - PesaGuard docs",
+    "description": "What changes between the staging variant and a production PesaGuard deployment: required settings, secrets handling, proxy and validation.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/quickstart.html",
+    "title": "Quickstart - PesaGuard docs",
+    "description": "Point a request at a running PesaGuard deployment, confirm health, and read the OpenAPI contract it publishes.",
+    "section": "Getting started"
+  },
+  {
+    "href": "getting-started/test-environment.html",
+    "title": "Test environment - PesaGuard docs",
+    "description": "The staging deployment variant: its own database and Kafka listeners, and how to validate configuration without leaking secrets.",
+    "section": "Getting started"
+  },
+  {
+    "href": "guides/anomalies/anomaly-events.html",
+    "title": "Anomaly events",
+    "description": "What raises a signal, and what the event carries.",
+    "section": "Anomaly guides"
+  },
+  {
+    "href": "guides/anomalies/index.html",
+    "title": "Anomaly guides",
+    "description": "Anomaly guides for PesaGuard integrations.",
+    "section": "Anomaly guides"
+  },
+  {
+    "href": "guides/anomalies/investigation.html",
+    "title": "Investigation",
+    "description": "Investigate, decide, and record the reason in the append-only trail.",
+    "section": "Anomaly guides"
+  },
+  {
+    "href": "guides/anomalies/risk-signals.html",
+    "title": "Risk signals",
+    "description": "Amount deviation, velocity, duplicate references, timing and channel patterns.",
+    "section": "Anomaly guides"
+  },
+  {
+    "href": "guides/anomalies/severity.html",
+    "title": "Severity",
+    "description": "Severity drives routing, so high severity stays distinguishable from routine.",
+    "section": "Anomaly guides"
+  },
+  {
+    "href": "guides/authentication/api-keys.html",
+    "title": "Authentication guides · API keys - PesaGuard docs",
+    "description": "Scopes, expiry, rotation metadata, and one credential per integration.",
+    "section": "Authentication guides"
+  },
+  {
+    "href": "guides/authentication/bearer-tokens.html",
+    "title": "Authentication guides · Bearer tokens - PesaGuard docs",
+    "description": "The Authorization header, tenant claims, and what a rejected token returns.",
+    "section": "Authentication guides"
+  },
+  {
+    "href": "guides/authentication/index.html",
+    "title": "Authentication guides - PesaGuard docs",
+    "description": "Authentication guides for PesaGuard integrations.",
+    "section": "Authentication guides"
+  },
+  {
+    "href": "guides/authentication/key-rotation.html",
+    "title": "Authentication guides · Key rotation - PesaGuard docs",
+    "description": "Rotate on a schedule and on suspicion; revocation takes effect immediately.",
+    "section": "Authentication guides"
+  },
+  {
+    "href": "guides/authentication/oauth.html",
+    "title": "Authentication guides · OAuth - PesaGuard docs",
+    "description": "Not supported today. Service access uses scoped bearer tokens issued per deployment.",
+    "section": "Authentication guides"
+  },
+  {
+    "href": "guides/index.html",
+    "title": "Guides - PesaGuard docs",
+    "description": "Task-oriented guides, honest about what is written and what is still a design contract.",
+    "section": "Guides"
+  },
+  {
+    "href": "guides/integrations/airtel-money.html",
+    "title": "Airtel Money",
+    "description": "Planned. No adapter, tests or documentation exist yet.",
+    "section": "Integration guides"
+  },
+  {
+    "href": "guides/integrations/banks.html",
+    "title": "Bank rails",
+    "description": "Planned. Statement and settlement import is out of scope today.",
+    "section": "Integration guides"
+  },
+  {
+    "href": "guides/integrations/custom-provider.html",
+    "title": "Custom provider",
+    "description": "A provider-connector abstraction is evaluated, not implemented. Multi-rail is a separate scoping conversation.",
+    "section": "Integration guides"
+  },
+  {
+    "href": "guides/integrations/index.html",
+    "title": "Integration guides",
+    "description": "Integration guides for PesaGuard integrations.",
+    "section": "Integration guides"
+  },
+  {
+    "href": "guides/integrations/mpesa.html",
+    "title": "M-Pesa (Daraja)",
+    "description": "The live rail: STK Push and PayBill callbacks, validated and matched.",
+    "section": "Integration guides"
+  },
+  {
+    "href": "guides/integrations/pos.html",
+    "title": "Point of sale",
+    "description": "Planned. Terminal feeds are not ingested today.",
+    "section": "Integration guides"
+  },
+  {
+    "href": "guides/reconciliation/analytics.html",
+    "title": "Reconciliation guides · Analytics &amp; reporting - PesaGuard docs",
+    "description": "Five read-only endpoints computed live from the discrepancy table: SLA metrics, resolution times, operator stats, incident trends and the reconciliation report.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/configure-reconciliation.html",
+    "title": "Reconciliation guides · Configure reconciliation - PesaGuard docs",
+    "description": "Match keys and timestamp tolerance are configured per flow, scoped with the pilot team.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/discrepancy-actions.html",
+    "title": "Reconciliation guides · Discrepancy actions - PesaGuard docs",
+    "description": "The seven endpoints that move a discrepancy from detected to resolved: activity feed, assignment queue, resolve, bulk-resolve, assign, notes and CSV export.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/exceptions.html",
+    "title": "Reconciliation guides · Exceptions - PesaGuard docs",
+    "description": "Differences are first-class: the delta is stated and a reviewer decides with a written reason.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/incident-management.html",
+    "title": "Reconciliation guides · Incident management - PesaGuard docs",
+    "description": "Search, bulk-assign, auto-escalate and filter presets: the operational endpoints for running a queue of many discrepancies rather than one at a time.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/index.html",
+    "title": "Reconciliation guides - PesaGuard docs",
+    "description": "Reconciliation guides for PesaGuard integrations.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/matching-rules.html",
+    "title": "Reconciliation guides · Matching rules - PesaGuard docs",
+    "description": "Amount, reference and tolerance decide the outcome; the same inputs give the same result.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/reconciliation-reports.html",
+    "title": "Reconciliation guides · Reconciliation reports - PesaGuard docs",
+    "description": "Reports read the reconciled record and its exceptions, so the queue and the numbers agree.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/reconciliation/unmatched-transactions.html",
+    "title": "Reconciliation guides · Unmatched transactions - PesaGuard docs",
+    "description": "Queue with the reason attached: never silently discarded.",
+    "section": "Reconciliation guides"
+  },
+  {
+    "href": "guides/transactions/create-transaction.html",
+    "title": "Transaction guides · Create a transaction - PesaGuard docs",
+    "description": "The write path is documented in the OpenAPI contract: confirm the schema against your deployment.",
+    "section": "Transaction guides"
+  },
+  {
+    "href": "guides/transactions/handle-failures.html",
+    "title": "Transaction guides · Handle failures - PesaGuard docs",
+    "description": "Retry with backoff, match on stable codes, and quote the request id.",
+    "section": "Transaction guides"
+  },
+  {
+    "href": "guides/transactions/index.html",
+    "title": "Transaction guides - PesaGuard docs",
+    "description": "Transaction guides for PesaGuard integrations.",
+    "section": "Transaction guides"
+  },
+  {
+    "href": "guides/transactions/retrieve-transaction.html",
+    "title": "Transaction guides · Retrieve a transaction - PesaGuard docs",
+    "description": "Detail lookups always include tenant predicates; IDs are not globally trusted.",
+    "section": "Transaction guides"
+  },
+  {
+    "href": "guides/transactions/search-transactions.html",
+    "title": "Transaction guides · Search transactions - PesaGuard docs",
+    "description": "Paginate deterministically and treat unspecified ordering as unstable.",
+    "section": "Transaction guides"
+  },
+  {
+    "href": "guides/transactions/transaction-status.html",
+    "title": "Transaction guides · Transaction status - PesaGuard docs",
+    "description": "See the lifecycle concept page for states and their preconditions.",
+    "section": "Transaction guides"
+  },
+  {
+    "href": "guides/webhooks/configure.html",
+    "title": "Configure delivery",
+    "description": "Endpoint, secret and channel preferences are scoped with the pilot team.",
+    "section": "Webhook guides"
+  },
+  {
+    "href": "guides/webhooks/events.html",
+    "title": "Events",
+    "description": "The event families and where each one is produced.",
+    "section": "Webhook guides"
+  },
+  {
+    "href": "guides/webhooks/idempotency.html",
+    "title": "Idempotency",
+    "description": "A replayed delivery must not create a second financial effect.",
+    "section": "Webhook guides"
+  },
+  {
+    "href": "guides/webhooks/index.html",
+    "title": "Webhook guides",
+    "description": "Webhook guides for PesaGuard integrations.",
+    "section": "Webhook guides"
+  },
+  {
+    "href": "guides/webhooks/signatures.html",
+    "title": "Signatures",
+    "description": "Verify the sender before parsing the payload.",
+    "section": "Webhook guides"
+  },
+  {
+    "href": "index.html",
+    "title": "PesaGuard Developer Documentation",
+    "description": "Developer documentation for PesaGuard: real-time reconciliation of M-Pesa (Safaricom Daraja) payments, with honest status for every capability.",
+    "section": "Enterprise reconciliation infrastructure"
+  },
+  {
+    "href": "migration/api-v1-to-v2.html",
+    "title": "Migration · API v1 to v2 - PesaGuard docs",
+    "description": "Developer runbook for comparing and migrating a future PesaGuard API v1 to v2 contract without breaking authentication, tenant safety, retries or reconciliation.",
+    "section": "Migration"
+  },
+  {
+    "href": "migration/deprecated-endpoints.html",
+    "title": "Migration · Deprecated endpoints - PesaGuard docs",
+    "description": "No endpoints are deprecated today. When one is, it is listed here with its replacement and sunset date.",
+    "section": "Migration"
+  },
+  {
+    "href": "migration/index.html",
+    "title": "Migration · Migrations - PesaGuard docs",
+    "description": "Schema migration discipline and the deprecation policy that governs API changes.",
+    "section": "Migration"
+  },
+  {
+    "href": "migration/webhook-migrations.html",
+    "title": "Migration · Webhook migrations - PesaGuard docs",
+    "description": "Consumer-affecting changes are announced through release notes and the OpenAPI document before any signature or payload change.",
+    "section": "Migration"
+  },
+  {
+    "href": "sdks/curl.html",
+    "title": "SDKs · curl - PesaGuard docs",
+    "description": "Every example on this site runs with curl against your deployment.",
+    "section": "SDKs"
+  },
+  {
+    "href": "sdks/index.html",
+    "title": "SDKs - PesaGuard docs",
+    "description": "No official SDKs today: generate a client from the OpenAPI document with any HTTP stack.",
+    "section": "SDKs"
+  },
+  {
+    "href": "sdks/java.html",
+    "title": "SDKs · Java - PesaGuard docs",
+    "description": "Generate a Java client from the OpenAPI document; no official SDK yet.",
+    "section": "SDKs"
+  },
+  {
+    "href": "sdks/javascript.html",
+    "title": "SDKs · JavaScript - PesaGuard docs",
+    "description": "Use fetch or a generated client; no official JavaScript SDK yet.",
+    "section": "SDKs"
+  },
+  {
+    "href": "sdks/python.html",
+    "title": "SDKs · Python - PesaGuard docs",
+    "description": "Use requests or a client generated from the OpenAPI document; no official Python SDK yet.",
+    "section": "SDKs"
+  },
+  {
+    "href": "sdks/typescript.html",
+    "title": "SDKs · TypeScript - PesaGuard docs",
+    "description": "Generate typed models from the OpenAPI document for compile-time safety.",
+    "section": "SDKs"
+  },
+  {
+    "href": "search/index.html",
+    "title": "Search - PesaGuard docs",
+    "description": "Search the PesaGuard documentation by task, API topic, environment, security control or operational guide. Client-side only.",
+    "section": "Search"
+  },
+  {
+    "href": "security/api-key-security.html",
+    "title": "Security · API key security - PesaGuard docs",
+    "description": "How tenant-scoped API keys are verified, scoped, expired and revoked, with operational guidance for secure storage and rotation.",
+    "section": "Security"
+  },
+  {
+    "href": "security/authentication.html",
+    "title": "Security · Authentication - PesaGuard docs",
+    "description": "How PesaGuard verifies short-lived JWTs, tenant-bound API keys, user sessions, and provider-specific callback credentials.",
+    "section": "Security"
+  },
+  {
+    "href": "security/authorization.html",
+    "title": "Security · Authorization - PesaGuard docs",
+    "description": "Server-side role, permission, tenant, and resource access checks with operational guidance for least-privilege access reviews.",
+    "section": "Security"
+  },
+  {
+    "href": "security/data-protection.html",
+    "title": "Security · Data protection - PesaGuard docs",
+    "description": "Data classification, application redaction, retention-policy values, deletion controls, and the operational checks required in each deployment.",
+    "section": "Security"
+  },
+  {
+    "href": "security/encryption.html",
+    "title": "Security · Encryption - PesaGuard docs",
+    "description": "Application-level encryption for provider secrets and selected sensitive payload fields, plus TLS deployment guidance and key rotation limits.",
+    "section": "Security"
+  },
+  {
+    "href": "security/index.html",
+    "title": "Security - PesaGuard docs",
+    "description": "Implemented PesaGuard backend security controls, repository evidence, and deployment responsibilities for authentication, authorization, tenant isolation, encryption, and audit.",
+    "section": "Security"
+  },
+  {
+    "href": "security/responsible-disclosure.html",
+    "title": "Security · Responsible disclosure - PesaGuard docs",
+    "description": "Private vulnerability reporting, safe testing boundaries, report details, and the PesaGuard security response process.",
+    "section": "Security"
+  },
+  {
+    "href": "security/tenant-isolation.html",
+    "title": "Security · Tenant isolation - PesaGuard docs",
+    "description": "How tenant and resource authorization context should be applied across API routes, queries, jobs, exports, caches, and operations.",
+    "section": "Security"
+  },
+  {
+    "href": "security/webhook-security.html",
+    "title": "Security · Webhook security - PesaGuard docs",
+    "description": "Detailed security guidance for outbound webhook HMAC signatures, SSRF defenses, delivery retries, and inbound provider callback verification.",
+    "section": "Security"
+  },
+  {
+    "href": "status/index.html",
+    "title": "Status · Service status",
+    "description": "Live health of the PesaGuard services, the ops metrics endpoint, and what an incident page includes.",
+    "section": "Status"
+  },
+  {
+    "href": "support/contact.html",
+    "title": "Support · Contact - PesaGuard docs",
+    "description": "Pilots are supported personally. Use the source repository for documentation issues and private advisories for security reports.",
+    "section": "Support"
+  },
+  {
+    "href": "support/faq.html",
+    "title": "Support · FAQ - PesaGuard docs",
+    "description": "Straight answers on scope: M-Pesa only today, no self-serve signup, no official SDKs, no certifications claimed.",
+    "section": "Support"
+  },
+  {
+    "href": "support/index.html",
+    "title": "Support - PesaGuard docs",
+    "description": "How to reach the team: pilots are supported personally, with the source repository as the shared record.",
+    "section": "Support"
+  },
+  {
+    "href": "support/troubleshooting.html",
+    "title": "Support · Troubleshooting - PesaGuard docs",
+    "description": "Start with the request id, then the status classes in Errors. Most failures are scope, tenant or an unverified assumption about a payload.",
+    "section": "Support"
+  },
+  {
+    "href": "testing/failure-scenarios.html",
+    "title": "Testing · Failure scenarios - PesaGuard docs",
+    "description": "Test duplicate delivery, malformed payloads, consumer downtime and tenant-scope violations.",
+    "section": "Testing"
+  },
+  {
+    "href": "testing/index.html",
+    "title": "Testing - PesaGuard docs",
+    "description": "How PesaGuard validates behaviour, and how to test your integration against staging.",
+    "section": "Testing"
+  },
+  {
+    "href": "testing/integration-testing.html",
+    "title": "Testing · Integration testing - PesaGuard docs",
+    "description": "Test the invariants, not the happy path: one record per event, one decision per exception, zero cross-tenant reads.",
+    "section": "Testing"
+  },
+  {
+    "href": "testing/load-testing.html",
+    "title": "Load and stress testing",
+    "description": "A disciplined way to load-test PesaGuard in staging: ground rules, what to measure, a ramp-soak-spike procedure and how to prove reconciliation correctness under load.",
+    "section": "Testing"
+  },
+  {
+    "href": "testing/sandbox-testing.html",
+    "title": "Testing · Testing against staging - PesaGuard docs",
+    "description": "Scope a staging tenant, then drive the same flows production will see.",
+    "section": "Testing"
+  },
+  {
+    "href": "testing/test-transactions.html",
+    "title": "Testing · Test transactions - PesaGuard docs",
+    "description": "Send events into staging and assert the match, the exception reason and the audit entry.",
+    "section": "Testing"
+  },
+  {
+    "href": "testing/webhook-testing.html",
+    "title": "Testing · Webhook testing - PesaGuard docs",
+    "description": "Stand up a consumer in staging, verify the signature, force a failure and replay from the dead letter.",
+    "section": "Testing"
+  },
+  {
+    "href": "webhooks/anomaly-detected.html",
+    "title": "Webhooks · anomaly.detected - PesaGuard docs",
+    "description": "A named rule or statistical check flagged the transaction for human review.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/event-catalog.html",
+    "title": "Webhooks · Event catalog - PesaGuard docs",
+    "description": "The event families that flow through the platform, and where each one is produced.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/index.html",
+    "title": "Webhooks · Webhook delivery - PesaGuard docs",
+    "description": "Signed outbound events with bounded retries and a dead-letter path you can inspect and replay.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/reconciliation-completed.html",
+    "title": "Webhooks · reconciliation.completed - PesaGuard docs",
+    "description": "A reconciliation run finished, with its match and exception counts.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/retries.html",
+    "title": "Webhooks · Retries and dead letters - PesaGuard docs",
+    "description": "Bounded backoff, visible attempt history, dead-letter retention and safe replay.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/transaction-created.html",
+    "title": "Webhooks · transaction.created - PesaGuard docs",
+    "description": "A payment event was accepted and validated, and is now a PesaGuard record.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/transaction-matched.html",
+    "title": "Webhooks · transaction.matched - PesaGuard docs",
+    "description": "A deterministic pairing succeeded and the evidence is retained with the record.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/transaction-unmatched.html",
+    "title": "Webhooks · transaction.unmatched - PesaGuard docs",
+    "description": "No internal candidate was found, so the payment queues with the reason attached.",
+    "section": "Webhooks"
+  },
+  {
+    "href": "webhooks/verification.html",
+    "title": "Webhooks · Verification - PesaGuard docs",
+    "description": "Verify outbound webhook signatures using PesaGuard's timestamped HMAC-SHA-256 and canonical JSON format; enforce replay checks and idempotent processing.",
+    "section": "Webhooks"
+  }
+]

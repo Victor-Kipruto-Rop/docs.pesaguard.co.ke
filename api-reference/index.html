@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+<title>OpenAPI reference — PesaGuard docs</title>
+<meta name="description" content="The PesaGuard API contract: an embedded viewer for openapi.json, with a link to the live specification on your deployment.">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body data-path="/api-reference/scalar.html">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd></div>
+  <nav class="docs-header-links" aria-label="Primary">
+    <a href="../getting-started/">Getting started</a>
+    <a href="../concepts/">Concepts</a>
+    <a href="../api/">API</a>
+    <a href="../webhooks/">Webhooks</a>
+    <a href="../security/">Security</a>
+    <a href="https://status.pesaguard.victorkipruto.com/">Status</a>
+  </nav>
+</div></header>
+
+<main id="main">
+<div class="docs-shell docs-content-wide">
+  <article class="docs-article docs-content-wide">
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span><span>API reference</span></nav>
+    <p class="docs-eyebrow">API reference</p>
+    <h1>OpenAPI contract</h1>
+    <p class="docs-lede">The authoritative document is served by your own deployment at <code>/openapi.json</code>. The copy in this folder is a mirror kept for offline reading and client generation.</p>
+
+    <h2>Files</h2>
+    <ul>
+      <li><a href="openapi.json">openapi.json</a> — the mirror, OpenAPI 3.0.3, dashboard version 2.0.0.</li>
+      <li><a href="openapi.yaml">openapi.yaml</a> — the same document in YAML.</li>
+      <li><a href="examples/transactions.json">examples/transactions.json</a>, <a href="examples/reconciliation.json">examples/reconciliation.json</a>, <a href="examples/anomalies.json">examples/anomalies.json</a>, <a href="examples/webhooks.json">examples/webhooks.json</a>.</li>
+      <li><a href="../schemas/transaction.schema.json">schemas/</a> — JSON Schema for the canonical shapes.</li>
+    </ul>
+
+    <h2>Generate a client</h2>
+    <pre class="docs-code" data-lang="bash"><code>curl -sS "$PESAGUARD_API_URL/openapi.json" -o openapi.json
+npx @openapitools/openapi-generator-cli generate -i openapi.json -g python -o ./client</code></pre>
+
+    <div class="callout" data-tone="warn">
+      <strong>The live deployment wins</strong>
+      <p>If this mirror and your deployment's document disagree, the deployment is authoritative. Re-generate clients from the live document before a release.</p>
+    </div>
+  </article>
+</div>
+</main>
+
+<footer class="docs-footer"><div class="docs-footer-inner">
+  <span>© 2026 PesaGuard</span>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com/">Status</a></nav>
+</div></footer>
+
+<script src="../js/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "$comment": "Illustrative anomaly signals. A signal is a prompt to review; it is never an automatic fraud verdict.",
+  "signals": [
+    { "signal": "amount_deviation", "severity": "high", "score": 82, "detail": "KES 45,000 · typical range KES 2,000-8,000" },
+    { "signal": "velocity_spike", "severity": "high", "score": 76, "detail": "14 transactions from one account in 6 minutes" },
+    { "signal": "duplicate_reference", "severity": "medium", "score": 61, "detail": "REF-9918 seen 3x in the last hour" },
+    { "signal": "unusual_timing", "severity": "low", "score": 38, "detail": "First activity outside business hours" },
+    { "signal": "repeated_failures", "severity": "low", "score": 34, "detail": "5 failed validations, same endpoint" }
+  ],
+  "authority": "Signals route a transaction to a human. PesaGuard does not auto-declare fraud."
+}

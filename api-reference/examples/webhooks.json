@@ -1,0 +1,32 @@
+{
+  "$comment": "Illustrative outbound delivery records, including a retry path and a dead letter. Consumers verify the signature before parsing.",
+  "deliveries": [
+    {
+      "event_id": "evt_8f31",
+      "event_type": "transaction.matched",
+      "status": "delivered",
+      "http_status": 200,
+      "retry_count": 0,
+      "signature": "<hmac>",
+      "transaction_id": "txn_8f31"
+    },
+    {
+      "event_id": "evt_8f32",
+      "event_type": "anomaly.detected",
+      "status": "retrying",
+      "http_status": 503,
+      "retry_count": 2,
+      "error": "consumer unavailable",
+      "transaction_id": "txn_2b77"
+    },
+    {
+      "event_id": "evt_8f33",
+      "event_type": "transaction.unmatched",
+      "status": "dead_letter",
+      "http_status": 500,
+      "retry_count": 5,
+      "error": "retries exhausted; retained for investigation and replay",
+      "transaction_id": null
+    }
+  ]
+}

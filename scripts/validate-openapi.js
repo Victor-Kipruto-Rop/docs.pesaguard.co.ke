@@ -42,7 +42,11 @@ if (!spec.info || !spec.info.version) err(`info.version is required`);
 if (!spec.paths || typeof spec.paths !== "object" || !Object.keys(spec.paths).length) {
   err(`paths must be a non-empty object`);
 }
-if (!spec.servers || !spec.servers.length) warn(`no "servers" declared; clients cannot tell the base URL`);
+if (!spec.servers || !spec.servers.length) {
+  warn(`no "servers" declared; clients cannot tell the base URL`);
+} else if (!spec.servers.some((server) => server.url === "https://api.pesaguard.victorkipruto.com")) {
+  err(`servers must include https://api.pesaguard.victorkipruto.com`);
+}
 
 const components = spec.components || {};
 const used = new Set();

@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Authentication - PesaGuard docs</title>
-<meta name="description" content="Every request carries a verified identity: scoped bearer tokens for services, signatures for provider callbacks, sessions for people.">
+<meta name="description" content="How PesaGuard verifies short-lived JWTs, tenant-bound API keys, user sessions, and provider-specific callback credentials.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/authentication.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Authentication - PesaGuard docs">
-<meta property="og:description" content="Every request carries a verified identity: scoped bearer tokens for services, signatures for provider callbacks, sessions for people.">
+<meta property="og:description" content="How PesaGuard verifies short-lived JWTs, tenant-bound API keys, user sessions, and provider-specific callback credentials.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/authentication.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Authentication - PesaGuard docs">
-<meta name="twitter:description" content="Every request carries a verified identity: scoped bearer tokens for services, signatures for provider callbacks, sessions for people.">
+<meta name="twitter:description" content="How PesaGuard verifies short-lived JWTs, tenant-bound API keys, user sessions, and provider-specific callback credentials.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -50,9 +48,37 @@
   <article class="docs-article">
     <p class="docs-eyebrow">Security</p>
     <h1>Authentication <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Every request carries a verified identity: scoped bearer tokens for services, signatures for provider callbacks, sessions for people.</p>
+    <p class="docs-lede">PesaGuard supports short-lived JWT bearer access tokens and tenant-scoped API keys on protected API routes. Provider callbacks use the verification method configured for that integration; do not treat callback authentication as interchangeable with API user authentication.</p>
+    <h2>Bearer access tokens</h2>
+    <p>Protected endpoints accept a token in the standard <code>Authorization: Bearer &lt;token&gt;</code> header. The verifier checks the JWT signature with the configured signing key, requires the configured issuer and audience, validates expiry and not-before timestamps, and requires identity, tenant, token type, authorization-version, scope, and token-ID claims. The accepted algorithm is pinned by the backend; the algorithm is not selected from an untrusted token header.</p>
+    <p>Access-token lifetime is configurable from 1 to 15 minutes and defaults to 15 minutes. Key IDs support verification against configured keys while a signing-key rotation is in progress. The token ID is checked against revocation state, and user tokens are also checked against current account and session state. Machine-principal tokens are checked against the current identity status, tenant and authorization version.</p>
+    <h3>Request example</h3>
+    <pre><code>curl --fail-with-body \
+  -H "Authorization: Bearer $PESAGUARD_ACCESS_TOKEN" \
+  -H "Accept: application/json" \
+  "https://api.pesaguard.victorkipruto.com/api/v1/transactions"</code></pre>
+    <p>Keep access tokens in process memory where practical; never place them in a URL, browser history, source control, screenshots, or logs. Send them only over HTTPS and only to the intended API origin.</p>
+    <h2>API-key authentication</h2>
+    <p>Where an endpoint supports API keys, send the key in <code>X-API-Key</code>. Keys are tenant-bound and resolved using a SHA-256 digest. Their records include a role, an explicit scope list, an active/revoked state, optional expiry, and last-used time. The verifier intersects the permissions associated with the role and the key's explicit scopes; having a key does not grant every permission in the role.</p>
+    <p>Use a different key for each application or integration. Restrict access to the smallest permitted scope, store the key in a secret manager, avoid printing it in diagnostics, and revoke it immediately if it may have been exposed. See <a href="api-key-security.html">API key security</a> for lifecycle and incident guidance.</p>
+    <h2>Interactive users and sessions</h2>
+    <p>User JWTs are linked to persisted account and session state. Session checks include active state and expiry information, including the configured idle timeout. Refresh tokens are persisted and rotated; reuse of an already-rotated token causes the associated token family to be revoked. Clients should replace a refresh token atomically after a successful refresh and discard the old value.</p>
+    <h2>Provider callbacks are a separate trust boundary</h2>
+    <p>Callback verification is provider-specific. Some flows validate an HMAC over the raw request body; the Daraja callback guard can require a shared-secret header, an IP/CIDR allowlist, or both, and rejects requests when neither is configured. Timestamp/replay checks are supported by the communications delivery callback pipeline where the provider sends a timestamp. Check the relevant integration guide before implementing a receiver.</p>
+    <h2>Failure behavior and operations</h2>
+    <ul>
+      <li>Missing, malformed, expired, revoked, or invalid credentials are rejected; protected routes do not treat a bad token as an anonymous request.</li>
+      <li>If persisted authentication or revocation state cannot be checked, the API returns an unavailable response rather than silently treating the identity as valid.</li>
+      <li>Configure a unique production <code>JWT_SECRET_KEY</code> of at least 32 bytes. If using a key ring, configure <code>JWT_KEYS_JSON</code> and <code>JWT_ACTIVE_KID</code> consistently before switching the active signing key.</li>
+      <li>Keep <code>PESAGUARD_ALLOW_INSECURE_DEV_SECRET</code> disabled in production; the development fallback is intentionally guarded against production environments.</li>
+      <li>Set session idle timeout and access-token lifetime deliberately, monitor authentication denials, and rehearse revocation before onboarding production integrations.</li>
+    </ul>
+    <p>The exact routes that require authentication are determined by the route configuration and deployment settings. The API's health and documentation routes may have intentionally different exposure rules; review <code>PESAGUARD_PUBLIC_API_DOCS</code> and the production route policy before deployment.</p>
     <h2>Related</h2>
     <ul>
+      <li><a href="../api/authentication.html">API authentication and request headers</a></li>
+      <li><a href="api-key-security.html">API key security</a></li>
+      <li><a href="webhook-security.html">Webhook security</a></li>
       <li><a href="../security/index.html">Security overview</a></li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
     </ul>

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/error.schema.json",
+  "title": "Normalized error envelope",
+  "description": "Every failure response uses this shape. Codes are stable; messages are not.",
+  "type": "object",
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "request_id"],
+      "properties": {
+        "code": { "type": "string", "description": "Stable machine-readable code — match on this." },
+        "message": { "type": "string", "description": "Human-readable explanation; copy may change." },
+        "request_id": { "type": "string", "description": "Correlation key to quote to the operator." },
+        "details": {
+          "type": ["array", "null"],
+          "items": { "type": "object", "properties": { "field": { "type": "string" }, "reason": { "type": "string" } } },
+          "description": "Per-field validation detail where applicable."
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/reconciliation.schema.json",
+  "title": "Reconciliation outcome",
+  "description": "The decision recorded when a provider event is compared against internal records. Every outcome keeps its evidence.",
+  "type": "object",
+  "required": ["transaction_reference", "outcome", "decided_at"],
+  "properties": {
+    "transaction_reference": { "type": "string" },
+    "outcome": {
+      "type": "string",
+      "enum": ["matched", "unmatched", "exception"],
+      "description": "matched = deterministic pairing; unmatched = no candidate; exception = difference awaiting review."
+    },
+    "match_keys": {
+      "type": "object",
+      "properties": {
+        "amount_matched": { "type": "boolean" },
+        "reference_matched": { "type": "boolean" },
+        "timestamp_within_tolerance": { "type": "boolean" }
+      }
+    },
+    "difference": { "type": "number", "description": "Stated explicitly on an amount mismatch; never smoothed over." },
+    "reason": { "type": "string", "description": "Why the outcome was reached. Required for exceptions." },
+    "decided_at": { "type": "string", "format": "date-time" },
+    "resolved_by": { "type": "string", "description": "Operator identity, recorded on resolution." }
+  },
+  "additionalProperties": true
+}

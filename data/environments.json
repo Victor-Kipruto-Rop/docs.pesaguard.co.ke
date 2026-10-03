@@ -1,0 +1,40 @@
+{
+  "environments": [
+    {
+      "id": "staging",
+      "label": "Staging",
+      "status": "available",
+      "note": "A real deployment with its own database and Kafka listeners. Used for integration testing.",
+      "requiredSettings": [
+        "POSTGRES_USER",
+        "POSTGRES_PASSWORD",
+        "STAGING_POSTGRES_DB",
+        "STAGING_KAFKA_ADVERTISED_LISTENERS"
+      ]
+    },
+    {
+      "id": "production",
+      "label": "Production",
+      "status": "available",
+      "note": "The live deployment the pilot runs on. Requires production credentials, backups and reviewed exposure.",
+      "requiredSettings": [
+        "POSTGRES_USER",
+        "POSTGRES_DB",
+        "POSTGRES_PASSWORD",
+        "DATABASE_URL_DOCKER",
+        "PESAGUARD_API_URL",
+        "JWT_SECRET_KEY",
+        "KAFKA_BOOTSTRAP_SERVERS_DOCKER",
+        "REDIS_URL_DOCKER",
+        "PESAGUARD_BIND_HOST_DOCKER"
+      ]
+    },
+    {
+      "id": "sandbox",
+      "label": "Sandbox",
+      "status": "not-available",
+      "note": "There is no mocked sandbox. Staging runs the same reconciliation behaviour, which is what makes testing meaningful.",
+      "requiredSettings": []
+    }
+  ]
+}

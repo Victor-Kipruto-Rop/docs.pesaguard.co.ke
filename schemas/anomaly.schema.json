@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/anomaly.schema.json",
+  "title": "Anomaly signal",
+  "description": "A named signal scored in context. A signal prompts review; it never declares fraud.",
+  "type": "object",
+  "required": ["transaction_reference", "signal", "severity", "detected_at"],
+  "properties": {
+    "transaction_reference": { "type": "string" },
+    "signal": {
+      "type": "string",
+      "enum": ["amount_deviation", "velocity_spike", "duplicate_reference", "unusual_timing", "repeated_failures", "unexpected_channel"],
+      "description": "The named pattern behind the flag."
+    },
+    "severity": { "type": "string", "enum": ["low", "medium", "high"], "description": "Drives routing to the owning team." },
+    "score": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Contextual score — a prompt to look, not a verdict." },
+    "detail": { "type": "string", "description": "Human-readable context, e.g. the observed range or count." },
+    "detected_at": { "type": "string", "format": "date-time" },
+    "reviewed_by": { "type": "string", "description": "Recorded when a human decides." }
+  },
+  "additionalProperties": true
+}

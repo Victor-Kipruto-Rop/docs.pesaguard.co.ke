@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Authorization - PesaGuard docs</title>
-<meta name="description" content="Role-based, least-privilege authorization. Grants and revocations are themselves recorded events.">
+<meta name="description" content="Server-side role, permission, tenant, and resource access checks with operational guidance for least-privilege access reviews.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/authorization.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Authorization - PesaGuard docs">
-<meta property="og:description" content="Role-based, least-privilege authorization. Grants and revocations are themselves recorded events.">
+<meta property="og:description" content="Server-side role, permission, tenant, and resource access checks with operational guidance for least-privilege access reviews.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/authorization.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Authorization - PesaGuard docs">
-<meta name="twitter:description" content="Role-based, least-privilege authorization. Grants and revocations are themselves recorded events.">
+<meta name="twitter:description" content="Server-side role, permission, tenant, and resource access checks with operational guidance for least-privilege access reviews.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -50,9 +48,37 @@
   <article class="docs-article">
     <p class="docs-eyebrow">Security</p>
     <h1>Authorization <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Role-based, least-privilege authorization. Grants and revocations are themselves recorded events.</p>
+    <p class="docs-lede">Authentication establishes an identity; authorization decides whether that identity may perform a particular action on a particular tenant or resource. Enforcement belongs on the server, not in a client-side menu or button.</p>
+    <h2>Authorization checks</h2>
+    <p>The backend's route guards can enforce a named permission, tenant access, or a resource-specific permission. The caller is resolved from a verified token or API-key record, and the resulting principal carries its tenant, role, and permission set. A request-supplied tenant identifier is not, by itself, proof that the caller may access that tenant.</p>
+    <table>
+      <thead><tr><th>Check</th><th>Purpose</th><th>Typical failure</th></tr></thead>
+      <tbody>
+        <tr><td>Route permission</td><td>Require a named action such as <code>read:transactions</code> or <code>manage:webhooks</code>.</td><td><code>403</code> when the authenticated principal lacks the permission.</td></tr>
+        <tr><td>Tenant access</td><td>Bind a requested tenant to the principal's authenticated tenant context, except for explicitly authorized cross-tenant administration.</td><td><code>403</code> when the requested tenant is outside the caller's authority.</td></tr>
+        <tr><td>Resource access</td><td>Check the permission against the exact resource identifier supplied to the route.</td><td><code>403</code> for a denied resource action; <code>400</code> for a missing or malformed resource identifier.</td></tr>
+        <tr><td>Authorization-state availability</td><td>Require current role, session, identity, or revocation state where the code path uses persisted state.</td><td><code>503</code> when the decision cannot be made safely.</td></tr>
+      </tbody>
+    </table>
+    <h2>Roles and permissions</h2>
+    <p>Role names and grants are defined in the backend policy map and can evolve with the product. The implementation includes organization roles such as owner, admin, finance, operations, analyst, and read-only roles; the exact grant list, not the label, determines access. For example, the owner role includes the cross-tenant permission <code>manage:all_tenants</code>, while the admin role's grants are separately enumerated. Do not assume that two roles with similar names are equivalent.</p>
+    <p>Where a machine credential carries explicit scopes, the effective permission set is constrained by both its assigned role and those scopes. Grant only the operations an integration needs, and review role-to-scope changes as access-control changes rather than routine configuration.</p>
+    <h2>Recommended access-management procedure</h2>
+    <ol>
+      <li>Identify the human or service principal that needs access, the tenant it operates in, and the exact actions required.</li>
+      <li>Choose the narrowest role and, for machine credentials, the narrowest supported scopes. Avoid cross-tenant permissions unless the operational function requires them.</li>
+      <li>Issue an individual account or integration credential; do not share credentials between people or services.</li>
+      <li>Review grants after role changes, team changes, integration replacement, and incident response. Revoke unused credentials and sessions promptly.</li>
+      <li>Test both allowed and denied paths using separate principals. Confirm that missing authorization state fails closed and that denied access is observable without logging secrets.</li>
+    </ol>
+    <h2>Audit and verification</h2>
+    <p>Authorization denials are returned distinctly from missing or invalid credentials and security-event instrumentation is present on relevant checks. Administrative actions should be traced through the audit facilities described in <a href="data-protection.html">Data protection</a> and <a href="../concepts/audit-trails.html">Audit trails</a>. The repository's <code>tests/test_rbac_enforcement.py</code> exercises a denied privileged-route case; it should be supplemented with deployment-specific checks for each route and role combination you rely on.</p>
+    <p>Do not interpret an API returning <code>404</code> as proof of a particular authorization policy; route and resource behavior can vary. Use the API reference for the documented response contract and test the tenant boundary directly.</p>
     <h2>Related</h2>
     <ul>
+      <li><a href="authentication.html">Authentication</a></li>
+      <li><a href="tenant-isolation.html">Tenant isolation</a></li>
+      <li><a href="api-key-security.html">API key security</a></li>
       <li><a href="../security/index.html">Security overview</a></li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
     </ul>

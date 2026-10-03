@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Data protection - PesaGuard docs</title>
-<meta name="description" content="Sensitive fields are redacted at logging boundaries, secrets never enter logs or audit entries, and retention follows a documented policy.">
+<meta name="description" content="Data classification, application redaction, retention-policy values, deletion controls, and the operational checks required in each deployment.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/data-protection.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Data protection - PesaGuard docs">
-<meta property="og:description" content="Sensitive fields are redacted at logging boundaries, secrets never enter logs or audit entries, and retention follows a documented policy.">
+<meta property="og:description" content="Data classification, application redaction, retention-policy values, deletion controls, and the operational checks required in each deployment.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/data-protection.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Data protection - PesaGuard docs">
-<meta name="twitter:description" content="Sensitive fields are redacted at logging boundaries, secrets never enter logs or audit entries, and retention follows a documented policy.">
+<meta name="twitter:description" content="Data classification, application redaction, retention-policy values, deletion controls, and the operational checks required in each deployment.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -50,9 +48,44 @@
   <article class="docs-article">
     <p class="docs-eyebrow">Security</p>
     <h1>Data protection <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Sensitive fields are redacted at logging boundaries, secrets never enter logs or audit entries, and retention follows a documented policy.</p>
+    <p class="docs-lede">PesaGuard's backend includes redaction and field-protection helpers, audit-detail sanitization, and a versioned retention policy. The policy describes target handling; operators must confirm that scheduled cleanup, archive lifecycle, approvals, and legal holds are enabled in the deployed environment.</p>
+    <h2>Data categories and policy periods</h2>
+    <p>The backend repository's retention policy is marked as requiring approval. Its declared values are below; they are policy configuration, not evidence that every storage system has enforced deletion on schedule.</p>
+    <table>
+      <thead><tr><th>Category</th><th>Declared retention</th><th>Policy notes</th></tr></thead>
+      <tbody>
+        <tr><td>Transactions</td><td>2,555 days</td><td>PostgreSQL hot storage, object-storage warm tier and cold archive; archive before controlled tenant-scoped purge and legal-hold check.</td></tr>
+        <tr><td>Audit data</td><td>2,555 days</td><td>Append-only store and immutable archive; purge only after archive verification and legal-hold check.</td></tr>
+        <tr><td>Application logs</td><td>90 days</td><td>Centralized log storage with lifecycle expiration after archive or export.</td></tr>
+        <tr><td>Security logs</td><td>730 days</td><td>Restricted store and immutable archive; controlled purge after incident and legal-hold review.</td></tr>
+        <tr><td>Raw provider data</td><td>2,555 days</td><td>Restricted object-storage raw zone and cold archive; verify archive integrity before lifecycle deletion.</td></tr>
+        <tr><td>Analytics</td><td>1,825 days</td><td>Curated storage and derived metric tables; derived data is rebuildable subject to source-retention review.</td></tr>
+        <tr><td>User data</td><td>365 days</td><td>PostgreSQL with selected sensitive fields encrypted; tenant offboarding uses anonymization or approved erasure.</td></tr>
+      </tbody>
+    </table>
+    <h2>Minimization, encryption and redaction</h2>
+    <p>Only collect and retain fields required for reconciliation, operations, fraud review, support, and legally approved evidence. The payload-protection helper encrypts a defined set of sensitive JSON leaf fields; provider configuration serialization masks credential-like keys; and audit detail sanitization redacts recognized secret values and keys while bounding the size and depth of audit details.</p>
+    <p>These protections are path-specific, not a promise that every log statement or export is automatically scrubbed. Before adding a data field, identify its classification, purpose, access roles, retention class, export path, and deletion behavior. Never place access tokens, passwords, signing secrets, or full payment credentials in audit details or routine logs.</p>
+    <h2>Access, exports and data-subject requests</h2>
+    <ul>
+      <li>Use tenant-scoped roles for queries, reports, exports, and administrative tools. Limit operational access to the people who need it and review that access periodically.</li>
+      <li>Exports should contain only requested fields, preserve tenant boundaries, and be protected during transfer and storage. Avoid downloading production data to unmanaged devices.</li>
+      <li>Handle deletion requests through the approved tenant-scoped workflow. Check legal holds, archive obligations, downstream copies, derived analytics, and backup expiry before confirming erasure.</li>
+      <li>Record approvals and outcomes without copying the sensitive records into the approval ticket or audit description.</li>
+    </ul>
+    <h2>Operational verification</h2>
+    <ol>
+      <li>Obtain approval for the retention policy and map each listed category to every live database, object store, log sink, queue, export store, and backup.</li>
+      <li>Confirm each retention and archive job is scheduled, has least-privilege access, emits observable success/failure signals, and can be safely rerun.</li>
+      <li>Test legal-hold and approval gates before a purge; verify that tenant-scoped deletion cannot affect another tenant.</li>
+      <li>Inspect representative logs, audit entries, provider responses, and exports for sensitive values using synthetic test data.</li>
+      <li>Run a restore/deletion exercise to confirm archives, backups, and downstream replicas follow the intended retention and recovery policy.</li>
+    </ol>
+    <p>The retention source is <code>retention_policy.json</code>; application-level protection and audit sanitization are implemented in <code>data_protection.py</code>, <code>provider_management_service.py</code>, and <code>action_audit.py</code>. These files do not, by themselves, prove deployment configuration or deletion completion.</p>
     <h2>Related</h2>
     <ul>
+      <li><a href="encryption.html">Encryption</a></li>
+      <li><a href="tenant-isolation.html">Tenant isolation</a></li>
       <li><a href="../security/index.html">Security overview</a></li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
     </ul>

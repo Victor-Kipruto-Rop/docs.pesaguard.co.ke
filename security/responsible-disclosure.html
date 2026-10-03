@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Responsible disclosure - PesaGuard docs</title>
-<meta name="description" content="How to report a suspected security issue in PesaGuard, and what happens next.">
+<meta name="description" content="Private vulnerability reporting, safe testing boundaries, report details, and the PesaGuard security response process.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/responsible-disclosure.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Responsible disclosure - PesaGuard docs">
-<meta property="og:description" content="How to report a suspected security issue in PesaGuard, and what happens next.">
+<meta property="og:description" content="Private vulnerability reporting, safe testing boundaries, report details, and the PesaGuard security response process.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/responsible-disclosure.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Responsible disclosure - PesaGuard docs">
-<meta name="twitter:description" content="How to report a suspected security issue in PesaGuard, and what happens next.">
+<meta name="twitter:description" content="Private vulnerability reporting, safe testing boundaries, report details, and the PesaGuard security response process.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -58,13 +56,35 @@
           <span>Responsible disclosure</span></nav>
     <p class="docs-eyebrow">Security</p>
     <h1>Responsible disclosure <span class="status-pill" data-tone="draft"><i></i>Draft</span></h1>
-    <p class="docs-lede">If you believe you have found a security issue, tell us privately and we will treat it seriously: acknowledge, reproduce, fix, and credit you if you want.</p>
+    <p class="docs-lede">If you believe you have found a vulnerability in PesaGuard, report it privately so it can be assessed without exposing customers or service data. Please do not publish exploit details or customer information before coordinating with us.</p>
+    <h2>Report privately</h2>
+    <p>Send a report to <a href="mailto:pesaguard@gmail.com?subject=PesaGuard%20security%20report">pesaguard@gmail.com</a> with the subject <code>PesaGuard security report</code>. The address is also published in the site's <a href="../security.txt">security.txt</a>. If GitHub private vulnerability reporting is enabled for the relevant repository, a private advisory is an alternative; do not open a public issue with reproduction details.</p>
+    <h2>Include enough detail to reproduce safely</h2>
+    <ul>
+      <li>A concise description of the affected service, endpoint, component, and the security property that appears to fail.</li>
+      <li>Reproduction steps using synthetic data, a non-production tenant, and the minimum requests needed to demonstrate the issue.</li>
+      <li>Expected behavior and observed behavior, including sanitized response codes, request/correlation IDs, approximate UTC timestamps, and relevant deployment/version details.</li>
+      <li>Impact you believe is possible, prerequisites, and any mitigations or workarounds you identified.</li>
+      <li>A safe way for us to contact you and whether you would like public credit if the issue is resolved.</li>
+    </ul>
+    <p>Do not send passwords, API keys, signing secrets, private keys, full payment payloads, personal data, or screenshots containing live customer information. Redact sensitive values; share only the minimum evidence needed.</p>
+    <h2>Testing boundaries</h2>
+    <ul>
+      <li>Do not access, modify, delete, or retain data belonging to another person or tenant. Stop if testing unexpectedly exposes such data.</li>
+      <li>Do not perform denial-of-service testing, high-volume scanning, destructive actions, social engineering, credential attacks against real users, or tests against third-party providers.</li>
+      <li>Use only accounts, tenants, and systems you own or have explicit authorization to test. Do not persist access or attempt to move laterally.</li>
+      <li>If you encounter sensitive data, stop, do not copy or share it, and report the minimum facts needed for us to investigate.</li>
+    </ul>
+    <h2>What happens after a report</h2>
     <ol>
-      <li>Open a private security advisory or issue on the <a href="https://github.com/Victor-Kipruto-Rop/pesaguard">source repository</a>: do not include exploit details in a public issue.</li>
-      <li>Include reproduction steps and the request id or timestamp if the issue involves API behaviour.</li>
-      <li>We acknowledge receipt, then confirm or decline with reasoning.</li>
-      <li>Fixes are released with a note; you may be credited unless you prefer otherwise.</li>
+      <li>We review the report, ask for clarification if needed, and assess reproducibility, affected components, and potential impact.</li>
+      <li>We coordinate a safe investigation and remediation plan. Please keep the report confidential while we investigate and agree on disclosure timing.</li>
+      <li>We may ask you to validate a fix using a controlled reproduction. Do not resume testing beyond the agreed scope.</li>
+      <li>When appropriate, we publish a security note that describes the impact and remediation without exposing exploit details or affected users.</li>
+      <li>We can credit a reporter who wants recognition, subject to their consent and the information they ask us to publish.</li>
     </ol>
+    <h2>Scope and expectations</h2>
+    <p>This page does not promise a bug bounty, a fixed response or remediation deadline, or immunity from legal claims. We will handle good-faith reports responsibly and ask reporters to follow the testing boundaries above. If you have an active incident involving credentials or customer data, state that clearly in the subject and include a safe contact method.</p>
     <h2>Related</h2>
     <ul>
       <li><a href="../security/index.html">Security overview</a></li>

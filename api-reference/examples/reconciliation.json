@@ -1,0 +1,20 @@
+{
+  "$comment": "Illustrative reconciliation outcomes: one match and one amount mismatch, showing the delta stated explicitly. Not live tenant data.",
+  "outcomes": [
+    {
+      "outcome": "matched",
+      "provider": { "source": "M-PESA DARAJA", "amount": "KES 5,000", "reference": "TXN-8F3A", "time": "10:21:28" },
+      "internal": { "source": "INTERNAL LEDGER", "amount": "KES 5,000", "reference": "INV-19382", "time": "10:21:29" },
+      "match_keys": { "amount_matched": true, "reference_matched": true, "timestamp_within_tolerance": true },
+      "reason": "Deterministic pairing on amount, reference and tolerance."
+    },
+    {
+      "outcome": "exception",
+      "provider": { "source": "M-PESA DARAJA", "amount": "KES 5,000", "reference": "TXN-2B77", "time": "10:26:41" },
+      "internal": { "source": "INTERNAL LEDGER", "amount": "KES 4,500", "reference": "INV-19407", "time": "10:26:43" },
+      "match_keys": { "amount_matched": false, "reference_matched": true, "timestamp_within_tolerance": true },
+      "difference": 500,
+      "reason": "Amount mismatch — difference KES 500. Queued for reviewer."
+    }
+  ]
+}

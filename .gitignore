@@ -1,0 +1,4 @@
+node_modules/
+serve.log
+.DS_Store
+Thumbs.db

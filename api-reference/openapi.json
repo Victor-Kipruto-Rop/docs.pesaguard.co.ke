@@ -11,6 +11,12 @@
       "generator": "scripts/generate-openapi.py"
     }
   },
+  "servers": [
+    {
+      "url": "https://api.pesaguard.victorkipruto.com",
+      "description": "PesaGuard API"
+    }
+  ],
   "security": [
     {
       "bearerAuth": []

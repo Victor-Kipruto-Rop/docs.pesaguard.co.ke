@@ -1,0 +1,22 @@
+name: Docs link check
+"on":
+  push:
+    paths:
+      - "docs.pesaguard.victorkipruto.com/**"
+  pull_request:
+    paths:
+      - "docs.pesaguard.victorkipruto.com/**"
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate internal links and metadata
+        working-directory: docs.pesaguard.victorkipruto.com
+        run: node scripts/check-docs.js
+      - name: Validate OpenAPI mirror
+        working-directory: docs.pesaguard.victorkipruto.com
+        run: node -e "JSON.parse(require('fs').readFileSync('api-reference/openapi.json','utf8'));console.log('openapi.json parses');"

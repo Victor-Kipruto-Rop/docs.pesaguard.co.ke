@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/transaction.schema.json",
+  "title": "Canonical payment transaction",
+  "description": "The normalized shape a provider event becomes before matching. Field names are indicative of the design contract; confirm against your deployment's OpenAPI document.",
+  "type": "object",
+  "required": ["reference", "amount", "currency", "channel", "occurred_at"],
+  "properties": {
+    "reference": { "type": "string", "description": "Provider or internal reference used as a match key." },
+    "amount": { "type": "number", "exclusiveMinimum": 0, "description": "Minor-unit safe amount; validated before matching." },
+    "currency": { "type": "string", "const": "KES", "description": "Active payment scope is KES." },
+    "channel": { "type": "string", "enum": ["mpesa"], "description": "M-Pesa (Daraja) is the only live channel." },
+    "occurred_at": { "type": "string", "format": "date-time", "description": "Provider event time, compared against a configured tolerance." },
+    "provider_transaction_id": { "type": "string" },
+    "payer": { "type": "string", "description": "Redacted at logging boundaries." },
+    "tenant_id": { "type": "string", "description": "Required on every write; enforced by database predicates." }
+  },
+  "additionalProperties": true
+}

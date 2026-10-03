@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Tenant isolation - PesaGuard docs</title>
-<meta name="description" content="Isolation enforced at the database layer: measured across 100 tenants with zero cross-tenant rows.">
+<meta name="description" content="How tenant and resource authorization context should be applied across API routes, queries, jobs, exports, caches, and operations.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/tenant-isolation.html">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Tenant isolation - PesaGuard docs">
-<meta property="og:description" content="Isolation enforced at the database layer: measured across 100 tenants with zero cross-tenant rows.">
+<meta property="og:description" content="How tenant and resource authorization context should be applied across API routes, queries, jobs, exports, caches, and operations.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/tenant-isolation.html">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Tenant isolation - PesaGuard docs">
-<meta name="twitter:description" content="Isolation enforced at the database layer: measured across 100 tenants with zero cross-tenant rows.">
+<meta name="twitter:description" content="How tenant and resource authorization context should be applied across API routes, queries, jobs, exports, caches, and operations.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -58,12 +56,29 @@
           <span>Tenant isolation</span></nav>
     <p class="docs-eyebrow">Security</p>
     <h1>Tenant isolation <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Every tenant-owned resource is evaluated against the authenticated tenant context, down to the query predicate. A query without an authorized tenant resolves to nothing.</p>
+    <p class="docs-lede">Tenant isolation binds an authenticated principal to an authorized tenant and requires that context to constrain every tenant-owned operation. The application provides tenant and resource authorization helpers, but isolation must be preserved across each route, query, asynchronous job, export, cache, and administrative workflow.</p>
+    <h2>Identity and tenant context</h2>
+    <p>Verified user and machine identities carry a tenant identifier. API-key records are tenant-bound, and machine-principal records are resolved with both identity and tenant. The tenant ID supplied in a URL, query parameter, or JSON body is an object of authorization to check; it is never sufficient evidence of permission by itself.</p>
+    <p>Protected routes can use tenant-access checks to compare the requested tenant with the principal's tenant. Cross-tenant access is a separately granted permission (for example, <code>manage:all_tenants</code>); it should be assigned only to an explicitly approved operational role. Resource-scoped guards also bind a permission to the resource ID rather than relying only on a broad route-level check.</p>
+    <h2>Apply the boundary end to end</h2>
     <ul>
-      <li>Covers queries, mutations, exports, cache keys, events and replays.</li>
-      <li>No undocumented administrative bypasses; scoped admin paths are themselves recorded.</li>
-      <li>Committed load test: 100 tenants, zero cross-tenant rows observed.</li>
+      <li><strong>Reads and writes:</strong> include the authorized tenant in database predicates for both lookup and mutation; do not fetch globally and filter only in the response layer.</li>
+      <li><strong>Related records:</strong> verify that referenced provider, webhook, transaction, user, and organization records belong to the same authorized tenant before joining or mutating them.</li>
+      <li><strong>Background work:</strong> persist the tenant with queued jobs and events, then re-check it at consumption, replay, retry, and dead-letter operations.</li>
+      <li><strong>Derived data:</strong> include tenant scope in cache keys, analytics aggregates, search indexes, report files, export objects, and idempotency/replay identifiers.</li>
+      <li><strong>Administration:</strong> require explicit cross-tenant authorization, record the actor and reason, constrain the operation to its approved scope, and review the result.</li>
     </ul>
+    <h2>Failure behavior</h2>
+    <p>Missing or malformed tenant context should be rejected. A cross-tenant request should not return the protected record. Depending on the route contract, it may return <code>403</code> or an intentionally non-disclosing <code>404</code>; do not assume that every endpoint uses the same response code. If current authorization state cannot be loaded, sensitive operations should fail closed with an unavailable response rather than proceed using a caller-selected tenant.</p>
+    <h2>Verification strategy</h2>
+    <ol>
+      <li>Create at least two test tenants with distinct records and principals.</li>
+      <li>For every read, write, list, export, and replay endpoint, verify that a tenant can access its own records and cannot read, update, delete, count, or infer another tenant's records.</li>
+      <li>Repeat tests with tenant IDs in path, query, and request body, including conflicting identifiers and missing values.</li>
+      <li>Exercise asynchronous consumers, retries, webhook deliveries, caches, and report-generation jobs; test cross-tenant references as well as direct IDs.</li>
+      <li>Verify that an explicitly authorized cross-tenant administrative action is logged and that an ordinary administrator or tenant role cannot invoke it by changing request data.</li>
+    </ol>
+    <p>The backend repository contains tenant-scoped checks and test suites for authorization and data access. A load test across 100 tenants is not a substitute for route-by-route security testing; no database row-level security guarantee is claimed here unless it is separately configured and verified in your deployment.</p>
     <p>Full concept treatment: <a href="../concepts/tenants.html">Concepts · Tenants</a>.</p>
     <h2>Related</h2>
     <ul>

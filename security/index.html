@@ -4,24 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security - PesaGuard docs</title>
-<meta name="description" content="The layers between a request and a record: authentication, authorization, tenant isolation, encryption and evidence.">
+<meta name="description" content="Implemented PesaGuard backend security controls, repository evidence, and deployment responsibilities for authentication, authorization, tenant isolation, encryption, and audit.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/security/">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security - PesaGuard docs">
-<meta property="og:description" content="The layers between a request and a record: authentication, authorization, tenant isolation, encryption and evidence.">
+<meta property="og:description" content="Implemented PesaGuard backend security controls, repository evidence, and deployment responsibilities for authentication, authorization, tenant isolation, encryption, and audit.">
 <meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/security/">
 <meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security - PesaGuard docs">
-<meta name="twitter:description" content="The layers between a request and a record: authentication, authorization, tenant isolation, encryption and evidence.">
+<meta name="twitter:description" content="Implemented PesaGuard backend security controls, repository evidence, and deployment responsibilities for authentication, authorization, tenant isolation, encryption, and audit.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -57,19 +55,46 @@
           <span>Security</span></nav>
     <p class="docs-eyebrow">Security</p>
     <h1>Security <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">Security is part of the product. Controls sit at every layer between the caller and the data, and isolation is enforced in the database so application mistakes cannot become leaks.</p>
+    <p class="docs-lede">This section describes security controls visible in the PesaGuard backend, the evidence available in its code and tests, and the deployment responsibilities that cannot be verified from source alone. A control marked live is not a certification or a guarantee about every customer deployment.</p>
     <table>
-      <thead><tr><th>Layer</th><th>Guarantee</th></tr></thead>
+      <thead><tr><th>Control area</th><th>Implemented behaviour</th><th>Deployment or operator responsibility</th></tr></thead>
       <tbody>
-        <tr><td><a href="../api/authentication.html">Authentication</a></td><td>Every request has a verified identity; no anonymous path to data.</td></tr>
-        <tr><td>Authorization</td><td>Role-based, least-privilege; grants and revocations are recorded.</td></tr>
-        <tr><td><a href="tenant-isolation.html">Tenant isolation</a></td><td>Database-enforced predicates; 100-tenant load test, zero leakage.</td></tr>
-        <tr><td>Encryption</td><td>In transit and at rest; secrets excluded from logs and audit.</td></tr>
-        <tr><td>Evidence</td><td>Append-only audit trail; no secret material in entries.</td></tr>
+        <tr><td><a href="authentication.html">Authentication</a></td><td>JWT verification checks signature, issuer, audience, time claims, token identifier, tenant and current account/session state. API keys are resolved by digest.</td><td>Use production signing keys, protect them, and review authentication requirements on each exposed route.</td></tr>
+        <tr><td><a href="authorization.html">Authorization</a></td><td>Protected routes can enforce named permissions, tenant access and resource-level permissions server-side.</td><td>Assign only the roles and scopes each identity needs; review elevated access and service identities.</td></tr>
+        <tr><td><a href="api-key-security.html">API keys</a></td><td>Tenant-bound records carry role, scopes, expiry/revocation state and a SHA-256 key digest.</td><td>Store credentials in a secret manager, set expiry where appropriate, rotate and revoke promptly.</td></tr>
+        <tr><td><a href="webhook-security.html">Webhooks</a></td><td>Outbound destinations are checked for HTTPS and unsafe addresses; delivery signatures are provided. Inbound flows validate their configured authentication.</td><td>Verify signatures before processing, reject stale/replayed events where timestamps are available, and keep receiver endpoints patched.</td></tr>
+        <tr><td><a href="encryption.html">Encryption</a></td><td>Application helpers encrypt selected sensitive payload values and provider configuration; HTTPS responses receive HSTS when the app recognizes HTTPS.</td><td>Configure TLS termination and storage/backup encryption in the hosting environment; protect and rotate encryption keys.</td></tr>
+        <tr><td><a href="data-protection.html">Data protection</a></td><td>Audit details and provider serialization include redaction paths; a versioned retention policy is present in the backend repository.</td><td>Confirm jobs, storage lifecycle rules, legal holds, and approved deletion are enabled in the deployed environment.</td></tr>
+        <tr><td><a href="tenant-isolation.html">Tenant isolation</a></td><td>Authenticated identity includes tenant context, and route/query helpers can enforce tenant- and resource-scoped access.</td><td>Pass the authenticated tenant context through every query, cache, export, event, and administrative workflow.</td></tr>
+        <tr><td>Audit evidence</td><td>Audit entries can be append-only, hash-linked, integrity-checked, and optionally signed.</td><td>Configure signing keys and immutable archive destinations; monitor integrity checks and retention jobs.</td></tr>
       </tbody>
     </table>
+    <h2>How to read these pages</h2>
+    <p>Each page separates the threat, the implemented control, evidence in the backend repository, and steps an operator or integrator can take to verify the behavior. Repository tests establish behavior for the exercised paths; they are not proof that every route, dependency, or production setting has been reviewed.</p>
+    <p>The API exposes multiple applications and integration flows. Authentication and callback verification therefore vary by route and provider: consult the endpoint contract and the relevant guide rather than assuming one credential or signature scheme applies everywhere.</p>
+    <h2>Deployment boundary</h2>
+    <ul>
+      <li>Deploy the API behind HTTPS, configure trusted proxy handling deliberately, and set production secrets through a protected secret-management system.</li>
+      <li>Restrict CORS to the intended origins, keep production authentication enabled, and avoid enabling development-only bypasses in production.</li>
+      <li>Backups, database-volume encryption, network segmentation, host patching, key custody, and monitoring depend on the selected infrastructure and are not proven by application source code alone.</li>
+      <li>No third-party security certification is represented here. Ask PesaGuard for deployment-specific assurance information before treating these pages as contractual commitments.</li>
+    </ul>
+    <h2>Evidence and verification</h2>
+    <ul>
+      <li>JWT lifecycle and refresh-token behavior: backend tests in <code>tests/test_auth_lifecycle.py</code>.</li>
+      <li>Authorization enforcement: backend tests in <code>tests/test_rbac_enforcement.py</code>.</li>
+      <li>Audit redaction and append-only behavior: backend tests in <code>tests/test_action_audit.py</code>.</li>
+      <li>Payload encryption and identifier tokenization: backend tests in <code>tests/test_data_protection.py</code>.</li>
+    </ul>
+    <p>For a suspected vulnerability, use the private reporting route on the <a href="responsible-disclosure.html">responsible disclosure</a> page. Do not send credentials, payment data, or customer records in a report.</p>
     <h2>Related</h2>
     <ul>
+      <li><a href="authentication.html">Authentication</a></li>
+      <li><a href="authorization.html">Authorization</a></li>
+      <li><a href="api-key-security.html">API key security</a></li>
+      <li><a href="webhook-security.html">Webhook security</a></li>
+      <li><a href="encryption.html">Encryption</a></li>
+      <li><a href="data-protection.html">Data protection</a></li>
       <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
       <li><a href="../security/responsible-disclosure.html">Responsible disclosure</a></li>
       <li><a href="../api/authentication.html">Authentication</a></li>

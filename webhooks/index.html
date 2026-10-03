@@ -6,8 +6,9 @@
 <title>Webhooks · Webhook delivery - PesaGuard docs</title>
 <meta name="description" content="Signed outbound events with bounded retries and a dead-letter path you can inspect and replay.">
 <link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/webhooks/">
-<meta name="theme-color" content="#f4f5ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Webhooks · Webhook delivery - PesaGuard docs">
@@ -19,9 +20,6 @@
 <meta name="twitter:description" content="Signed outbound events with bounded retries and a dead-letter path you can inspect and replay.">
 <meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
 <link rel="stylesheet" href="../css/navigation.css">
@@ -72,8 +70,8 @@
     </ul>
     <p>The ops API exposes webhook delivery events (event id, type, source, received and processing times, status, HTTP status, retry count, error and the related transaction) under the integrations scopes: see <a href="../api/index.html">the API reference</a> and the contract at <a href="../api-reference/openapi.json">api-reference/openapi.json</a>.</p>
     <div class="api-hero"><div><strong>Receiver contract</strong><p>Verify the sender, accept durably, process idempotently and expose every attempt for investigation.</p></div><div class="api-hero-meta"><span>VERIFY</span><span>ACKNOWLEDGE</span><span>REPLAY</span></div></div>
-    <h2>Delivery lifecycle</h2><ol><li>PesaGuard creates an event with a stable event and delivery identity.</li><li>The payload is signed and sent to the configured receiver.</li><li>The receiver verifies the raw body before parsing.</li><li>The receiver persists the event and acknowledges only after durable acceptance.</li><li>Failures are retried with bounded backoff, then retained in a dead-letter path.</li><li>Operators can inspect and replay the delivery without losing its identity.</li></ol>
-    <h2>Minimum receiver requirements</h2><table><thead><tr><th>Requirement</th><th>Why</th></tr></thead><tbody><tr><td>Raw-body signature verification</td><td>Prevents a modified payload from being trusted.</td></tr><tr><td>Fast acknowledgement after persistence</td><td>Prevents timeouts while avoiding data loss.</td></tr><tr><td>Idempotent event handling</td><td>Provider retries must not create duplicate effects.</td></tr><tr><td>Unknown-field tolerance</td><td>Additive payload changes remain compatible.</td></tr><tr><td>Observable delivery identity</td><td>Operators can trace attempts, retries and replay.</td></tr></tbody></table>
+    <h2>Delivery lifecycle</h2><ol><li>PesaGuard creates an event with a stable event and delivery identity.</li><li>The payload is signed and sent to the configured receiver.</li><li>The receiver parses bounded JSON as untrusted input and reconstructs the documented canonical representation.</li><li>The receiver verifies the timestamped signature and freshness before persisting or acting on the event.</li><li>The receiver records the event identity and applies business effects idempotently, then acknowledges according to its retry policy.</li><li>Failures are retried with bounded backoff; operators can inspect retained delivery outcomes and replay where supported.</li></ol>
+    <h2>Minimum receiver requirements</h2><table><thead><tr><th>Requirement</th><th>Why</th></tr></thead><tbody><tr><td>Bounded JSON parsing and canonicalization</td><td>Reconstructs the exact HMAC input without allowing untrusted data to trigger side effects.</td></tr><tr><td>Timestamped HMAC verification</td><td>Authenticates the sender and supports a freshness window.</td></tr><tr><td>Constant-time comparison</td><td>Avoids early-exit comparisons of signature digests.</td></tr><tr><td>Idempotent event handling</td><td>Retries must not create duplicate financial effects.</td></tr><tr><td>Durable event identity</td><td>Operators can trace attempts, retries, and replay.</td></tr></tbody></table>
     <h2>Related</h2>
     <ul>
       <li><a href="../webhooks/event-catalog.html">Event catalog</a></li>

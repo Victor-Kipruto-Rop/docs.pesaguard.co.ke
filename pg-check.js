@@ -1,0 +1,1 @@
+try{require("./tests/run.js")}catch(e){console.log("CODE:"+(e.code||"???"));console.log("MSG:"+e.message.split(String.fromCharCode(10))[0]);console.log("STACK:"+e.stack.split(String.fromCharCode(10)).slice(0,6).join(String.fromCharCode(10)))}

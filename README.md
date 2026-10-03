@@ -31,8 +31,8 @@ by the same walk.
 
 ```sh
 # needs the backend checkout and its Python dependencies
-python scripts/dump-flask-routes.py ../api.pesaguard.victorkipruto.com     # api-reference/routes.snapshot.json
-python scripts/generate-openapi.py  ../api.pesaguard.victorkipruto.com     # api-reference/openapi.json
+python scripts/dump-flask-routes.py ..     # api-reference/routes.snapshot.json
+python scripts/generate-openapi.py  ..     # api-reference/openapi.json
 ```
 
 Checks (Node only, no dependencies):
@@ -44,14 +44,14 @@ Checks (Node only, no dependencies):
 ## Connection to the backend
 
 The docs are static and stay that way: there is no docs backend. The API
-reference is rebuilt from the backend repository
-(`Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com`) by a workflow.
+reference targets `https://api.pesaguard.victorkipruto.com` and is rebuilt from
+the canonical Flask app in `pesaguard_backend_pipeline` in the backend
+repository (`Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com`).
 
 ```
-backend push to main
-  -> backend .github/workflows/sync-docs.yml
-       notify-docs   sends repository_dispatch "backend-updated" to this repo
-       refresh-spec  refreshes docs/api/openapi.implemented.json in the backend
+backend push to main (backend routes, contracts, or dependency changes)
+  -> backend .github/workflows/notify-docs.yml
+       sends repository_dispatch "backend-updated" to this docs repository
   -> this repo .github/workflows/sync-openapi.yml
        regenerates api-reference/openapi.json and routes.snapshot.json,
        runs `npm run check`, opens the pull request "Sync API reference ..."
@@ -64,12 +64,13 @@ backend push to main
   when a route, parameter or response changed.
 - Merge the sync pull request, then run `npm run check:drift` to see which
   new operations still need a hand-written page.
-- The backend's generated routes need `DATABASE_URL` and `PESAGUARD_API_URL`
+- The route generator needs `DATABASE_URL` and `PESAGUARD_API_URL`
   set (any values; nothing is contacted) and `jsonschema` installed, which the
   backend's `requirements.txt` omits.
 
-Repository settings needed once: Actions may create pull requests (this repo
-and the backend), and the backend has a `DOCS_DISPATCH_TOKEN` secret (a
-fine-grained token with Contents read/write on this repo only).
+Repository settings needed once: Actions may create pull requests in this docs
+repository, and the backend has a `DOCS_DISPATCH_TOKEN` secret (a fine-grained
+token with Contents read/write on this repo only). Without the token, the
+daily schedule and manual workflow dispatch still refresh the API reference.
 
 Do not run `scripts/generate-pages.js`: it predates the current pages and overwrites them.
