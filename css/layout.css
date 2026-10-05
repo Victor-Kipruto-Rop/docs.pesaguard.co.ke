@@ -12,6 +12,13 @@
   transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), box-shadow 0.28s var(--ease-out);
 }
 
+@media (prefers-color-scheme: dark) {
+  .docs-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 .docs-header-inner {
   max-width: 1340px;
   margin-inline: auto;

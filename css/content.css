@@ -243,9 +243,7 @@ a.card:hover {
 
 @media (prefers-color-scheme: dark) {
   .hero-panel {
-    background:
-      radial-gradient(circle at top left, rgba(34, 197, 94, 0.12), transparent 26%),
-      linear-gradient(135deg, rgba(11, 36, 25, 0.88), rgba(6, 26, 18, 0.98));
+    background: var(--paper-raised);
   }
 }
 
@@ -339,7 +337,9 @@ a.card:hover {
 
 @media (prefers-color-scheme: dark) {
   .stack-card {
-    background: rgba(11, 36, 25, 0.72);
+    background: rgba(25, 28, 31, 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
@@ -551,7 +551,7 @@ a.card:hover {
 
 @media (prefers-color-scheme: dark) {
   .feature-card {
-    background: linear-gradient(180deg, rgba(11, 36, 25, 0.9), rgba(6, 26, 18, 0.95));
+    background: var(--paper-raised);
   }
 }
 
@@ -711,7 +711,7 @@ a.card:hover {
 
 @media (prefers-color-scheme: dark) {
   .api-hero {
-    background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(11,36,25,0.88));
+    background: var(--paper-raised);
   }
 }
 

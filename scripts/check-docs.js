@@ -57,7 +57,7 @@ for (const file of files.filter((f) => f.endsWith(".html"))) {
     problems.push(`${rel(file)} -> missing meta description`);
   }
   if (!/<meta name="theme-color" content="#ffffff" media="\(prefers-color-scheme: light\)">/.test(html) ||
-      !/<meta name="theme-color" content="#061a12" media="\(prefers-color-scheme: dark\)">/.test(html) ||
+      !/<meta name="theme-color" content="#121416" media="\(prefers-color-scheme: dark\)">/.test(html) ||
       !/<meta name="color-scheme" content="light dark">/.test(html)) {
     problems.push(`${rel(file)} -> missing device-based light/dark theme metadata`);
   }

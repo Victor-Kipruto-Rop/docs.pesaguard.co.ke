@@ -52,7 +52,7 @@ function chrome(file, page, sidebarHtml) {
 <meta name="description" content="${page.description}">
 <link rel="canonical" href="${canonical}">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#061a12" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
