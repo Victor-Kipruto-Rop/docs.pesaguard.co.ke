@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "docs-pesaguard-co-ke",
+  "compatibility_date": "2026-10-01",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".",
+    "exclude": [
+      "node_modules/**",
+      ".git/**",
+      ".github/**",
+      ".trunk/**",
+      ".wrangler/**",
+      "scripts/**",
+      "tests/**",
+      ".env",
+      ".env.*",
+      "README.md",
+      "package.json",
+      "package-lock.json",
+      "bun.lock",
+      "bun.lockb"
+    ]
+  }
+}
