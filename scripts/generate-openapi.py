@@ -283,7 +283,7 @@ def build(base_spec, app):
     comp.setdefault("securitySchemes", {})
     comp["securitySchemes"]["apiKeyAuth"] = {
         "type": "apiKey", "in": "header", "name": "X-API-Key",
-        "description": "Tenant API key starting with `pk_`. Used when no Authorization header is sent.",
+        "description": "Provisioned tenant API key using a supported `pk_` or `pgk_` format. Used when no Authorization header is sent.",
     }
     spec["security"] = [{"bearerAuth": []}, {"apiKeyAuth": []}]
     comp["schemas"]["Error"] = {

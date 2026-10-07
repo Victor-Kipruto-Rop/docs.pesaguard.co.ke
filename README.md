@@ -13,6 +13,10 @@ that custom host for the static-site deployment. DNS and hosting-provider
 configuration are managed outside this repository; changing `CNAME` does not
 configure DNS or publish the site.
 
+The site links to the intended `.co.ke` product, developer, API and status
+origins. Those links are not evidence of DNS, deployment, TLS, availability or
+API reachability; verify each target before using it.
+
 ## Preview
 
 ```powershell
@@ -48,10 +52,14 @@ Checks (Node only, no dependencies):
 - `npm run check:drift` compares the docs and the spec with the backend's real routes.
 - `npm run check:strict` fails on warnings and drift too.
 
+AI-assistant indexes are published at `llms.txt` and `llms-full.txt`. They
+repeat the same contract and environment caveats as the human-readable pages;
+they are indexes, not an independent source of API behavior.
+
 ## Connection to the backend
 
 The docs are static and stay that way: there is no docs backend. The API
-reference targets `https://api.pesaguard.victorkipruto.com` and is rebuilt from
+reference targets `https://api.pesaguard.co.ke` and is rebuilt from
 the canonical Flask app in `pesaguard_backend_pipeline` in the backend
 repository (`Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com`).
 

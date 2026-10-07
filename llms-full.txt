@@ -1,0 +1,85 @@
+# PesaGuard Developer Documentation — Full Index
+
+The documentation describes the PesaGuard API and platform for developers and operators. It is a rolling documentation set, not a product certification. Where examples or schemas differ from a target deployment, use the contract and behavior of that deployment.
+
+## Canonical sources
+
+- Documentation host: `https://docs.pesaguard.co.ke`
+- Intended product: `https://pesaguard.co.ke`
+- Intended Developer Platform: `https://developers.pesaguard.co.ke`
+- Intended API origin: `https://api.pesaguard.co.ke`
+- Intended status service: `https://status.pesaguard.co.ke`
+- Checked-in OpenAPI contract: [`api-reference/openapi.json`](https://docs.pesaguard.co.ke/api-reference/openapi.json)
+- YAML contract: [`api-reference/openapi.yaml`](https://docs.pesaguard.co.ke/api-reference/openapi.yaml)
+- JSON schemas: [`schemas/`](https://docs.pesaguard.co.ke/schemas/)
+
+The site domain list does not prove that DNS resolves, TLS is valid, a service is deployed, or any endpoint is reachable. Verify the target environment before sending requests.
+
+## Integration path
+
+1. Read [Getting started](https://docs.pesaguard.co.ke/getting-started/).
+2. Confirm the provisioned environment and base URL in [Environment guidance](https://docs.pesaguard.co.ke/environments/).
+3. Obtain a credential through the authorized provisioning process described in [API-key guidance](https://docs.pesaguard.co.ke/getting-started/create-api-key.html).
+4. Use [Authentication](https://docs.pesaguard.co.ke/api/authentication.html) and the scopes configured for that credential.
+5. Read the exact operation and schema from the target deployment's OpenAPI document.
+6. Implement stable error handling, timeouts, idempotent retries where supported, and request-ID logging.
+7. Configure and verify callbacks using the [Webhook guides](https://docs.pesaguard.co.ke/webhooks/).
+8. Exercise the integration in an explicitly provisioned non-production environment before production use.
+9. Complete the [Production checklist](https://docs.pesaguard.co.ke/getting-started/production-checklist.html) and collect evidence for every deployment dependency.
+
+## Authentication and secrets
+
+- Protected API routes use the authentication schemes documented in the target OpenAPI contract and route policy.
+- Send credentials only in their designated HTTPS header, never in URLs, browser bundles, source control, or logs.
+- Do not infer a key's tenant, environment, permissions, or lifecycle from its display prefix.
+- Use least privilege, a named owner, a distinct credential per integration/environment, and an expiry/rotation policy.
+- A valid identity does not imply authorization for every tenant or operation.
+- Provider callback verification is a separate trust boundary and is provider-specific.
+- Never include API keys, access tokens, provider credentials, or customer information in requests to support.
+
+## Contract versioning
+
+- Public API resource paths are under `/api/v1`.
+- The checked-in Dashboard OpenAPI document reports version `2.0.0`; this is the document's version, not a claim that the public resource API is version 2.
+- The checked-in specification is a mirror. The target deployment's `/openapi.json` is authoritative for available operations.
+- Review deprecation and migration guidance before changing generated clients.
+
+## Environments and readiness
+
+- Do not call an environment "available" based only on documentation or a manifest. Verify DNS, TLS, credentials, database, Redis, broker, migrations, and access controls in the target environment.
+- No public self-serve sandbox signup is described. Staging access is provisioned through the pilot process; it is not a synthetic transaction simulator.
+- Production operation requires demonstrated deployment, migration, backup-and-restore, email delivery, provider callback, metrics, incident, and rollback evidence. A passing build or a route in OpenAPI does not prove these operational capabilities.
+- The Developer Platform's user-facing transaction behavior and the Core API's transaction behavior are separate. The docs explicitly call out transaction functionality that is not implemented or verified.
+
+## Reliability
+
+- Use bounded connect/read timeouts.
+- Retry only transient failures, with backoff and jitter. Do not blindly retry writes; reuse the same idempotency key where the target operation supports it.
+- Handle `401`, `403`, `409`, `429`, and `5xx` distinctly.
+- Preserve request IDs and UTC timestamps for support, but redact authorization and personal data.
+- Verify pagination semantics and maximum page sizes from the exact endpoint contract.
+
+## Documentation sections
+
+- [Overview](https://docs.pesaguard.co.ke/)
+- [Concepts](https://docs.pesaguard.co.ke/concepts/)
+- [Developer guides](https://docs.pesaguard.co.ke/guides/)
+- [API behavior](https://docs.pesaguard.co.ke/api/)
+- [OpenAPI reference](https://docs.pesaguard.co.ke/api-reference/)
+- [Webhooks](https://docs.pesaguard.co.ke/webhooks/)
+- [Errors](https://docs.pesaguard.co.ke/errors/)
+- [Security](https://docs.pesaguard.co.ke/security/)
+- [Environments](https://docs.pesaguard.co.ke/environments/)
+- [Testing](https://docs.pesaguard.co.ke/testing/)
+- [SDKs and client patterns](https://docs.pesaguard.co.ke/sdks/)
+- [Migration](https://docs.pesaguard.co.ke/migration/)
+- [Changelog](https://docs.pesaguard.co.ke/changelog/)
+- [Support](https://docs.pesaguard.co.ke/support/)
+
+## Support report template
+
+Include the environment, endpoint (method and path), UTC timestamp, HTTP status, stable error code, request ID, a short redacted description, expected behavior, actual behavior, and whether a retry was attempted. Never include the credential itself or an unredacted authorization header.
+
+## AI-assisted implementation
+
+Treat this file as an index, not an authority over a deployment's runtime contract. Consult the linked page and OpenAPI schema for the exact operation. If information is absent or uncertain, ask the operator; do not invent an endpoint, scope, sandbox behavior, payment outcome, uptime claim, or compliance status.

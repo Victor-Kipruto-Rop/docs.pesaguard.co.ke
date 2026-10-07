@@ -3,8 +3,8 @@
     {
       "id": "staging",
       "label": "Staging",
-      "status": "available",
-      "note": "A real deployment with its own database and Kafka listeners. Used for integration testing.",
+      "status": "verification-required",
+      "note": "Staging is an intended separate integration environment. Its current reachability, data isolation, Redis, and broker configuration must be verified in the target environment.",
       "requiredSettings": [
         "POSTGRES_USER",
         "POSTGRES_PASSWORD",
@@ -15,8 +15,8 @@
     {
       "id": "production",
       "label": "Production",
-      "status": "available",
-      "note": "The live deployment the pilot runs on. Requires production credentials, backups and reviewed exposure.",
+      "status": "verification-required",
+      "note": "Production deployment and operational readiness are not verified by this documentation repository. Confirm deployment, credentials, backups and recovery evidence in the target environment.",
       "requiredSettings": [
         "POSTGRES_USER",
         "POSTGRES_DB",

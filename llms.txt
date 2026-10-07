@@ -1,0 +1,40 @@
+# PesaGuard Developer Documentation
+
+> Technical documentation for developers integrating with the PesaGuard API and reconciliation platform.
+
+This documentation is a rolling set of guides. The OpenAPI document served by the deployment you are authorized to use is authoritative over the checked-in mirror.
+
+## Start here
+
+- [Quickstart](https://docs.pesaguard.co.ke/getting-started/quickstart.html): verify an API deployment and retrieve its contract.
+- [Getting started](https://docs.pesaguard.co.ke/getting-started/): provisioning, first requests, and production checklist.
+- [Authentication](https://docs.pesaguard.co.ke/api/authentication.html): bearer tokens, API keys, and provider callback boundaries.
+- [Environment guide](https://docs.pesaguard.co.ke/environments/): staging and production distinctions.
+- [OpenAPI reference](https://docs.pesaguard.co.ke/api-reference/): interactive contract browser and JSON/YAML downloads.
+
+## Build and operate
+
+- [API guides](https://docs.pesaguard.co.ke/api/): errors, pagination, filtering, idempotency, rate limits, and versioning.
+- [Webhooks](https://docs.pesaguard.co.ke/webhooks/): event catalog, verification, retries, and delivery guidance.
+- [Reconciliation](https://docs.pesaguard.co.ke/guides/reconciliation/): matching, exceptions, and reports.
+- [SDK guidance](https://docs.pesaguard.co.ke/sdks/): language-specific HTTP client patterns. No official SDK is claimed unless a page explicitly says otherwise.
+- [Security](https://docs.pesaguard.co.ke/security/): API-key handling, tenant boundaries, and responsible disclosure.
+- [Troubleshooting and support](https://docs.pesaguard.co.ke/support/): gather request IDs and redacted evidence.
+- [Changelog](https://docs.pesaguard.co.ke/changelog/): documentation and contract notes.
+
+## Contract and capability boundaries
+
+- Public resource routes use the `/api/v1` prefix. The checked-in Dashboard OpenAPI document has `info.version` `2.0.0`; that document version does not mean the public API is v2.
+- The OpenAPI mirror may lag a deployment. Compare it with that deployment's `/openapi.json`.
+- There is no public self-serve PesaGuard sandbox signup described here. Staging access is provisioned and must be verified with the pilot team.
+- Documentation pages distinguish implemented behavior from planned behavior. A UI, route, or schema alone is not evidence that payment processing or production readiness has been verified.
+- Never put credentials, customer data, or provider secrets into documentation examples, issue reports, or browser-based tools.
+
+## PesaGuard sites
+
+- [Product](https://pesaguard.co.ke/)
+- [Developer Platform](https://developers.pesaguard.co.ke/)
+- [API origin](https://api.pesaguard.co.ke/)
+- [System status](https://status.pesaguard.co.ke/)
+
+These links identify the intended product domains; this file does not assert DNS, deployment, uptime, or API reachability.

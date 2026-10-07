@@ -22,7 +22,7 @@ const SECTIONS = {
   },
   changelog: {
     label: "Changelog",
-    groups: [["Changelog", [["Overview", "index.html"], ["Breaking changes", "breaking-changes.html"], ["July 2026", "2026/july.html"], ["August 2026", "2026/august.html"], ["September 2026", "2026/september.html"]]]],
+    groups: [["Changelog", [["Overview", "index.html"], ["Breaking changes", "breaking-changes.html"], ["July 2026", "2026/july.html"], ["August 2026", "2026/august.html"], ["September 2026", "2026/september.html"], ["October 2026", "2026/october.html"]]]],
   },
   environments: {
     label: "Environments",
@@ -51,7 +51,7 @@ const SECTIONS = {
     label: "Support",
     groups: [
       ["Support", [["Overview", "index.html"], ["FAQ", "faq.html"], ["Troubleshooting", "troubleshooting.html"], ["Contact support", "contact.html"]]],
-      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.victorkipruto.com/"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]],
+      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.co.ke/"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]],
     ],
   },
   guides: {

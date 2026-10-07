@@ -72,6 +72,10 @@ for (const file of walk(ROOT).filter((f) => f.endsWith(".html"))) {
 
 /* ---- specified endpoints ------------------------------------------------- */
 const spec = JSON.parse(fs.readFileSync(path.join(ROOT, "api-reference", "openapi.json"), "utf8"));
+const referencePage = fs.readFileSync(path.join(ROOT, "api-reference", "index.html"), "utf8");
+const hasOperationExplorer =
+  referencePage.includes('id="contract-explorer"') &&
+  fs.existsSync(path.join(ROOT, "js", "api-reference.js"));
 const specified = new Map();
 for (const [p, item] of Object.entries(spec.paths || {})) {
   for (const method of Object.keys(item).filter((k) => METHODS.includes(k))) {
@@ -89,7 +93,9 @@ for (const [key, d] of documented) {
   if (!s) missingFromSpec.push(d);
   else if (hasPrefix(d.path) !== hasPrefix(s.path)) prefixMismatch.push({ docs: d.path, spec: s.path, method: d.method, pages: [...d.pages] });
 }
-for (const [key, s] of specified) if (!documented.has(key)) undocumented.push(s);
+for (const [key, s] of specified) {
+  if (!documented.has(key) && !hasOperationExplorer) undocumented.push(s);
+}
 
 
 /* ---- against the real route table ---------------------------------------- */

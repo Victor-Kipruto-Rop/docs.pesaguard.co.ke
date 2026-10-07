@@ -33,6 +33,13 @@ function normalize(href) {
 
 const files = walk(ROOT);
 
+for (const indexFile of ["llms.txt", "llms-full.txt"]) {
+  const fullPath = path.join(ROOT, indexFile);
+  if (!fs.existsSync(fullPath) || fs.statSync(fullPath).size === 0) {
+    problems.push(`${indexFile} -> required AI documentation index is missing or empty`);
+  }
+}
+
 for (const file of files.filter((f) => f.endsWith(".html"))) {
   const html = fs.readFileSync(file, "utf8");
   if (!/<html(?:\s|>)/i.test(html)) continue;
@@ -79,6 +86,13 @@ for (const file of jsonFiles) {
     JSON.parse(fs.readFileSync(file, "utf8"));
   } catch (err) {
     problems.push(`${rel(file)} -> invalid JSON: ${err.message}`);
+  }
+
+  for (const file of files.filter((f) => /\.(?:html|json|ya?ml|xml)$/i.test(f))) {
+    const contents = fs.readFileSync(file, "utf8");
+    if (/https?:\/\/(?:[a-z0-9-]+\.)*pesaguard\.victorkipruto\.com/i.test(contents)) {
+      problems.push(`${rel(file)} -> production-facing PesaGuard links must use the canonical .co.ke domains`);
+    }
   }
 }
 

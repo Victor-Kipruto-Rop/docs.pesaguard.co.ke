@@ -41,7 +41,7 @@
       sectionGroups = [["API", [["Overview", "index.html"], ["Authentication", "authentication.html"], ["Errors", "errors.html"], ["Filtering", "filtering.html"], ["Request validation", "request-validation.html"], ["Sorting", "sorting.html"], ["Pagination", "pagination.html"], ["Rate limits", "rate-limits.html"], ["Idempotency", "idempotency.html"], ["Versioning", "versioning.html"], ["Reference", "reference.html"]]]];
     } else if (path.indexOf("/changelog/") === 0) {
       section = "/changelog/";
-      sectionGroups = [["Changelog", [["Overview", "index.html"], ["Breaking changes", "breaking-changes.html"], ["July 2026", "2026/july.html"], ["August 2026", "2026/august.html"], ["September 2026", "2026/september.html"]]]];
+      sectionGroups = [["Changelog", [["Overview", "index.html"], ["Breaking changes", "breaking-changes.html"], ["July 2026", "2026/july.html"], ["August 2026", "2026/august.html"], ["September 2026", "2026/september.html"], ["October 2026", "2026/october.html"]]]];
     } else if (path.indexOf("/environments/") === 0) {
       section = "/environments/";
       sectionGroups = [["Environments", [["Overview", "index.html"], ["Environment variables", "environment-variables.html"], ["Sandbox", "sandbox.html"], ["Staging", "staging.html"], ["Production", "production.html"]]]];
@@ -121,7 +121,7 @@
     var supportPrefix = "../".repeat(supportDepth);
     var supportGroups = [
       ["Support", [["Overview", "index.html"], ["FAQ", "faq.html"], ["Troubleshooting", "troubleshooting.html"], ["Contact support", "contact.html"]]],
-      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.victorkipruto.com"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]]
+      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.co.ke"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]]
     ];
     var supportSidebar = document.createElement("aside");
     supportSidebar.className = "docs-sidebar";
@@ -156,8 +156,8 @@
           '<section><h2>Developers</h2><a href="' + footerPrefix + 'sdks/">SDKs and clients</a><a href="' + footerPrefix + 'guides/">Developer guides</a><a href="' + footerPrefix + 'webhooks/">Webhook delivery</a><a href="' + footerPrefix + 'api-reference/openapi.json">OpenAPI specification</a><a href="' + footerPrefix + 'migration/">Migration guides</a><a href="' + footerPrefix + 'testing/">Testing</a><a href="' + footerPrefix + 'environments/">Environments</a></section>' +
           '<section><h2>Security &amp; support</h2><a href="' + footerPrefix + 'security/">Security overview</a><a href="' + footerPrefix + 'security/authentication.html">Authentication</a><a href="' + footerPrefix + 'security/tenant-isolation.html">Tenant isolation</a><a href="' + footerPrefix + 'security/encryption.html">Encryption</a><a href="' + footerPrefix + 'security/data-protection.html">Data protection</a><a href="' + footerPrefix + 'security/responsible-disclosure.html">Responsible disclosure</a><a href="' + footerPrefix + 'support/">Help and support</a><a href="' + footerPrefix + 'support/contact.html">Contact support</a></section>' +
         '</div>' +
-        '<div class="docs-footer-status"><a href="https://status.pesaguard.victorkipruto.com"><span class="docs-status-dot" aria-hidden="true"></span><strong>All systems operational</strong><span>View system status</span></a></div>' +
-        '<div class="docs-footer-utility"><span>Developer documentation for PesaGuard financial infrastructure.</span><nav aria-label="Footer utility"><a href="' + footerPrefix + 'support/">Support</a><a href="' + footerPrefix + 'security/responsible-disclosure.html">Security contact</a><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">GitHub source</a><a href="https://status.pesaguard.victorkipruto.com">Status</a><a href="#main">Back to top ↑</a></nav></div>';
+        '<div class="docs-footer-status"><a href="https://status.pesaguard.co.ke"><span class="docs-status-dot" aria-hidden="true"></span><strong>All systems operational</strong><span>View system status</span></a></div>' +
+        '<div class="docs-footer-utility"><span>Developer documentation for PesaGuard financial infrastructure.</span><nav aria-label="Footer utility"><a href="' + footerPrefix + 'support/">Support</a><a href="' + footerPrefix + 'security/responsible-disclosure.html">Security contact</a><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">GitHub source</a><a href="https://status.pesaguard.co.ke">Status</a><a href="#main">Back to top ↑</a></nav></div>';
     }
   });
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="October 2026 documentation updates: canonical PesaGuard domains, searchable OpenAPI operation browser, AI indexes, and environment verification guidance.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<title>October 2026 — PesaGuard docs changelog</title>
+<link rel="canonical" href="https://docs.pesaguard.co.ke/changelog/2026/october.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="October 2026 — PesaGuard docs changelog">
+<meta property="og:description" content="Documentation improvements and contract usability updates. No API release is implied.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/changelog/2026/october.html">
+<link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../../css/variables.css">
+<link rel="stylesheet" href="../../css/layout.css">
+<link rel="stylesheet" href="../../css/navigation.css">
+<link rel="stylesheet" href="../../css/content.css">
+<link rel="stylesheet" href="../../css/code.css">
+<link rel="stylesheet" href="../../css/search.css">
+<link rel="stylesheet" href="../../css/animations.css">
+<link rel="stylesheet" href="../../css/responsive.css">
+</head>
+<body data-path="/changelog/2026/october.html">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+  <a class="docs-brand" href="../../index.html"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd></div>
+  <nav class="docs-header-links" aria-label="Primary"><a href="../../getting-started/">Getting started</a><a href="../../concepts/">Concepts</a><a href="../../api/">API</a><a href="../../webhooks/">Webhooks</a><a href="../../security/">Security</a><a href="https://status.pesaguard.co.ke">Status</a></nav>
+</div></header>
+<main id="main"><div class="docs-shell">
+  <article class="docs-article">
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../index.html">Changelog</a><span aria-hidden="true">/</span><span>October 2026</span></nav>
+    <p class="docs-eyebrow">Documentation · 7 October 2026</p>
+    <h1>October 2026</h1>
+    <p class="docs-lede">These changes improve documentation navigation and clarify evidence boundaries. They do not announce an API, payment-processing, or production-readiness release.</p>
+    <article class="change-entry"><p class="change-meta">DOCUMENTATION · DOMAINS</p><h2>Canonical ecosystem links</h2><p>Production-facing documentation links now use the PesaGuard <code>.co.ke</code> domains for product, Developer Platform, API and status references. The links identify intended origins; this update does not verify their DNS, TLS, deployment or reachability.</p></article>
+    <article class="change-entry"><p class="change-meta">DOCUMENTATION · API REFERENCE</p><h2>Searchable OpenAPI operation browser</h2><p>The reference page now filters operations from the checked-in OpenAPI mirror and shows the operation's documented parameters, schemas, responses and a cURL template. It does not execute calls or accept credentials because no public self-serve sandbox is documented.</p></article>
+    <article class="change-entry"><p class="change-meta">DOCUMENTATION · AI INDEX</p><h2>Added LLM documentation indexes</h2><p><a href="../../llms.txt">llms.txt</a> and <a href="../../llms-full.txt">llms-full.txt</a> provide concise and expanded indexes with the same API-version, sandbox and production-evidence caveats as the human-readable docs.</p></article>
+    <article class="change-entry"><p class="change-meta">DOCUMENTATION · TRUST</p><h2>Environment guidance now requires verification</h2><p>Staging and production are described as intended environments rather than confirmed live deployments. Verify protected-environment deployment, migrations, Redis, backups and restore, email, provider callbacks and metrics with the target operator.</p></article>
+    <h2>Consumer action</h2><p>Fetch <code>/openapi.json</code> from the deployment you are authorized to use before generating a client. Do not treat the API document version, documentation link, or configured environment as evidence of a live capability.</p>
+    <h2>Related</h2><ul><li><a href="../index.html">Changelog archive</a></li><li><a href="../../api-reference/">OpenAPI reference</a></li><li><a href="../../environments/">Environment guidance</a></li></ul>
+  </article>
+</div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard</span><nav aria-label="Footer"><a href="https://pesaguard.co.ke">Product</a><a href="https://status.pesaguard.co.ke">Status</a><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a></nav></div></footer>
+<script src="../../js/app.js" defer></script>
+</body>
+</html>

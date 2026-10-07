@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Environments · Staging - PesaGuard docs</title>
-<meta name="description" content="A real deployment with its own database and Kafka listeners, used for integration testing.">
+<meta name="description" content="Staging is an intended isolated integration environment; verify its live reachability and dependencies before use.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/environments/staging.html">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
@@ -12,12 +12,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Environments · Staging - PesaGuard docs">
-<meta property="og:description" content="A real deployment with its own database and Kafka listeners, used for integration testing.">
+<meta property="og:description" content="Staging is an intended isolated integration environment; verify its live reachability and dependencies before use.">
 <meta property="og:url" content="https://docs.pesaguard.co.ke/environments/staging.html">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Environments · Staging - PesaGuard docs">
-<meta name="twitter:description" content="A real deployment with its own database and Kafka listeners, used for integration testing.">
+<meta name="twitter:description" content="Staging is an intended isolated integration environment; verify its live reachability and dependencies before use.">
 <meta name="twitter:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../css/variables.css">
@@ -39,7 +39,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -48,7 +48,8 @@
   <article class="docs-article docs-content-wide api-page">
     <p class="docs-eyebrow">Environments</p>
     <h1>Staging</h1>
-    <p class="docs-lede">Staging is a real deployment used to exercise integration behavior before production. It has its own database, Redis configuration, Kafka listeners, credentials and operational data.</p>
+    <p class="docs-lede">Staging is the intended isolated environment for integration tests before production. This documentation does not prove that a staging deployment is currently reachable or that its database, Redis, broker and credential boundaries have been verified.</p>
+    <div class="callout" data-tone="warn"><strong>Availability must be verified</strong><p>Confirm the staging base URL, TLS, environment credentials, migrations, PostgreSQL, Redis, Kafka and provider callback path with the deployment operator before sending requests. A configuration or CI pass is not live-environment evidence.</p></div>
     <div class="api-hero"><div><strong>Promotion gate</strong><p>Staging is complete when the integration is not only functional, but observable, replayable and isolated.</p></div><div class="api-hero-meta"><span>CONTRACT TESTS</span><span>FAILURE TESTS</span><span>ISOLATION</span></div></div>
     <div class="info-grid"><div class="info-panel"><h2>Developer focus</h2><p>Contract fixtures, validation, authentication, retries, idempotency and error handling.</p></div><div class="info-panel"><h2>Operator focus</h2><p>Queue lag, broker health, audit events, reconciliation outcomes and reset procedures.</p></div></div>
     <h2>What staging should prove</h2>
@@ -69,7 +70,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

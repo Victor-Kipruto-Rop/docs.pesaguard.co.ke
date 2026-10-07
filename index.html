@@ -62,7 +62,7 @@
         <a href="api/">API</a>
         <a href="webhooks/">Webhooks</a>
         <a href="security/">Security</a>
-        <a href="https://status.pesaguard.victorkipruto.com">Status</a>
+        <a href="https://status.pesaguard.co.ke">Status</a>
       </nav>
       <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
     </div>
@@ -96,7 +96,7 @@
         </ul></div>
         <div class="docs-nav-group"><p>Support</p><ul>
           <li><a href="support/">Support</a></li>
-          <li><a href="https://status.pesaguard.victorkipruto.com">System status</a></li>
+          <li><a href="https://status.pesaguard.co.ke">System status</a></li>
         </ul></div>
       </aside>
       <article class="docs-article docs-content-wide docs-homepage">
@@ -104,12 +104,13 @@
           <div class="home-hero-copy">
             <p class="docs-eyebrow">PesaGuard · Developer documentation</p>
             <h1 id="home-title">Build against clear contracts.</h1>
-            <p class="docs-lede">Find the API contract, environment guidance, and implementation notes for integrating with PesaGuard. Start with the environment and access model, then verify each request against the contract published for the service you use.</p>
+            <p class="docs-lede">Build and operate integrations against PesaGuard's documented API contract. Start with access and environment boundaries, then verify request and response details against the specification served by the deployment you use.</p>
             <div class="hero-actions">
-              <a class="primary-btn" href="getting-started/">Start with the basics</a>
+              <a class="primary-btn" href="getting-started/quickstart.html">Start building</a>
               <a class="secondary-btn" href="api-reference/">OpenAPI contract</a>
+              <a class="secondary-btn" href="https://developers.pesaguard.co.ke">Developer Platform</a>
             </div>
-            <p class="home-hero-footnote">For exact schemas and routes, use the OpenAPI document served by the deployment you call.</p>
+            <p class="home-hero-footnote">There is no public self-serve sandbox today. Access is provisioned through the pilot team; see the <a href="environments/">environment guide</a>.</p>
           </div>
           <aside class="home-hero-index" aria-label="A practical integration path">
             <p class="home-index-label">A practical path</p>
@@ -117,6 +118,26 @@
             <a href="api/"><span>02</span><strong>Read the contract</strong><small>Confirm authentication, request shape, and errors.</small></a>
             <a href="testing/"><span>03</span><strong>Test and verify</strong><small>Use the documented test and operational guidance.</small></a>
           </aside>
+        </section>
+
+        <section class="docs-home-section" aria-label="Current contract and service links">
+          <div class="info-grid">
+            <div class="info-panel">
+              <h2>API contract</h2>
+              <p>Public API resource prefix: <code>/api/v1</code>. The checked-in Dashboard OpenAPI mirror reports document version <code>2.0.0</code>; it is not a claim that the public API is v2. Confirm the current version in your target deployment.</p>
+              <a href="api-reference/">Inspect the contract <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="info-panel">
+              <h2>Documentation edition</h2>
+              <p>Updated 7 October 2026: canonical domains, a searchable contract browser, and clearer deployment-verification boundaries. This is not an API release.</p>
+              <a href="changelog/2026/october.html">Read this documentation update <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="info-panel">
+              <h2>System status</h2>
+              <p>Check the status service for current incidents. This page does not present a cached or hard-coded uptime claim.</p>
+              <a href="https://status.pesaguard.co.ke">View current status <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
         </section>
 
         <section class="docs-home-section" aria-labelledby="home-browse-title">
@@ -186,6 +207,8 @@
           <a href="support/">Support and troubleshooting</a>
           <span aria-hidden="true">·</span>
           <a href="changelog/">Changelog</a>
+          <span aria-hidden="true">·</span>
+          <a href="llms.txt">AI / LLM index</a>
         </section>
       </article>
     </div>
@@ -195,8 +218,8 @@
     <div class="docs-footer-inner">
       <span>© 2026 PesaGuard</span>
       <nav aria-label="Footer">
-        <a href="https://pesaguard.victorkipruto.com">Product</a>
-        <a href="https://status.pesaguard.victorkipruto.com">System status</a>
+        <a href="https://pesaguard.co.ke">Product</a>
+        <a href="https://status.pesaguard.co.ke">System status</a>
         <a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a>
         <a href="security/responsible-disclosure.html">Report an issue</a>
       </nav>

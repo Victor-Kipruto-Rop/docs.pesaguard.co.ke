@@ -85,7 +85,7 @@ pages.push(sdkFamily({
   install:
     '# Nothing to install. Confirm you have curl and jq:\ncurl --version\njq --version   # optional, for readable output',
   client:
-    'export PESAGUARD_API_URL="https://api.pesaguard.victorkipruto.com"\nexport PESAGUARD_TOKEN="<scoped-token-from-provisioning>"\n\n# Fail fast and loudly rather than hanging\ncurl -sS --max-time 15 --retry 0 \\\n  -H "Authorization: Bearer $PESAGUARD_TOKEN" \\\n  -H "Accept: application/json"',
+    'export PESAGUARD_API_URL="https://api.pesaguard.co.ke"\nexport PESAGUARD_TOKEN="<scoped-token-from-provisioning>"\n\n# Fail fast and loudly rather than hanging\ncurl -sS --max-time 15 --retry 0 \\\n  -H "Authorization: Bearer $PESAGUARD_TOKEN" \\\n  -H "Accept: application/json"',
   request:
     'curl -sS --max-time 15 "$PESAGUARD_API_URL/tenant/current" \\\n  -H "Authorization: Bearer $PESAGUARD_TOKEN" \\\n  -H "Accept: application/json" | jq .',
   requestNote:

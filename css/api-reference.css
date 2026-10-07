@@ -36,3 +36,96 @@
 .endpoint-list .verb[data-verb="POST"] { color: #a8641c; }
 .endpoint-list .verb[data-verb="PATCH"],
 .endpoint-list .verb[data-verb="PUT"] { color: var(--forest); }
+
+.contract-explorer {
+  margin: 1.5rem 0 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: var(--paper-raised);
+}
+
+.contract-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 8px 14px;
+  align-items: center;
+}
+
+.contract-controls label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.contract-controls input,
+.contract-controls select {
+  min-width: 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--text);
+  background: var(--paper);
+  font: inherit;
+}
+
+.contract-controls label[for="operation-search"] { grid-column: 1; }
+.contract-controls input { grid-column: 1; }
+.contract-controls label[for="operation-method"] { grid-column: 2; grid-row: 1; }
+.contract-controls select { grid-column: 2; grid-row: 2; }
+
+.operation-list { display: grid; gap: 0.75rem; margin-top: 1rem; }
+
+.operation-card {
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.operation-card > summary {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+}
+
+.operation-card > summary code {
+  overflow-wrap: anywhere;
+  color: var(--text);
+}
+
+.operation-card .operation-method {
+  flex: 0 0 4.5rem;
+  color: var(--lime-deep);
+  font: 700 0.75rem / 1.4 var(--font-mono);
+}
+
+.operation-card .operation-method[data-method="POST"] { color: #a8641c; }
+.operation-card .operation-method[data-method="DELETE"] { color: #b42318; }
+
+.operation-details { padding: 0 1rem 1rem; }
+.operation-details h3 { margin: 1rem 0 0.4rem; font-size: 0.95rem; }
+.operation-details pre { overflow-x: auto; }
+.operation-details table { display: block; max-width: 100%; overflow-x: auto; }
+.contract-copy {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--paper-sunken);
+  font: 600 0.8rem / 1.4 var(--font-sans);
+  cursor: pointer;
+}
+.contract-copy:hover { border-color: var(--lime-deep); }
+.contract-copy:focus-visible { outline: 2px solid var(--lime-deep); outline-offset: 2px; }
+.operation-empty { padding: 1rem; border: 1px dashed var(--line); border-radius: 8px; }
+
+@media (max-width: 640px) {
+  .contract-explorer { padding: 0.9rem; }
+  .contract-controls { grid-template-columns: minmax(0, 1fr); }
+  .contract-controls label[for="operation-method"],
+  .contract-controls select { grid-column: 1; grid-row: auto; }
+  .operation-card > summary { flex-wrap: wrap; gap: 0.35rem 0.65rem; }
+  .operation-card .operation-method { flex-basis: 3.6rem; }
+}

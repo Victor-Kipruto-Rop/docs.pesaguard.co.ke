@@ -45,7 +45,7 @@ jobs:
       - name: Regenerate route snapshot
         env:
           DATABASE_URL: sqlite:////tmp/pesaguard-docs-check.db
-          PESAGUARD_API_URL: https://api.pesaguard.victorkipruto.com
+          PESAGUARD_API_URL: https://api.pesaguard.co.ke
         run: python scripts/dump-flask-routes.py backend --out /tmp/routes.json
       - name: Compare routes with the committed snapshot
         run: |
@@ -60,7 +60,7 @@ jobs:
       - name: Compare openapi.json with a fresh build
         env:
           DATABASE_URL: sqlite:////tmp/pesaguard-docs-check.db
-          PESAGUARD_API_URL: https://api.pesaguard.victorkipruto.com
+          PESAGUARD_API_URL: https://api.pesaguard.co.ke
         run: |
           python scripts/generate-openapi.py backend --out /tmp/openapi.json
           python - <<'PY'

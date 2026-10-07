@@ -41,7 +41,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a>
+    <a href="https://status.pesaguard.co.ke">Status</a>
   </nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
@@ -64,7 +64,7 @@
       <li><a href="../api/">API</a></li>
       <li><a href="../webhooks/">Webhooks</a></li>
       <li><a href="../security/">Security</a></li>
-      <li><a href="https://status.pesaguard.victorkipruto.com">Status</a></li>
+      <li><a href="https://status.pesaguard.co.ke">Status</a></li>
     </ul></div>
   </aside>
 
@@ -80,7 +80,7 @@
     <p>The deployment's base URL is configured as <code>PESAGUARD_API_URL</code> in the infrastructure environment file.</p>
     <div class="code-head"><span class="method">GET</span><code>/health</code></div>
     <pre class="docs-code" data-lang="bash"><code>curl -sS "$PESAGUARD_API_URL/health"</code></pre>
-    <p>A <code>200</code> means the API process is up. The public status site probes this same endpoint, so the green strip above the marketing site means exactly this check answered.</p>
+    <p>A <code>200</code> means the API process answered this health request at that moment. It does not prove that the database, Redis, brokers, email, provider callbacks or backups are healthy; consult the <a href="https://status.pesaguard.co.ke">status service</a> and the deployment operator for those checks.</p>
 
     <h2>2 · Read the OpenAPI contract</h2>
     <div class="code-head"><span class="method">GET</span><code>/openapi.json</code></div>
@@ -110,8 +110,8 @@ python -c "import json;print(json.load(open('openapi.json'))['info']['version'])
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
   <nav aria-label="Footer">
-    <a href="https://pesaguard.victorkipruto.com">Product</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a>
+    <a href="https://pesaguard.co.ke">Product</a>
+    <a href="https://status.pesaguard.co.ke">Status</a>
     <a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a>
   </nav>
 </div></footer>

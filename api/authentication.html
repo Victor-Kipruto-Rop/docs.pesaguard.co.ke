@@ -39,7 +39,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -75,7 +75,7 @@
     <h2>Supported authentication methods</h2>
     <table><thead><tr><th>Method</th><th>Best for</th><th>Transport</th><th>Notes</th></tr></thead><tbody>
       <tr><td>Bearer JWT</td><td>API clients and service integrations</td><td><code>Authorization</code> header</td><td>Defined by the OpenAPI <code>bearerAuth</code> scheme.</td></tr>
-      <tr><td>API key</td><td>Long-lived service credentials</td><td><code>X-API-Key</code> header</td><td>Value must start with <code>pk_</code>. Used only when no <code>Authorization</code> header is sent. Provision, scope and revoke through the operator workflow.</td></tr>
+      <tr><td>API key</td><td>Long-lived service credentials</td><td><code>X-API-Key</code> header</td><td>Provisioned keys may use <code>pk_</code> or <code>pgk_</code> prefixes. The prefix is not proof of tenant, environment or permission. Used only when no <code>Authorization</code> header is sent.</td></tr>
       <tr><td>Dashboard session</td><td>Human operators</td><td>Secure session cookie</td><td>Do not reuse browser session cookies in integrations.</td></tr>
     </tbody></table>
 
@@ -91,7 +91,7 @@
     <h3>API key format</h3>
     <p>Use the key identifier to identify a credential and the secret to authenticate it. A typical provisioned key has a non-secret prefix and a high-entropy secret:</p>
     <pre class="docs-code" data-lang="http"><code>X-API-Key: pk_&lt;secret&gt;</code></pre>
-    <p>The backend requires the <code>pk_</code> prefix, looks the key up by its SHA-256 hash and accepts only active keys. An unknown, expired or revoked key returns <code>401</code> with <code>invalid_api_key</code>. Never infer environment or tenant access from a prefix alone; validate the credential with the server.</p>
+    <p>The API accepts <code>pk_</code> and <code>pgk_</code> key formats for compatibility; Developer Platform-synchronized keys use <code>pgk_</code>. The backend looks up the key by its SHA-256 hash and accepts only active keys. An unknown, expired or revoked key returns <code>401</code> with <code>invalid_api_key</code>. Never infer environment or tenant access from a prefix alone; validate the credential with the server.</p>
     <h3>Creating, viewing, rotating and revoking keys</h3>
     <ol>
       <li>Request a key for one integration and record its owner, environment, scopes, and expiry. Secret-display and recovery behavior depend on the authorized provisioning workflow; do not assume a public API route exists.</li>
@@ -115,7 +115,7 @@
       <tr><td><code>scope</code></td><td>Allowed operations</td><td>Checked against the route and requested resource.</td></tr>
     </tbody></table>
     <h3>Obtaining, refreshing and revoking a token <span class="status-pill" data-tone="planned"><i></i>Planned</span></h3>
-    <p>The canonical backend app does not register a login, token-refresh or logout route, so there is no public endpoint to call for these today. Older application variants in the backend repository define <code>POST /auth/login</code>, but the image entrypoint does not load them. Obtain access tokens or <code>pk_</code> API keys from your PesaGuard operator, keep them in a server-side secret store, and expect <code>401</code> with <code>authentication_failed</code> once a token expires or is revoked. When a login route ships, this section will document its request and response.</p>
+    <p>The canonical backend app does not register a login, token-refresh or logout route, so there is no public endpoint to call for these today. Older application variants in the backend repository define <code>POST /auth/login</code>, but the image entrypoint does not load them. Obtain access tokens or API keys from your PesaGuard operator, keep them in a server-side secret store, and expect <code>401</code> with <code>authentication_failed</code> once a token expires or is revoked. When a login route ships, this section will document its request and response.</p>
 
     <h2 id="authentication-headers">Authentication headers</h2>
     <h3>Authorization header</h3>
@@ -123,7 +123,7 @@
     <h3>Required and optional headers</h3>
     <table><thead><tr><th>Header</th><th>Required</th><th>Purpose</th></tr></thead><tbody>
       <tr><td><code>Authorization</code></td><td>Protected routes</td><td>Bearer access token.</td></tr>
-      <tr><td><code>X-API-Key</code></td><td>Alternative to Authorization</td><td>A <code>pk_</code> API key. Not used when an <code>Authorization</code> header is present.</td></tr>
+      <tr><td><code>X-API-Key</code></td><td>Alternative to Authorization</td><td>A provisioned <code>pk_</code> or <code>pgk_</code> API key. Not used when an <code>Authorization</code> header is present.</td></tr>
       <tr><td><code>Content-Type: application/json</code></td><td>JSON request bodies</td><td>Declares the representation being sent.</td></tr>
       <tr><td><code>Accept: application/json</code></td><td>Recommended</td><td>Requests the documented JSON response shape.</td></tr>
       <tr><td><code>Idempotency-Key</code></td><td>Communication send routes</td><td>Required by <code>POST /api/v1/communications/sms</code> and <code>/email</code>; see the idempotency guide.</td></tr>
@@ -289,7 +289,7 @@ response.raise_for_status()</code></pre>
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

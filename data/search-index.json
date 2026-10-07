@@ -2,7 +2,7 @@
   {
     "href": "api-reference/index.html",
     "title": "OpenAPI reference",
-    "description": "The PesaGuard API contract: an embedded viewer for openapi.json, with a link to the live specification on your deployment.",
+    "description": "Searchable PesaGuard OpenAPI operation reference with JSON and YAML downloads. The target deployment remains authoritative.",
     "section": "API reference"
   },
   {
@@ -82,6 +82,12 @@
     "title": "Changelog · July 2026 - PesaGuard docs",
     "description": "July 2026 documentation baseline for PesaGuard integrations, API behavior, security and versioning.",
     "section": "Changelog"
+  },
+  {
+    "href": "changelog/2026/october.html",
+    "title": "October 2026 — PesaGuard docs changelog",
+    "description": "October 2026 documentation updates: canonical PesaGuard domains, searchable OpenAPI operation browser, AI indexes, and environment verification guidance.",
+    "section": "Documentation · 7 October 2026"
   },
   {
     "href": "changelog/2026/september.html",
@@ -176,7 +182,7 @@
   {
     "href": "environments/production.html",
     "title": "Environments · Production - PesaGuard docs",
-    "description": "The live deployment: production credentials, backups, reviewed exposure and the strictest change discipline.",
+    "description": "Production environment guidance and readiness checks; this page does not claim a live deployment or verified operational readiness.",
     "section": "Environments"
   },
   {
@@ -188,7 +194,7 @@
   {
     "href": "environments/staging.html",
     "title": "Environments · Staging - PesaGuard docs",
-    "description": "A real deployment with its own database and Kafka listeners, used for integration testing.",
+    "description": "Staging is an intended isolated integration environment; verify its live reachability and dependencies before use.",
     "section": "Environments"
   },
   {
@@ -302,19 +308,19 @@
   {
     "href": "getting-started/test-environment.html",
     "title": "Test environment - PesaGuard docs",
-    "description": "The staging deployment variant: its own database and Kafka listeners, and how to validate configuration without leaking secrets.",
+    "description": "A repeatable integration test path; verify staging availability, credentials and isolation with the deployment operator first.",
     "section": "Getting started"
   },
   {
     "href": "guides/anomalies/anomaly-events.html",
     "title": "Anomaly events",
-    "description": "The anomaly.detected event signals a named pattern for review; event payload fields are still being stabilized.",
+    "description": "Understand the anomaly.detected webhook, its review context, and the current limits of its event payload.",
     "section": "Anomaly guides"
   },
   {
     "href": "guides/anomalies/index.html",
     "title": "Anomaly guides",
-    "description": "Understand named anomaly signals, human review, risk signals, severity, and current event-schema limits.",
+    "description": "Learn how PesaGuard anomaly signals are identified, prioritized, and reviewed by people.",
     "section": "Anomaly guides"
   },
   {
@@ -374,7 +380,7 @@
   {
     "href": "guides/integrations/airtel-money.html",
     "title": "Airtel Money",
-    "description": "Planned; no PesaGuard adapter or verified request and callback contract is documented.",
+    "description": "Airtel Money integration is planned; no PesaGuard adapter or verified contract is documented.",
     "section": "Integration guides"
   },
   {
@@ -529,9 +535,9 @@
   },
   {
     "href": "index.html",
-    "title": "PesaGuard Developer Documentation",
-    "description": "Developer documentation for PesaGuard: real-time reconciliation of M-Pesa (Safaricom Daraja) payments, with honest status for every capability.",
-    "section": "Enterprise reconciliation infrastructure"
+    "title": "PesaGuard Documentation — Build with clear contracts",
+    "description": "PesaGuard integration documentation: API contracts, environments, webhooks, security, testing guidance, and current platform boundaries.",
+    "section": "PesaGuard · Developer documentation"
   },
   {
     "href": "migration/api-v1-to-v2.html",
@@ -652,12 +658,6 @@
     "title": "Security · Webhook security - PesaGuard docs",
     "description": "Detailed security guidance for outbound webhook HMAC signatures, SSRF defenses, delivery retries, and inbound provider callback verification.",
     "section": "Security"
-  },
-  {
-    "href": "status/index.html",
-    "title": "Status · Service status",
-    "description": "Live health of the PesaGuard services, the ops metrics endpoint, and what an incident page includes.",
-    "section": "Status"
   },
   {
     "href": "support/contact.html",

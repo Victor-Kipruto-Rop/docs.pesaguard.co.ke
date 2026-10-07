@@ -39,7 +39,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -50,14 +50,14 @@
           <span>Environments</span></nav>
     <p class="docs-eyebrow">Environments</p>
     <h1>Environments</h1>
-    <p class="docs-lede">Each environment has its own credentials, data stores, brokers and operational risk. Staging is a real deployment for integration testing; production is isolated and change-controlled. Do not treat an environment name as proof of safety: verify the base URL and effective configuration before every test or migration.</p>
-    <div class="api-hero"><div><strong>Deployment map</strong><p>Choose the environment by data sensitivity, integration risk and operational ownership.</p></div><div class="api-hero-meta"><span>STAGING · VERIFY</span><span>PRODUCTION · CONTROLLED</span></div></div>
-    <div class="info-grid"><div class="info-panel"><h2>Staging</h2><p>Real services, isolated data and test credentials. Use it to prove integration behavior before promotion.</p><p><a href="staging.html">Read staging guide →</a></p></div><div class="info-panel"><h2>Production</h2><p>Live tenant data and provider traffic. Changes require approval, observability, rollback and recovery evidence.</p><p><a href="production.html">Read production guide →</a></p></div></div>
+    <p class="docs-lede">Staging and production are distinct intended environments with separate data, credentials and operational risk. This documentation describes the boundaries and verification steps; it does not assert either deployment is currently reachable or ready.</p>
+    <div class="api-hero"><div><strong>Environment status: verification required</strong><p>Confirm the base URL, effective configuration and operator-provided evidence before using either environment.</p></div><div class="api-hero-meta"><span>STAGING · VERIFY</span><span>PRODUCTION · VERIFY</span></div></div>
+    <div class="info-grid"><div class="info-panel"><h2>Staging</h2><p>Use only after its reachability, isolated data, test credentials and dependencies have been confirmed by the operator.</p><p><a href="staging.html">Read staging guide →</a></p></div><div class="info-panel"><h2>Production</h2><p>Production use requires verified deployment, operational dependencies, monitoring, rollback and recovery evidence.</p><p><a href="production.html">Read production guide →</a></p></div></div>
     <table>
       <thead><tr><th>Variant</th><th>Purpose</th><th>Owns</th></tr></thead>
       <tbody>
-        <tr><td>Staging</td><td>Integration testing against real reconciliation behaviour.</td><td>Separate Postgres database and Kafka listeners.</td></tr>
-        <tr><td>Production</td><td>The live deployment the pilot runs on.</td><td>Production credentials, backups and review.</td></tr>
+        <tr><td>Staging</td><td>Intended for integration testing; live availability is unverified here.</td><td>Must verify separate database, Redis and broker configuration.</td></tr>
+        <tr><td>Production</td><td>Intended for live workloads; deployment and readiness are unverified here.</td><td>Must verify production credentials, backups, restore and review.</td></tr>
       </tbody>
     </table>
     <h2>Environment selection checklist</h2>
@@ -69,7 +69,7 @@
     <ul>
       <li><a href="../environments/environment-variables.html">Environment variables</a></li>
       <li><a href="../getting-started/production-checklist.html">Production checklist</a></li>
-      <li><a href="https://status.pesaguard.victorkipruto.com">Status</a></li>
+      <li><a href="https://status.pesaguard.co.ke">Status</a></li>
     </ul>
   </article>
 </div>
@@ -77,7 +77,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

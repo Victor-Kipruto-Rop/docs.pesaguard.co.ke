@@ -13,7 +13,7 @@
   },
   "servers": [
     {
-      "url": "https://api.pesaguard.victorkipruto.com",
+      "url": "https://api.pesaguard.co.ke",
       "description": "PesaGuard API"
     }
   ],
@@ -36,7 +36,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "X-API-Key",
-        "description": "Tenant API key starting with `pk_`. Used when no Authorization header is sent."
+        "description": "Provisioned tenant API key using a supported `pk_` or `pgk_` format. Used when no Authorization header is sent."
       }
     },
     "responses": {

@@ -44,8 +44,8 @@ if (!spec.paths || typeof spec.paths !== "object" || !Object.keys(spec.paths).le
 }
 if (!spec.servers || !spec.servers.length) {
   warn(`no "servers" declared; clients cannot tell the base URL`);
-} else if (!spec.servers.some((server) => server.url === "https://api.pesaguard.victorkipruto.com")) {
-  err(`servers must include https://api.pesaguard.victorkipruto.com`);
+} else if (!spec.servers.some((server) => server.url === "https://api.pesaguard.co.ke")) {
+  err(`servers must include https://api.pesaguard.co.ke`);
 }
 
 const components = spec.components || {};

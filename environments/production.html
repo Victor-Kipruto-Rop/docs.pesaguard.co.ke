@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Environments · Production - PesaGuard docs</title>
-<meta name="description" content="The live deployment: production credentials, backups, reviewed exposure and the strictest change discipline.">
+<meta name="description" content="Production environment guidance and readiness checks; this page does not claim a live deployment or verified operational readiness.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/environments/production.html">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
@@ -12,12 +12,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Environments · Production - PesaGuard docs">
-<meta property="og:description" content="The live deployment: production credentials, backups, reviewed exposure and the strictest change discipline.">
+<meta property="og:description" content="Production environment guidance and readiness checks; this page does not claim a live deployment or verified operational readiness.">
 <meta property="og:url" content="https://docs.pesaguard.co.ke/environments/production.html">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Environments · Production - PesaGuard docs">
-<meta name="twitter:description" content="The live deployment: production credentials, backups, reviewed exposure and the strictest change discipline.">
+<meta name="twitter:description" content="Production environment guidance and readiness checks; this page does not claim a live deployment or verified operational readiness.">
 <meta name="twitter:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../css/variables.css">
@@ -39,7 +39,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -48,8 +48,9 @@
   <article class="docs-article docs-content-wide api-page">
     <p class="docs-eyebrow">Environments</p>
     <h1>Production</h1>
-    <p class="docs-lede">Production is the authoritative environment for live tenant data, provider callbacks and reconciliation outcomes. It requires separate credentials, reviewed network exposure, tested backups and strict change discipline.</p>
-    <div class="api-hero"><div><strong>Production posture</strong><p>Every change must be observable, reversible and supported by an owner who can explain its effect on live reconciliation.</p></div><div class="api-hero-meta"><span>LIVE DATA</span><span>APPROVED CHANGES</span><span>RECOVERY READY</span></div></div>
+    <p class="docs-lede">This page defines production safeguards; it does not assert that a production deployment is currently running or ready. Verify the environment and each dependency with its operator before enabling live traffic.</p>
+    <div class="callout" data-tone="warn"><strong>Readiness is not established by this guide</strong><p>Deployment, migrations, backup restore, Redis rate limiting, email delivery, provider callbacks, metrics and protected-environment behavior require target-environment evidence. See the <a href="../getting-started/production-checklist.html">production checklist</a>.</p></div>
+    <div class="api-hero"><div><strong>Required production posture</strong><p>Every change must be observable, reversible and supported by an owner who can explain its effect on live reconciliation.</p></div><div class="api-hero-meta"><span>VERIFY DATA</span><span>APPROVE CHANGES</span><span>PROVE RECOVERY</span></div></div>
     <div class="info-grid"><div class="info-panel"><h2>Before deploy</h2><p>Verify artifact, environment variables, migrations, credentials, dependencies and rollback.</p></div><div class="info-panel"><h2>After deploy</h2><p>Run a read-only smoke test, watch health signals and compare reconciliation outcomes.</p></div></div>
     <h2>Production entry criteria</h2>
     <ul><li>Staging tests pass for authentication, tenant isolation, validation, idempotency and reconciliation.</li><li>Production credentials have named owners, least-privilege scopes, expiry and rotation evidence.</li><li>Database backups and restore procedures have been verified.</li><li>Monitoring covers API errors, queue lag, broker health, reconciliation outcomes and provider delivery.</li><li>Rollback, incident contacts and change approval are documented.</li></ul>
@@ -69,7 +70,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>
