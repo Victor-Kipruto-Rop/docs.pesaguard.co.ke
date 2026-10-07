@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/anomaly.schema.json",
+  "$id": "https://docs.pesaguard.co.ke/schemas/anomaly.schema.json",
   "title": "Anomaly signal",
   "description": "A named signal scored in context. A signal prompts review; it never declares fraud.",
   "type": "object",

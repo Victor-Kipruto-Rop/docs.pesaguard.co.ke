@@ -234,8 +234,20 @@
   safe(function () {
     /* --- Mobile nav toggle (hamburger) --------------------------------------- */
 
-    var navToggle = document.querySelector(".docs-nav-toggle");
-    var primaryNav = document.getElementById("primary-nav");
+    var headerInner = document.querySelector(".docs-header-inner");
+    var primaryNav = document.getElementById("primary-nav") || document.querySelector(".docs-header-links");
+    var navToggle = headerInner && headerInner.querySelector(".docs-nav-toggle");
+    if (primaryNav && !primaryNav.id) primaryNav.id = "primary-nav";
+    if (primaryNav && !navToggle && headerInner) {
+      navToggle = document.createElement("button");
+      navToggle.type = "button";
+      navToggle.className = "docs-nav-toggle";
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-controls", primaryNav.id);
+      navToggle.setAttribute("aria-label", "Toggle navigation menu");
+      navToggle.innerHTML = "<span></span><span></span><span></span>";
+      headerInner.appendChild(navToggle);
+    }
     if (navToggle && primaryNav) {
       var closeNav = function () {
         primaryNav.classList.remove("is-open");
@@ -270,7 +282,10 @@
       ["Guides", [["Overview", "index.html"]]],
       ["Authentication", [["Authentication overview", "authentication/index.html"], ["API keys", "authentication/api-keys.html"], ["Bearer tokens", "authentication/bearer-tokens.html"], ["Key rotation", "authentication/key-rotation.html"], ["OAuth support", "authentication/oauth.html"]]],
       ["Reconciliation", [["Reconciliation overview", "reconciliation/index.html"], ["Configure reconciliation", "reconciliation/configure-reconciliation.html"], ["Matching rules", "reconciliation/matching-rules.html"], ["Unmatched transactions", "reconciliation/unmatched-transactions.html"], ["Exceptions", "reconciliation/exceptions.html"], ["Reconciliation reports", "reconciliation/reconciliation-reports.html"]]],
-      ["Transactions", [["Transaction overview", "transactions/index.html"], ["Create a transaction", "transactions/create-transaction.html"], ["Retrieve a transaction", "transactions/retrieve-transaction.html"], ["Search transactions", "transactions/search-transactions.html"], ["Transaction status", "transactions/transaction-status.html"], ["Handle failures", "transactions/handle-failures.html"]]]
+      ["Transactions", [["Transaction overview", "transactions/index.html"], ["Create a transaction", "transactions/create-transaction.html"], ["Retrieve a transaction", "transactions/retrieve-transaction.html"], ["Search transactions", "transactions/search-transactions.html"], ["Transaction status", "transactions/transaction-status.html"], ["Handle failures", "transactions/handle-failures.html"]]],
+      ["Anomalies", [["Overview", "anomalies/index.html"], ["Anomaly events", "anomalies/anomaly-events.html"], ["Investigation", "anomalies/investigation.html"], ["Risk signals", "anomalies/risk-signals.html"], ["Severity", "anomalies/severity.html"]]],
+      ["Integrations", [["Overview", "integrations/index.html"], ["M-Pesa (Daraja)", "integrations/mpesa.html"], ["Airtel Money", "integrations/airtel-money.html"], ["Bank rails", "integrations/banks.html"], ["Point of sale", "integrations/pos.html"], ["Custom provider", "integrations/custom-provider.html"]]],
+      ["Webhooks", [["Overview", "webhooks/index.html"], ["Configure delivery", "webhooks/configure.html"], ["Events", "webhooks/events.html"], ["Signatures", "webhooks/signatures.html"], ["Idempotency", "webhooks/idempotency.html"]]]
     ];
     var sidebar = document.createElement("aside");
     sidebar.className = "docs-sidebar";
@@ -326,9 +341,22 @@
       var words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
       var matches = [];
       if (words.length) {
-        matches = catalog.filter(function (item) {
-          return words.every(function (word) { return item.text.indexOf(word) >= 0; });
-        }).slice(0, 30);
+        matches = catalog.map(function (item) {
+          var title = item.title.toLowerCase();
+          var description = item.description.toLowerCase();
+          var searchable = item.text + " " + title + " " + description;
+          if (!words.every(function (word) { return searchable.indexOf(word) >= 0; })) return null;
+          var score = 0;
+          words.forEach(function (word) {
+            if (title.indexOf(word) >= 0) score += 6;
+            if (description.indexOf(word) >= 0) score += 3;
+            if (item.text.indexOf(word) >= 0) score += 1;
+          });
+          if (title.indexOf(query.trim().toLowerCase()) >= 0) score += 4;
+          return { item: item, score: score };
+        }).filter(Boolean).sort(function (a, b) {
+          return b.score - a.score || a.item.title.localeCompare(b.item.title);
+        }).slice(0, 30).map(function (match) { return match.item; });
       }
       searchResults.replaceChildren();
       if (!words.length) {
@@ -371,10 +399,13 @@
             var description = page.querySelector('meta[name="description"]');
             var link = pathname.replace(/^\//, "");
             return { section: link.split("/")[0] || "Docs", href: link, title: title ? title.textContent.replace(/\s*-\s*PesaGuard docs.*$/, "") : link, description: description ? description.content : "PesaGuard documentation", text: page.body.textContent.toLowerCase() };
+          }).catch(function () {
+            return null;
           });
         }));
       }).then(function (pages) {
         catalog = pages.filter(Boolean);
+        if (!catalog.length) throw new Error("documentation index is empty");
         searchStatus.textContent = catalog.length + " documentation pages indexed. Start typing to search.";
         render(searchInput.value);
       }).catch(function () {
@@ -384,6 +415,13 @@
     }
 
     searchInput.addEventListener("input", function () { render(searchInput.value); });
+    var searchForm = searchInput.closest("form");
+    if (searchForm) {
+      searchForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        render(searchInput.value);
+      });
+    }
     clearButton && clearButton.addEventListener("click", function () { searchInput.value = ""; searchInput.focus(); render(""); });
     render(initialQuery);
     loadCatalog();
@@ -412,7 +450,9 @@
       if (!href || href.charAt(0) === "#") return;
       var target;
       try {
-        target = new URL(href, window.location.href).pathname;
+        var targetUrl = new URL(href, window.location.href);
+        if (targetUrl.origin !== window.location.origin) return;
+        target = targetUrl.pathname;
       } catch (err) {
         return;
       }
@@ -435,25 +475,83 @@
   });
 
   safe(function () {
+    /* --- Compact section navigation ---------------------------------------- */
+
+    document.querySelectorAll(".docs-sidebar").forEach(function (sidebar) {
+      if (sidebar.querySelector(".docs-mobile-nav")) return;
+
+      var details = document.createElement("details");
+      details.className = "docs-mobile-nav";
+      var summary = document.createElement("summary");
+      summary.textContent = path === "/" ? "Browse all documentation" : "Browse this section";
+      var content = document.createElement("div");
+      content.className = "docs-mobile-nav-content";
+      var compactViewport = window.matchMedia("(max-width: 960px)");
+      details.open = !compactViewport.matches;
+      var syncDisclosure = function (event) {
+        details.open = !event.matches;
+      };
+      if (compactViewport.addEventListener) compactViewport.addEventListener("change", syncDisclosure);
+      else compactViewport.addListener(syncDisclosure);
+
+      while (sidebar.firstChild) content.appendChild(sidebar.firstChild);
+      details.appendChild(summary);
+      details.appendChild(content);
+      sidebar.appendChild(details);
+    });
+  });
+
+  safe(function () {
     /* --- Sidebar filter, search focus and shortcuts ------------------------- */
 
     var searchInput = document.querySelector(".docs-search input");
     var groups = Array.prototype.slice.call(document.querySelectorAll(".docs-nav-group"));
     var searchRegion = document.querySelector(".docs-search");
     var searchClose = searchRegion && searchRegion.querySelector(".docs-search-close");
-    if (searchRegion) searchRegion.setAttribute("role", "search");
+    var searchToggle = null;
+    if (searchRegion && searchInput && !searchClose) {
+      searchClose = document.createElement("button");
+      searchClose.type = "button";
+      searchClose.className = "docs-search-close";
+      searchClose.setAttribute("aria-label", "Close search");
+      searchClose.textContent = "✕";
+      searchRegion.appendChild(searchClose);
+    }
+    if (searchRegion) {
+      searchRegion.setAttribute("role", "search");
+      searchRegion.setAttribute("aria-label", "Documentation search");
+      if (searchInput) {
+        if (!searchInput.id) searchInput.id = "docs-search-input";
+        searchToggle = document.createElement("button");
+        searchToggle.type = "button";
+        searchToggle.className = "docs-search-open";
+        searchToggle.setAttribute("aria-label", "Open documentation search");
+        searchToggle.setAttribute("aria-controls", searchInput.id);
+        searchToggle.setAttribute("aria-expanded", "false");
+        searchToggle.textContent = "⌕";
+        searchRegion.insertBefore(searchToggle, searchRegion.firstChild);
+      }
+    }
 
     /* On narrow screens the search box collapses to an icon (see
        responsive.css). These open/close it as a full-width overlay so it
        stays reachable with a tap instead of becoming a dead icon. */
     function openMobileSearch() {
       if (searchRegion) searchRegion.classList.add("is-active");
+      if (searchToggle) searchToggle.setAttribute("aria-expanded", "true");
       if (searchInput) searchInput.focus();
     }
     function closeMobileSearch() {
       if (searchRegion) searchRegion.classList.remove("is-active");
+      if (searchToggle) searchToggle.setAttribute("aria-expanded", "false");
     }
 
+    if (searchToggle) {
+      searchToggle.addEventListener("click", function (event) {
+        event.stopPropagation();
+        openMobileSearch();
+      });
+    }
     if (searchRegion) {
       searchRegion.addEventListener("click", function () {
         if (!searchRegion.classList.contains("is-active")) openMobileSearch();

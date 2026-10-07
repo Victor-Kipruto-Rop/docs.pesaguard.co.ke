@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Severity — PesaGuard docs</title>
-<meta name="description" content="Severity drives routing, so high severity stays distinguishable from routine.">
+<meta name="description" content="Understand low, medium, and high anomaly severity as review priorities, not fraud verdicts.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/anomalies/severity.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/anomalies/severity.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,19 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Anomaly guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Anomaly guides</a><span aria-hidden="true">/</span>
           <span>Severity</span></nav>
     <p class="docs-eyebrow">Anomaly guides</p>
     <h1>Severity <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">Anomaly severity is a routing priority that helps distinguish review urgency. The current schema permits <code>low</code>, <code>medium</code>, and <code>high</code>.</p>
+    <ul>
+      <li>Severity does not declare fraud or authorize an automatic block.</li>
+      <li>Use the signal's evidence and transaction context alongside severity.</li>
+      <li>Record the human review outcome and reason separately.</li>
+    </ul>
+    <p>The schema defines the available values but does not assign a universal response policy to each one. See <a href="../../schemas/anomaly.schema.json">the anomaly schema</a> and <a href="investigation.html">the investigation guide</a>.</p>
   </article>
 </div>
 </main>

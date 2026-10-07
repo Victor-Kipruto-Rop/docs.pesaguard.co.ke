@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Webhook guides — PesaGuard docs</title>
-<meta name="description" content="Webhook guides for PesaGuard integrations.">
+<meta name="description" content="Guides to PesaGuard outbound webhook delivery, event names, verification, retries, and idempotency.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhooks/">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhooks/">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,13 +29,24 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
           <span>Webhook guides</span></nav>
     <p class="docs-eyebrow">Webhook guides</p>
     <h1>Webhook guides <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">These guides cover PesaGuard outbound webhook delivery to systems you operate: configure the receiver with the pilot team, verify deliveries, and process retries safely.</p>
+    <div class="callout" data-tone="warn">
+      <strong>Outbound webhooks are not provider callbacks</strong>
+      <p>PesaGuard webhooks are sent to your receiver. Payment-provider callbacks travel in the opposite direction and can have a different signature format.</p>
+    </div>
+    <h2>Follow the receiver flow</h2>
+    <ol>
+      <li><a href="configure.html">Coordinate delivery configuration</a> with the pilot team.</li>
+      <li><a href="signatures.html">Verify the signature</a> before trusting or persisting an event.</li>
+      <li>Use the <a href="events.html">event catalog</a> and current deployment contract; event payload fields may still change.</li>
+      <li>Make event handling <a href="idempotency.html">idempotent</a> so retries do not repeat business effects.</li>
+    </ol>
+    <p>For the full delivery behavior, see the <a href="../../webhooks/index.html">webhook delivery reference</a> and <a href="../../webhooks/retries.html">retry guidance</a>.</p>
   </article>
 </div>
 </main>

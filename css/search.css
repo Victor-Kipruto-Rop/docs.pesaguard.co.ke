@@ -37,6 +37,21 @@
   flex: none;
 }
 
+.docs-search-open {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--forest);
+  font: 500 22px / 1 var(--font-sans);
+  cursor: pointer;
+}
+
+.docs-search-close {
+  display: none;
+}
+
 .search-hero { margin-top: 22px; }
 
 .search-page-form { margin: 28px 0 10px; }

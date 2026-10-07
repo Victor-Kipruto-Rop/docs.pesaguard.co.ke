@@ -12,7 +12,7 @@
 const path = require("path");
 
 const SITE = {
-  origin: "https://docs.pesaguard.victorkipruto.com",
+  origin: "https://docs.pesaguard.co.ke",
   name: "PesaGuard docs",
   product: "https://pesaguard.victorkipruto.com",
   status: "https://status.pesaguard.victorkipruto.com",

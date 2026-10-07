@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/error.schema.json",
+  "$id": "https://docs.pesaguard.co.ke/schemas/error.schema.json",
   "title": "Normalized error envelope",
   "description": "Every failure response uses this shape. Codes are stable; messages are not.",
   "type": "object",

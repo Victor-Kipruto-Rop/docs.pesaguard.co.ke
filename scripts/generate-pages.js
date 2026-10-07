@@ -36,7 +36,7 @@ function chrome(file, page, sidebarHtml) {
   ]
     .map(([label, href]) => `<a href="${up}${href}">${label}</a>`)
     .join("\n    ");
-  const siteRoot = "https://docs.pesaguard.victorkipruto.com";
+  const siteRoot = "https://docs.pesaguard.co.ke";
   const canonical = siteRoot + page.path;
   const ogImage = `${siteRoot}/assets/brand/og-image.jpg`;
   const titleText = page.section && page.section !== page.title
@@ -1205,7 +1205,7 @@ function walkHtml(dir, out) {
   return out;
 }
 
-const siteRoot = "https://docs.pesaguard.victorkipruto.com";
+const siteRoot = "https://docs.pesaguard.co.ke";
 const htmlFiles = walkHtml(ROOT, []).sort();
 const urls = htmlFiles.map((full) => {
   const rel = path.relative(ROOT, full).split(path.sep).join("/");

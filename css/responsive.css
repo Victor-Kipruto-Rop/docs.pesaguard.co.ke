@@ -14,7 +14,7 @@
   .docs-nav-group { margin-bottom: 12px; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 960px) {
   /* Collapsed to an icon-only button. Tapping it reveals the input as a
      full-width overlay row (see .is-active below) instead of hiding the
      search away with no way to open it again. */
@@ -116,6 +116,30 @@
     background: var(--paper-deep);
   }
 
+  .docs-search {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .docs-search > span { display: none; }
+
+  .docs-search-open {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+
+  .docs-search.is-active {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .docs-search.is-active .docs-search-open { display: none; }
+
   .docs-brand small { display: none; }
 
   .docs-nav-toggle { display: flex; }
@@ -123,7 +147,6 @@
   /* Larger touch targets in the compact header. */
   .docs-nav-toggle { width: 44px; height: 44px; }
 
-  /* Hidden state transitions to .is-open (and back): opacity/transform for
   /* Hidden state transitions to .is-open (and back): opacity/transform for
      the panel, a staggered cascade for the links, with visibility delayed so
      the close animation can play before the panel stops hit-testing. */
@@ -176,4 +199,30 @@
   .card-grid { grid-template-columns: minmax(0, 1fr); }
 
   .docs-article table { display: block; overflow-x: auto; }
+
+  .docs-mobile-nav > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--paper-raised);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .docs-mobile-nav > summary::-webkit-details-marker { display: none; }
+  .docs-mobile-nav > summary::after { content: "+"; color: var(--lime-deep); font: 600 16px / 1 var(--font-mono); }
+  .docs-mobile-nav[open] > summary::after { content: "−"; }
+  .docs-mobile-nav-content { padding-top: 14px; }
+}
+
+@media (min-width: 961px) {
+  .docs-mobile-nav > summary { display: none; }
+  .docs-mobile-nav-content { display: contents; }
 }

@@ -1,0 +1,325 @@
+.docs-shell-home {
+  padding-top: 18px;
+}
+
+.docs-sidebar-home {
+  border-right: 1px solid var(--line-soft);
+  padding-right: 16px;
+}
+
+.docs-homepage {
+  width: 100%;
+  max-width: none;
+}
+
+.docs-home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(250px, 0.75fr);
+  gap: clamp(24px, 4vw, 52px);
+  align-items: center;
+  margin: 8px 0 44px;
+  padding: clamp(24px, 4vw, 46px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 8% 8%, var(--lime-wash), transparent 48%),
+    linear-gradient(135deg, var(--paper-raised), var(--paper-sunken));
+  box-shadow: var(--shadow-sm);
+}
+
+.home-hero-copy {
+  min-width: 0;
+}
+
+.home-hero-copy h1 {
+  max-width: 12ch;
+  margin-bottom: 16px;
+  font-size: clamp(2.4rem, 1.8rem + 2.2vw, 3.7rem);
+  letter-spacing: -0.055em;
+  line-height: 1.02;
+}
+
+.home-hero-copy .docs-lede {
+  max-width: 56ch;
+  margin-bottom: 0;
+}
+
+.home-hero-copy .hero-actions {
+  margin: 22px 0 14px;
+}
+
+.home-hero-footnote {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+
+.home-hero-index {
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-xs);
+}
+
+.home-index-label,
+.home-card-index {
+  margin: 0;
+  color: var(--lime-deep);
+  font: 600 10px / 1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-hero-index > .home-index-label {
+  padding: 2px 8px 10px;
+}
+
+.home-hero-index > a {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 2px 10px;
+  align-items: baseline;
+  padding: 12px 8px;
+  border-top: 1px solid var(--line-soft);
+  border-radius: 6px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.home-hero-index > a:hover {
+  background: var(--paper-sunken);
+}
+
+.home-hero-index > a > span {
+  grid-row: span 2;
+  color: var(--lime-deep);
+  font: 600 11px / 1.5 var(--font-mono);
+}
+
+.home-hero-index strong {
+  font-size: 13px;
+}
+
+.home-hero-index small {
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.docs-home-section {
+  margin-top: 42px;
+}
+
+.home-section-heading {
+  max-width: 64ch;
+  margin-bottom: 18px;
+}
+
+.home-section-heading h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: clamp(1.45rem, 1.15rem + 1vw, 1.9rem);
+}
+
+.home-section-heading > p:last-child {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.home-category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-category-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper-raised);
+  transition: border-color 140ms var(--ease-out), box-shadow 140ms var(--ease-out), transform 140ms var(--ease-out);
+}
+
+.home-category-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-category-card h3 {
+  margin: 12px 0 6px;
+  font-size: 1.05rem;
+}
+
+.home-category-card > p {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.home-category-card nav {
+  display: grid;
+  gap: 2px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.home-category-card nav a,
+.platform-boundary a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 36px;
+  color: var(--forest);
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.home-category-card nav a span,
+.platform-boundary a span {
+  flex: none;
+  transition: transform 140ms var(--ease-out);
+}
+
+.home-category-card nav a:hover span,
+.platform-boundary a:hover span {
+  transform: translateX(3px);
+}
+
+.platform-boundary {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin-top: 40px;
+  padding: 22px;
+  border: 1px solid var(--signal-amber);
+  border-radius: 14px;
+  background: var(--paper-raised);
+}
+
+.boundary-mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--paper-deep);
+  color: var(--signal-amber);
+  font: 700 17px / 1 var(--font-mono);
+}
+
+.platform-boundary h2 {
+  margin: 7px 0;
+  padding: 0;
+  border: 0;
+  font-size: 1.1rem;
+}
+
+.platform-boundary p:not(.home-index-label) {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.platform-boundary a {
+  justify-content: flex-start;
+  margin-top: 7px;
+}
+
+.docs-home-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--text-faint);
+  font-size: 12px;
+}
+
+.docs-home-bottom p {
+  margin: 0;
+  color: var(--text-muted);
+  font-weight: 650;
+}
+
+.docs-home-bottom a {
+  color: var(--forest);
+  text-decoration: none;
+}
+
+.docs-home-bottom a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 1100px) {
+  .docs-sidebar-home {
+    border-right: 0;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .docs-home-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    margin-bottom: 34px;
+    padding: clamp(20px, 5vw, 32px);
+  }
+
+  .home-hero-copy h1 {
+    max-width: 15ch;
+  }
+
+  .home-hero-index {
+    padding: 12px;
+  }
+
+  .docs-home-section,
+  .platform-boundary {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 560px) {
+  .home-category-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-category-card {
+    padding: 18px;
+  }
+
+  .platform-boundary {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-category-card,
+  .home-category-card nav a span,
+  .platform-boundary a span {
+    transition: none;
+  }
+
+  .home-category-card:hover {
+    transform: none;
+  }
+}

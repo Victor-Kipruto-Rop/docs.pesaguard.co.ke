@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Load and stress testing — PesaGuard docs</title>
 <meta name="description" content="A disciplined way to load-test PesaGuard in staging: ground rules, what to measure, a ramp-soak-spike procedure and how to prove reconciliation correctness under load.">
-<link rel="canonical" href="https://docs.pesaguard.victorkipruto.com/testing/load-testing.html">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/testing/load-testing.html">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
@@ -13,12 +13,12 @@
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Load and stress testing — PesaGuard docs">
 <meta property="og:description" content="A disciplined way to load-test PesaGuard in staging: ground rules, what to measure, a ramp-soak-spike procedure and how to prove reconciliation correctness under load.">
-<meta property="og:url" content="https://docs.pesaguard.victorkipruto.com/testing/load-testing.html">
-<meta property="og:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/testing/load-testing.html">
+<meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Load and stress testing — PesaGuard docs">
 <meta name="twitter:description" content="A disciplined way to load-test PesaGuard in staging: ground rules, what to measure, a ramp-soak-spike procedure and how to prove reconciliation correctness under load.">
-<meta name="twitter:image" content="https://docs.pesaguard.victorkipruto.com/assets/brand/og-image.jpg">
+<meta name="twitter:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../css/variables.css">
 <link rel="stylesheet" href="../css/layout.css">
@@ -71,11 +71,12 @@
           <span>Load and stress testing</span></nav>
     <p class="docs-eyebrow">Testing</p>
     <h1>Load and stress testing</h1>
-    <p class="docs-lede">Reconciliation correctness under load is observed, never assumed. Load testing proves that throughput, retries and recovery behave the way the integration requires — in staging, with synthetic data, before production volume arrives.</p>
+    <p class="docs-lede">Reconciliation correctness under load is observed, never assumed. Load testing proves that throughput, retries and recovery behave the way the integration requires — start in staging with synthetic data, and use production only when explicitly authorized and confirmed.</p>
     <div class="callout" data-tone="warn">
       <strong>Ground rules</strong>
       <ul>
-        <li>Staging only. Load tests never target production.</li>
+        <li>Staging is the default. Production tests require the appropriate project permission and a separate, explicit confirmation that shows the target, maximum concurrency, maximum RPS and duration.</li>
+        <li>Target only approved project environments and load-test-safe API routes. Never use real financial operations, customer payments, SMS, email, third-party charges, or destructive actions.</li>
         <li>Synthetic data only — synthetic references, amounts and identities; never production credentials or copied personal data.</li>
         <li>Schedule the window with the pilot team so observability and consumers are watching.</li>
         <li>Respect documented rate limits. A <code>429</code> under load is backpressure working, not an error to defeat.</li>

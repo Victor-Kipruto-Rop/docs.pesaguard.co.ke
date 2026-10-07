@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Events — PesaGuard docs</title>
-<meta name="description" content="The event families and where each one is produced.">
+<meta name="description" content="Use the webhook event catalog for current event names; event-specific payload fields may change.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhooks/events.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhooks/events.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,21 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Webhook guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Webhook guides</a><span aria-hidden="true">/</span>
           <span>Events</span></nav>
     <p class="docs-eyebrow">Webhook guides</p>
-    <h1>Events <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <h1>Events <span class="status-pill" data-tone="draft"><i></i>Draft</span></h1>
+    <p class="docs-lede">Use the event catalog for current event names and the deployment's OpenAPI document for the current payload contract.</p>
+    <p>Event-specific payload fields are still being stabilized. The individual event references are useful for consumer behavior, but should not be treated as a guarantee that every field is final.</p>
+    <h2>Current references</h2>
+    <ul>
+      <li><a href="../../webhooks/event-catalog.html">Event catalog</a> — published event names.</li>
+      <li><a href="../../webhooks/transaction-created.html"><code>transaction.created</code></a>, <a href="../../webhooks/transaction-matched.html"><code>transaction.matched</code></a>, and <a href="../../webhooks/transaction-unmatched.html"><code>transaction.unmatched</code></a>.</li>
+      <li><a href="../../webhooks/reconciliation-completed.html"><code>reconciliation.completed</code></a> and <a href="../../webhooks/anomaly-detected.html"><code>anomaly.detected</code></a>.</li>
+    </ul>
+    <p>Before binding application logic to a payload, check the live <a href="../../api-reference/index.html">OpenAPI contract</a> served by your deployment.</p>
   </article>
 </div>
 </main>

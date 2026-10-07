@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Integration guides — PesaGuard docs</title>
-<meta name="description" content="Integration guides for PesaGuard integrations.">
+<meta name="description" content="Current provider scope: M-Pesa (Daraja) callbacks for reconciliation; other rails remain planned.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/integrations/">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/integrations/">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,13 +29,18 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
           <span>Integration guides</span></nav>
     <p class="docs-eyebrow">Integration guides</p>
-    <h1>Integration guides <span class="status-pill" data-tone="draft"><i></i>Draft</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <h1>Integration guides <span class="status-pill" data-tone="live"><i></i>M-Pesa only</span></h1>
+    <p class="docs-lede">M-Pesa (Daraja) callback validation and reconciliation is the only provider integration documented as current. Other rails remain planned and do not have a verified PesaGuard adapter contract here.</p>
+    <ul>
+      <li><a href="mpesa.html">M-Pesa (Daraja)</a> — the current callback and matching scope.</li>
+      <li><a href="airtel-money.html">Airtel Money</a>, <a href="banks.html">bank rails</a>, and <a href="pos.html">point of sale</a> — planned; no adapter is documented.</li>
+      <li><a href="custom-provider.html">Custom provider</a> — a connector abstraction is evaluated, not implemented.</li>
+    </ul>
+    <p>This describes callback ingestion and reconciliation, not the Developer Platform's sandbox transaction listing. That listing is read-only and does not process or simulate payments. Use the <a href="../../api-reference/index.html">API reference</a> and the live deployment's OpenAPI contract for request details.</p>
   </article>
 </div>
 </main>

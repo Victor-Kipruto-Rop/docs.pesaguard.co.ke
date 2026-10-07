@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Configure delivery — PesaGuard docs</title>
-<meta name="description" content="Endpoint, secret and channel preferences are scoped with the pilot team.">
+<meta name="description" content="Webhook endpoint, signing secret, and channel preferences are scoped with the pilot team.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhooks/configure.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhooks/configure.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,20 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Webhook guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Webhook guides</a><span aria-hidden="true">/</span>
           <span>Configure delivery</span></nav>
     <p class="docs-eyebrow">Webhook guides</p>
     <h1>Configure delivery <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">The webhook endpoint, signing secret, and channel preferences are scoped with the pilot team. These docs do not describe a self-service setup endpoint.</p>
+    <h2>Prepare the receiver</h2>
+    <ul>
+      <li>Coordinate the endpoint and delivery preferences with the pilot team.</li>
+      <li>Store the signing secret in protected storage and keep it out of source control and logs.</li>
+      <li>Implement <a href="signatures.html">signature verification</a> and <a href="idempotency.html">idempotent handling</a> before accepting production traffic.</li>
+    </ul>
+    <p>See <a href="../../webhooks/index.html">webhook delivery</a> for the receiver requirements and <a href="../../support/contact.html">contact support</a> to coordinate configuration.</p>
   </article>
 </div>
 </main>

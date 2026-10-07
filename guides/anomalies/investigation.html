@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Investigation — PesaGuard docs</title>
-<meta name="description" content="Investigate, decide, and record the reason in the append-only trail.">
+<meta name="description" content="Use anomaly context to review a flag, record a decision, and retain the audit trail.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/anomalies/investigation.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/anomalies/investigation.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,19 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Anomaly guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Anomaly guides</a><span aria-hidden="true">/</span>
           <span>Investigation</span></nav>
     <p class="docs-eyebrow">Anomaly guides</p>
     <h1>Investigation <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">Investigate a flagged transaction using the named signal and its supporting context, then record a human decision and reason in the audit trail.</p>
+    <ol>
+      <li>Review the signal name, severity, evidence window, and observed values.</li>
+      <li>Compare the signal with the transaction and tenant context; do not treat the flag as a fraud verdict.</li>
+      <li>Record the reviewer, decision, and reason so the outcome remains auditable.</li>
+    </ol>
+    <p>Blocking, if any, is a recorded human decision. See <a href="../../concepts/anomalies.html">the anomaly concept</a> and <a href="../../concepts/audit-trails.html">audit-trail guidance</a> for the review boundary and evidence context.</p>
   </article>
 </div>
 </main>

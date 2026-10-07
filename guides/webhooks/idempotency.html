@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Idempotency — PesaGuard docs</title>
-<meta name="description" content="A replayed delivery must not create a second financial effect.">
+<meta name="description" content="Deduplicate repeated webhook deliveries so retries do not repeat financial effects.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhooks/idempotency.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhooks/idempotency.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,20 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Webhook guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Webhook guides</a><span aria-hidden="true">/</span>
           <span>Idempotency</span></nav>
     <p class="docs-eyebrow">Webhook guides</p>
     <h1>Idempotency <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">Webhook deliveries can be retried or replayed. Deduplicate by the stable event identity and ensure that processing the same event again does not repeat a financial effect.</p>
+    <ol>
+      <li>Verify the signature before accepting an event.</li>
+      <li>Persist the event identity and processing outcome durably.</li>
+      <li>Apply business effects once; return an acknowledgement only after the receiver has accepted the event according to its policy.</li>
+      <li>Make replay safe by returning the recorded outcome for an already-processed event.</li>
+    </ol>
+    <p>See <a href="../../concepts/idempotency.html">the idempotency concept</a>, <a href="../../webhooks/retries.html">retry guidance</a>, and the <a href="../../webhooks/index.html">delivery lifecycle</a>.</p>
   </article>
 </div>
 </main>

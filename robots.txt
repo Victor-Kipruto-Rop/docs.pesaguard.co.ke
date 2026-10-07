@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://docs.pesaguard.victorkipruto.com/sitemap.xml
+Sitemap: https://docs.pesaguard.co.ke/sitemap.xml

@@ -4,7 +4,7 @@
     "title": "PesaGuard Dashboard & Reconciliation API",
     "version": "2.0.0",
     "description": "Enterprise-grade operational telemetry and reconciliation endpoints. This file mirrors the specification served at /openapi.json by a running deployment; the live deployment is authoritative.",
-    "x-documentation": "https://docs.pesaguard.victorkipruto.com/api/"
+    "x-documentation": "https://docs.pesaguard.co.ke/api/"
   },
   "servers": [
     {

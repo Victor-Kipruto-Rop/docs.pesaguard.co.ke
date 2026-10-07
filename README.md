@@ -1,10 +1,17 @@
-# PesaGuard docs (docs.pesaguard.victorkipruto.com)
+# PesaGuard docs (docs.pesaguard.co.ke)
 
 Static developer documentation for the PesaGuard reconciliation platform.
 No build step: pages are hand-written HTML sharing one stylesheet and one
 script. Each page declares its own title and description honestly; anything
 without an adapter, test suite or shipped behaviour is labelled planned or
 not-started rather than implied.
+
+## Site address
+
+The intended canonical host is `https://docs.pesaguard.co.ke`. `CNAME` declares
+that custom host for the static-site deployment. DNS and hosting-provider
+configuration are managed outside this repository; changing `CNAME` does not
+configure DNS or publish the site.
 
 ## Preview
 

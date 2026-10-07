@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Risk signals — PesaGuard docs</title>
-<meta name="description" content="Amount deviation, velocity, duplicate references, timing and channel patterns.">
+<meta name="description" content="Reference the anomaly signal names and schema used to describe patterns for review.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/anomalies/risk-signals.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/anomalies/risk-signals.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,20 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Anomaly guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Anomaly guides</a><span aria-hidden="true">/</span>
           <span>Risk signals</span></nav>
     <p class="docs-eyebrow">Anomaly guides</p>
     <h1>Risk signals <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">The current anomaly schema names the patterns below. A signal is context for review, not a standalone conclusion about fraud.</p>
+    <ul>
+      <li><code>amount_deviation</code> — an amount differs from the expected pattern.</li>
+      <li><code>velocity_spike</code> — activity changes sharply within an evidence window.</li>
+      <li><code>duplicate_reference</code> — a reference has been seen before.</li>
+      <li><code>unusual_timing</code>, <code>repeated_failures</code>, and <code>unexpected_channel</code> — additional named patterns in the current schema.</li>
+    </ul>
+    <p>These are the schema's signal names, not a promise that every signal is enabled for every deployment. See <a href="../../schemas/anomaly.schema.json">the anomaly schema</a> and <a href="../../concepts/anomalies.html">the anomaly concept</a> for field meaning and review context.</p>
   </article>
 </div>
 </main>

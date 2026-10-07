@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/reconciliation.schema.json",
+  "$id": "https://docs.pesaguard.co.ke/schemas/reconciliation.schema.json",
   "title": "Reconciliation outcome",
   "description": "The decision recorded when a provider event is compared against internal records. Every outcome keeps its evidence.",
   "type": "object",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://docs.pesaguard.victorkipruto.com/schemas/transaction.schema.json",
+  "$id": "https://docs.pesaguard.co.ke/schemas/transaction.schema.json",
   "title": "Canonical payment transaction",
   "description": "The normalized shape a provider event becomes before matching. Field names are indicative of the design contract; confirm against your deployment's OpenAPI document.",
   "type": "object",

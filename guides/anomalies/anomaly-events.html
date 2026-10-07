@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Anomaly events — PesaGuard docs</title>
-<meta name="description" content="What raises a signal, and what the event carries.">
+<meta name="description" content="Understand the anomaly.detected webhook, its review context, and the current limits of its event payload.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/anomalies/anomaly-events.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/anomalies/anomaly-events.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,21 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Anomaly guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Anomaly guides</a><span aria-hidden="true">/</span>
           <span>Anomaly events</span></nav>
     <p class="docs-eyebrow">Anomaly guides</p>
-    <h1>Anomaly events <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <h1>Anomaly events <span class="status-pill" data-tone="draft"><i></i>Draft</span></h1>
+    <p class="docs-lede">The <code>anomaly.detected</code> event signals that a named rule or statistical check flagged a transaction for human review.</p>
+    <p>The event-specific payload fields are still being stabilized. Use the live deployment's OpenAPI contract before depending on field-level details; the <a href="../../schemas/anomaly.schema.json">anomaly schema</a> describes a signal, not the full webhook envelope.</p>
+    <h2>Handle the signal safely</h2>
+    <ul>
+      <li>Verify the PesaGuard webhook signature before persisting or acting on the event.</li>
+      <li>Use the signal as a review prompt, not as a confirmed-fraud label or automatic blocking instruction.</li>
+      <li>Record any reviewer decision separately in the audit trail.</li>
+    </ul>
+    <p>See <a href="../../webhooks/anomaly-detected.html">the event reference</a> for current consumer guidance, the <a href="../../webhooks/verification.html">verification steps</a>, and the <a href="../../api-reference/index.html">OpenAPI reference</a> for the deployment contract.</p>
   </article>
 </div>
 </main>

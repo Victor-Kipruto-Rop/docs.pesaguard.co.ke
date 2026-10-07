@@ -308,31 +308,31 @@
   {
     "href": "guides/anomalies/anomaly-events.html",
     "title": "Anomaly events",
-    "description": "What raises a signal, and what the event carries.",
+    "description": "The anomaly.detected event signals a named pattern for review; event payload fields are still being stabilized.",
     "section": "Anomaly guides"
   },
   {
     "href": "guides/anomalies/index.html",
     "title": "Anomaly guides",
-    "description": "Anomaly guides for PesaGuard integrations.",
+    "description": "Understand named anomaly signals, human review, risk signals, severity, and current event-schema limits.",
     "section": "Anomaly guides"
   },
   {
     "href": "guides/anomalies/investigation.html",
     "title": "Investigation",
-    "description": "Investigate, decide, and record the reason in the append-only trail.",
+    "description": "Use anomaly context to review a flag, record a decision, and retain the audit trail.",
     "section": "Anomaly guides"
   },
   {
     "href": "guides/anomalies/risk-signals.html",
     "title": "Risk signals",
-    "description": "Amount deviation, velocity, duplicate references, timing and channel patterns.",
+    "description": "Reference the anomaly signal names and schema used to describe patterns for review.",
     "section": "Anomaly guides"
   },
   {
     "href": "guides/anomalies/severity.html",
     "title": "Severity",
-    "description": "Severity drives routing, so high severity stays distinguishable from routine.",
+    "description": "Understand low, medium, and high anomaly severity as review priorities, not fraud verdicts.",
     "section": "Anomaly guides"
   },
   {
@@ -374,37 +374,37 @@
   {
     "href": "guides/integrations/airtel-money.html",
     "title": "Airtel Money",
-    "description": "Planned. No adapter, tests or documentation exist yet.",
+    "description": "Planned; no PesaGuard adapter or verified request and callback contract is documented.",
     "section": "Integration guides"
   },
   {
     "href": "guides/integrations/banks.html",
     "title": "Bank rails",
-    "description": "Planned. Statement and settlement import is out of scope today.",
+    "description": "Bank statement and settlement imports are out of scope today; no PesaGuard bank-rail adapter is documented.",
     "section": "Integration guides"
   },
   {
     "href": "guides/integrations/custom-provider.html",
     "title": "Custom provider",
-    "description": "A provider-connector abstraction is evaluated, not implemented. Multi-rail is a separate scoping conversation.",
+    "description": "A generic provider connector is evaluated, not implemented; no custom-adapter contract is published.",
     "section": "Integration guides"
   },
   {
     "href": "guides/integrations/index.html",
     "title": "Integration guides",
-    "description": "Integration guides for PesaGuard integrations.",
+    "description": "Current provider scope: M-Pesa (Daraja) callbacks for reconciliation; other rails remain planned.",
     "section": "Integration guides"
   },
   {
     "href": "guides/integrations/mpesa.html",
     "title": "M-Pesa (Daraja)",
-    "description": "The live rail: STK Push and PayBill callbacks, validated and matched.",
+    "description": "Current M-Pesa (Daraja) scope: STK Push and PayBill callbacks are validated and matched for reconciliation.",
     "section": "Integration guides"
   },
   {
     "href": "guides/integrations/pos.html",
     "title": "Point of sale",
-    "description": "Planned. Terminal feeds are not ingested today.",
+    "description": "Point-of-sale terminal feeds are planned; no PesaGuard ingestion adapter is documented today.",
     "section": "Integration guides"
   },
   {
@@ -500,31 +500,31 @@
   {
     "href": "guides/webhooks/configure.html",
     "title": "Configure delivery",
-    "description": "Endpoint, secret and channel preferences are scoped with the pilot team.",
+    "description": "Webhook endpoint, signing secret, and channel preferences are scoped with the pilot team.",
     "section": "Webhook guides"
   },
   {
     "href": "guides/webhooks/events.html",
     "title": "Events",
-    "description": "The event families and where each one is produced.",
+    "description": "Use the webhook event catalog for current event names; event-specific payload fields may change.",
     "section": "Webhook guides"
   },
   {
     "href": "guides/webhooks/idempotency.html",
     "title": "Idempotency",
-    "description": "A replayed delivery must not create a second financial effect.",
+    "description": "Deduplicate repeated webhook deliveries so retries do not repeat financial effects.",
     "section": "Webhook guides"
   },
   {
     "href": "guides/webhooks/index.html",
     "title": "Webhook guides",
-    "description": "Webhook guides for PesaGuard integrations.",
+    "description": "Guides to PesaGuard outbound webhook delivery, event names, verification, retries, and idempotency.",
     "section": "Webhook guides"
   },
   {
     "href": "guides/webhooks/signatures.html",
     "title": "Signatures",
-    "description": "Verify the sender before parsing the payload.",
+    "description": "Verify PesaGuard outbound webhook signatures before persisting or acting on event payloads.",
     "section": "Webhook guides"
   },
   {

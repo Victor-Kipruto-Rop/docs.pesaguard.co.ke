@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>M-Pesa (Daraja) — PesaGuard docs</title>
-<meta name="description" content="The live rail: STK Push and PayBill callbacks, validated and matched.">
+<meta name="description" content="Current M-Pesa (Daraja) scope: STK Push and PayBill callbacks are validated and matched for reconciliation.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/integrations/mpesa.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/integrations/mpesa.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,24 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Integration guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Integration guides</a><span aria-hidden="true">/</span>
           <span>M-Pesa (Daraja)</span></nav>
     <p class="docs-eyebrow">Integration guides</p>
     <h1>M-Pesa (Daraja) <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">The current integration scope validates and matches M-Pesa (Safaricom Daraja) STK Push and PayBill callbacks for reconciliation.</p>
+    <h2>Use the current contract</h2>
+    <p>Callback request details and transaction fields must come from the <a href="../../api-reference/index.html">API reference</a> and the OpenAPI document served by your deployment. This guide does not define a separate payment-initiation contract or invent provider payloads.</p>
+    <ul>
+      <li>Confirm the callback and transaction contract against your deployment before integration.</li>
+      <li>Use the <a href="../../concepts/reconciliation.html">reconciliation concepts</a> to understand matching and exceptions.</li>
+      <li>For outbound notifications from PesaGuard, follow the separate <a href="../../webhooks/index.html">webhook delivery</a> and <a href="../../webhooks/verification.html">signature verification</a> guides.</li>
+    </ul>
+    <div class="callout" data-tone="warn">
+      <strong>Keep inbound and outbound flows distinct</strong>
+      <p>M-Pesa provider callbacks are inbound to PesaGuard. PesaGuard webhooks are outbound to your receiver and have their own signature format. The Developer Platform's sandbox transaction listing is read-only; it does not process or simulate payments.</p>
+    </div>
   </article>
 </div>
 </main>

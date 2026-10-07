@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Signatures — PesaGuard docs</title>
-<meta name="description" content="Verify the sender before parsing the payload.">
+<meta name="description" content="Verify PesaGuard outbound webhook signatures before persisting or acting on event payloads.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhooks/signatures.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhooks/signatures.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,19 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Webhook guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Webhook guides</a><span aria-hidden="true">/</span>
           <span>Signatures</span></nav>
     <p class="docs-eyebrow">Webhook guides</p>
     <h1>Signatures <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">PesaGuard outbound webhooks use a timestamped HMAC-SHA-256 signature over canonical JSON. Verify the sender and timestamp before persisting or acting on the event.</p>
+    <ul>
+      <li>Use the endpoint's signing secret and the documented canonicalization rules.</li>
+      <li>Compare the expected digest in constant time and enforce a freshness window.</li>
+      <li>Deduplicate the accepted event so retries do not repeat business effects.</li>
+    </ul>
+    <p>This signature format applies to PesaGuard outbound webhooks. Inbound payment-provider callbacks may use different formats; do not reuse this verifier for them. Follow the detailed <a href="../../webhooks/verification.html">verification reference</a> and <a href="../../webhooks/retries.html">retry guidance</a>.</p>
   </article>
 </div>
 </main>

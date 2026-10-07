@@ -7,7 +7,9 @@
   <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
 <title>Custom provider — PesaGuard docs</title>
-<meta name="description" content="A provider-connector abstraction is evaluated, not implemented. Multi-rail is a separate scoping conversation.">
+<meta name="description" content="A generic provider connector is evaluated, not implemented; no custom-adapter contract is published.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/integrations/custom-provider.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/integrations/custom-provider.html">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
@@ -27,14 +29,19 @@
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="../../index.html">Integration guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
+          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
+          <a href="index.html">Integration guides</a><span aria-hidden="true">/</span>
           <span>Custom provider</span></nav>
     <p class="docs-eyebrow">Integration guides</p>
     <h1>Custom provider <span class="status-pill" data-tone="planned"><i></i>Planned</span></h1>
-    <p class="docs-lede">undefined</p>
-undefined
+    <p class="docs-lede">A provider-connector abstraction is being evaluated, not implemented. There is no published generic endpoint or custom-provider contract.</p>
+    <div class="callout" data-tone="warn">
+      <strong>Do not assume an adapter interface</strong>
+      <p>The current M-Pesa integration does not imply that arbitrary provider payloads can be submitted through the same flow. Multi-rail support requires a separate scope and a verified contract.</p>
+    </div>
+    <h2>Current documented scope</h2>
+    <p>See <a href="mpesa.html">M-Pesa (Daraja)</a> for the provider flow documented as current, or <a href="../../support/contact.html">contact support</a> to discuss requirements for another provider.</p>
   </article>
 </div>
 </main>
