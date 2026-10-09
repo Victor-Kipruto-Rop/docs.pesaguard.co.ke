@@ -902,7 +902,7 @@ const pages = [
     crumbs: crumb(["Docs", "index.html"], ["Security", "index.html"], ["Responsible disclosure"], null),
     blocks: [
       { h2: "Report privately" },
-      { p: "Send a report to <a href=\"mailto:pesaguard@gmail.com?subject=PesaGuard%20security%20report\">pesaguard@gmail.com</a> with the subject <code>PesaGuard security report</code>. This address is also published in <a href=\"../security.txt\">security.txt</a>. If GitHub private vulnerability reporting is enabled for the relevant repository, a private advisory is an alternative; do not open a public issue with reproduction details." },
+      { p: "Send a report to <a href=\"mailto:security@pesaguard.co.ke?subject=PesaGuard%20security%20report\">security@pesaguard.co.ke</a> with the subject <code>PesaGuard security report</code>. This address is also published in <a href=\"../security.txt\">security.txt</a>. If GitHub private vulnerability reporting is enabled for the relevant repository, a private advisory is an alternative; do not open a public issue with reproduction details." },
       { h2: "Include enough detail to reproduce safely" },
       { ul: [
         "Affected service, endpoint, component, and the security property that appears to fail.",
