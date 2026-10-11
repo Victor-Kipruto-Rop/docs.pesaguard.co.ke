@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SDKs · curl - PesaGuard docs</title>
 <meta name="description" content="Every example on this site runs with curl against your deployment.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/sdks/curl.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/sdks/curl">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="SDKs · curl - PesaGuard docs">
 <meta property="og:description" content="Every example on this site runs with curl against your deployment.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/sdks/curl.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/sdks/curl">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SDKs · curl - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/sdks/curl.html">
+<body data-path="/sdks/curl">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -63,7 +62,7 @@ curl --fail "$PESAGUARD_API_URL/openapi.json" -o openapi.json</code></pre>
   --data '{"recipient": "+254700000000", "message": "Your payment was received."}'</code></pre><p>Never reuse an idempotency key for a different logical operation. Save the response request id for correlation.</p>
     <h2>Debugging checklist</h2><ol><li>Confirm the URL and environment.</li><li>Use <code>--fail-with-body</code> so error responses remain visible.</li><li>Inspect status and stable error code, not only prose.</li><li>Redact the Authorization header before sharing output.</li></ol>
     <ul>
-      <li><a href="../sdks/index.html">SDKs</a></li>
+      <li><a href="../sdks/">SDKs</a></li>
       <li><a href="../api-reference/openapi.json">OpenAPI document</a></li>
     </ul>
   </article>
@@ -72,7 +71,7 @@ curl --fail "$PESAGUARD_API_URL/openapi.json" -o openapi.json</code></pre>
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

@@ -16,8 +16,39 @@
 (function () {
   "use strict";
 
+  var themeKey = "pesaguard-site-theme";
+  function setTheme(theme, persist) {
+    theme = theme === "dark" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+    if (persist) {
+      try { window.localStorage.setItem(themeKey, theme); } catch (err) {
+        if (window.console && window.console.warn) window.console.warn("docs UI: theme preference could not be saved.", err);
+      }
+    }
+    var themeColor = theme === "dark" ? "#121416" : "#ffffff";
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function (meta) {
+      meta.setAttribute("content", themeColor);
+      meta.removeAttribute("media");
+    });
+  }
+
+  try {
+    setTheme(window.localStorage.getItem(themeKey) || "light", false);
+  } catch (err) {
+    setTheme("light", false);
+  }
+
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var path = document.body.getAttribute("data-path") || "/";
+
+  function cleanPageHref(href) {
+    var parts = String(href).match(/^([^?#]*)([?#].*)?$/);
+    var pathname = parts[1];
+    if (pathname === "index.html") pathname = "./";
+    else if (pathname.slice(-11) === "/index.html") pathname = pathname.slice(0, -10);
+    else pathname = pathname.replace(/\.html$/, "");
+    return (pathname || "./") + (parts[2] || "");
+  }
 
   /* Runs one feature setup; a failure is logged and contained. */
   function safe(setup) {
@@ -27,6 +58,33 @@
       if (window.console && window.console.error) window.console.error("docs UI:", err);
     }
   }
+
+  safe(function () {
+    var headerInner = document.querySelector(".docs-header-inner");
+    if (!headerInner) return;
+
+    var themeToggle = headerInner.querySelector(".docs-theme-toggle");
+    var navToggle = headerInner.querySelector(".docs-nav-toggle");
+    if (!themeToggle) {
+      themeToggle = document.createElement("button");
+      themeToggle.type = "button";
+      themeToggle.className = "theme-toggle docs-theme-toggle";
+      themeToggle.innerHTML = '<svg class="theme-icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><svg class="theme-icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg>';
+      headerInner.insertBefore(themeToggle, navToggle || null);
+    }
+
+    function syncThemeLabel() {
+      var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      themeToggle.setAttribute("aria-label", "Switch to " + next + " theme");
+      themeToggle.title = "Switch to " + next + " theme";
+    }
+
+    themeToggle.addEventListener("click", function () {
+      setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark", true);
+      syncThemeLabel();
+    });
+    syncThemeLabel();
+  });
 
   safe(function () {
     /* --- Section sidebars -------------------------------------------------
@@ -61,7 +119,7 @@
     sectionSidebar.setAttribute("aria-label", sectionGroups[0][0] + " navigation");
     sectionSidebar.innerHTML = sectionGroups.map(function (group) {
       return '<div class="docs-nav-group"><p>' + group[0] + '</p><ul>' + group[1].map(function (item) {
-        return '<li><a href="' + sectionPrefix + item[1] + '">' + item[0] + '</a></li>';
+        return '<li><a href="' + cleanPageHref(sectionPrefix + item[1]) + '">' + item[0] + '</a></li>';
       }).join("") + '</ul></div>';
     }).join("");
     var sectionShell = document.querySelector(".docs-shell");
@@ -81,7 +139,7 @@
     webhookSidebar.className = "docs-sidebar";
     webhookSidebar.setAttribute("aria-label", "Webhooks navigation");
     webhookSidebar.innerHTML = '<div class="docs-nav-group"><p>Webhooks</p><ul>' + webhookLinks.map(function (item) {
-      return '<li><a href="' + webhookPrefix + item[1] + '">' + item[0] + '</a></li>';
+      return '<li><a href="' + cleanPageHref(webhookPrefix + item[1]) + '">' + item[0] + '</a></li>';
     }).join("") + '</ul></div>';
     var webhookShell = document.querySelector(".docs-shell");
     var webhookArticle = webhookShell && webhookShell.querySelector("article");
@@ -104,7 +162,7 @@
     testingSidebar.setAttribute("aria-label", "Testing navigation");
     testingSidebar.innerHTML = testingGroups.map(function (group) {
       return '<div class="docs-nav-group"><p>' + group[0] + '</p><ul>' + group[1].map(function (item) {
-        return '<li><a href="' + testingPrefix + item[1] + '">' + item[0] + '</a></li>';
+        return '<li><a href="' + cleanPageHref(testingPrefix + item[1]) + '">' + item[0] + '</a></li>';
       }).join("") + '</ul></div>';
     }).join("");
     var testingShell = document.querySelector(".docs-shell");
@@ -121,14 +179,14 @@
     var supportPrefix = "../".repeat(supportDepth);
     var supportGroups = [
       ["Support", [["Overview", "index.html"], ["FAQ", "faq.html"], ["Troubleshooting", "troubleshooting.html"], ["Contact support", "contact.html"]]],
-      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.co.ke"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]]
+      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.victorkipruto.com"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]]
     ];
     var supportSidebar = document.createElement("aside");
     supportSidebar.className = "docs-sidebar";
     supportSidebar.setAttribute("aria-label", "Support navigation");
     supportSidebar.innerHTML = supportGroups.map(function (group) {
       return '<div class="docs-nav-group"><p>' + group[0] + '</p><ul>' + group[1].map(function (item) {
-        return '<li><a href="' + (/^https?:/.test(item[1]) ? "" : supportPrefix) + item[1] + '">' + item[0] + '</a></li>';
+        return '<li><a href="' + cleanPageHref((/^https?:/.test(item[1]) ? "" : supportPrefix) + item[1]) + '">' + item[0] + '</a></li>';
       }).join("") + '</ul></div>';
     }).join("");
     var supportShell = document.querySelector(".docs-shell");
@@ -154,10 +212,16 @@
           '<section><h2>Documentation</h2><a href="' + footerPrefix + 'index.html">Documentation home</a><a href="' + footerPrefix + 'getting-started/">Getting started</a><a href="' + footerPrefix + 'concepts/">Concepts</a><a href="' + footerPrefix + 'concepts/architecture.html">Architecture</a><a href="' + footerPrefix + 'changelog/">Changelog</a><a href="' + footerPrefix + 'search/">Search documentation</a></section>' +
           '<section><h2>API</h2><a href="' + footerPrefix + 'api/">API overview</a><a href="' + footerPrefix + 'api/authentication.html">Authentication</a><a href="' + footerPrefix + 'guides/transactions/">Transactions</a><a href="' + footerPrefix + 'guides/reconciliation/">Reconciliation</a><a href="' + footerPrefix + 'webhooks/">Webhooks</a><a href="' + footerPrefix + 'api/errors.html">Errors</a><a href="' + footerPrefix + 'api/rate-limits.html">Rate limits</a><a href="' + footerPrefix + 'api/pagination.html">Pagination</a><a href="' + footerPrefix + 'api/idempotency.html">Idempotency</a><a href="' + footerPrefix + 'api-reference/openapi.json">API reference</a></section>' +
           '<section><h2>Developers</h2><a href="' + footerPrefix + 'sdks/">SDKs and clients</a><a href="' + footerPrefix + 'guides/">Developer guides</a><a href="' + footerPrefix + 'webhooks/">Webhook delivery</a><a href="' + footerPrefix + 'api-reference/openapi.json">OpenAPI specification</a><a href="' + footerPrefix + 'migration/">Migration guides</a><a href="' + footerPrefix + 'testing/">Testing</a><a href="' + footerPrefix + 'environments/">Environments</a></section>' +
-          '<section><h2>Security &amp; support</h2><a href="' + footerPrefix + 'security/">Security overview</a><a href="' + footerPrefix + 'security/authentication.html">Authentication</a><a href="' + footerPrefix + 'security/tenant-isolation.html">Tenant isolation</a><a href="' + footerPrefix + 'security/encryption.html">Encryption</a><a href="' + footerPrefix + 'security/data-protection.html">Data protection</a><a href="' + footerPrefix + 'security/responsible-disclosure.html">Responsible disclosure</a><a href="' + footerPrefix + 'support/">Help and support</a><a href="' + footerPrefix + 'support/contact.html">Contact support</a></section>' +
+          '<section><h2>Security &amp; support</h2><a href="' + footerPrefix + 'security/">Security overview</a><a href="' + footerPrefix + 'security/authentication.html">Authentication</a><a href="' + footerPrefix + 'security/tenant-isolation.html">Tenant isolation</a><a href="' + footerPrefix + 'security/encryption.html">Encryption</a><a href="' + footerPrefix + 'security/data-protection.html">Data protection</a><a href="' + footerPrefix + 'security/responsible-disclosure.html">Responsible disclosure</a><a href="' + footerPrefix + 'support/">Help and support</a><a href="' + footerPrefix + 'support/contact.html">Contact support</a><a href="mailto:support@pesaguard.co.ke">Email support</a></section>' +
         '</div>' +
-        '<div class="docs-footer-status"><a href="https://status.pesaguard.co.ke"><span class="docs-status-dot" aria-hidden="true"></span><strong>All systems operational</strong><span>View system status</span></a></div>' +
-        '<div class="docs-footer-utility"><span>Developer documentation for PesaGuard financial infrastructure.</span><nav aria-label="Footer utility"><a href="' + footerPrefix + 'support/">Support</a><a href="' + footerPrefix + 'security/responsible-disclosure.html">Security contact</a><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">GitHub source</a><a href="https://status.pesaguard.co.ke">Status</a><a href="#main">Back to top ↑</a></nav></div>';
+        '<div class="docs-footer-status"><a href="https://status.pesaguard.victorkipruto.com"><span class="docs-status-dot" aria-hidden="true"></span><strong>All systems operational</strong><span>View system status</span></a></div>' +
+        '<div class="docs-footer-utility"><span>Developer documentation for PesaGuard financial infrastructure.</span><nav aria-label="Footer utility"><a href="' + footerPrefix + 'support/">Support</a><a href="mailto:support@pesaguard.co.ke">Email support</a><a href="' + footerPrefix + 'security/responsible-disclosure.html">Security contact</a><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">GitHub source</a><a href="https://status.pesaguard.victorkipruto.com">Status</a><a href="#main">Back to top ↑</a></nav></div>';
+      footerInner.querySelectorAll("a[href]").forEach(function (link) {
+        var href = link.getAttribute("href");
+        if (!/^https?:|^\/\//.test(href) || href.indexOf(window.location.origin) === 0) {
+          link.setAttribute("href", cleanPageHref(href));
+        }
+      });
     }
   });
 
@@ -180,7 +244,7 @@
     sdkSidebar.setAttribute("aria-label", "SDK navigation");
     sdkSidebar.innerHTML = sdkGroups.map(function (group) {
       return '<div class="docs-nav-group"><p>' + group[0] + '</p><ul>' + group[1].map(function (item) {
-        return '<li><a href="' + sdkPrefix + item[1] + '">' + item[0] + '</a></li>';
+        return '<li><a href="' + cleanPageHref(sdkPrefix + item[1]) + '">' + item[0] + '</a></li>';
       }).join("") + '</ul></div>';
     }).join("");
     var sdkShell = document.querySelector(".docs-shell");
@@ -202,7 +266,7 @@
     migrationSidebar.className = "docs-sidebar";
     migrationSidebar.setAttribute("aria-label", "Migration navigation");
     migrationSidebar.innerHTML = '<div class="docs-nav-group"><p>Migration</p><ul>' + migrationLinks.map(function (item) {
-      return '<li><a href="' + migrationPrefix + item[1] + '">' + item[0] + '</a></li>';
+      return '<li><a href="' + cleanPageHref(migrationPrefix + item[1]) + '">' + item[0] + '</a></li>';
     }).join("") + '</ul></div>';
     var migrationShell = document.querySelector(".docs-shell");
     var migrationArticle = migrationShell && migrationShell.querySelector("article");
@@ -237,6 +301,12 @@
     var headerInner = document.querySelector(".docs-header-inner");
     var primaryNav = document.getElementById("primary-nav") || document.querySelector(".docs-header-links");
     var navToggle = headerInner && headerInner.querySelector(".docs-nav-toggle");
+    if (primaryNav && !primaryNav.querySelector('a[href="mailto:support@pesaguard.co.ke"]')) {
+      var supportLink = document.createElement("a");
+      supportLink.href = "mailto:support@pesaguard.co.ke";
+      supportLink.textContent = "Email support";
+      primaryNav.appendChild(supportLink);
+    }
     if (primaryNav && !primaryNav.id) primaryNav.id = "primary-nav";
     if (primaryNav && !navToggle && headerInner) {
       navToggle = document.createElement("button");
@@ -292,7 +362,7 @@
     sidebar.setAttribute("aria-label", "Guides navigation");
     sidebar.innerHTML = groups.map(function (group) {
       return '<div class="docs-nav-group"><p>' + group[0] + '</p><ul>' + group[1].map(function (item) {
-        return '<li><a href="' + prefix + item[1] + '">' + item[0] + '</a></li>';
+        return '<li><a href="' + cleanPageHref(prefix + item[1]) + '">' + item[0] + '</a></li>';
       }).join("") + '</ul></div>';
     }).join("");
     var shell = document.querySelector(".docs-shell");
@@ -369,7 +439,7 @@
       matches.forEach(function (item) {
         var link = document.createElement("a");
         link.className = "search-result";
-        link.href = item.href.indexOf("http") === 0 ? item.href : relativeUrl(item.href);
+        link.href = item.href.indexOf("http") === 0 ? item.href : relativeUrl(cleanPageHref(item.href));
         var section = document.createElement("small");
         section.textContent = item.section;
         var title = document.createElement("strong");

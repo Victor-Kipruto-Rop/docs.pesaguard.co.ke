@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reconciliation guides · Incident management - PesaGuard docs</title>
 <meta name="description" content="Search, bulk-assign, auto-escalate and filter presets: the operational endpoints for running a queue of many discrepancies rather than one at a time.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/reconciliation/incident-management.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/reconciliation/incident-management">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Reconciliation guides · Incident management - PesaGuard docs">
 <meta property="og:description" content="Search, bulk-assign, auto-escalate and filter presets: the operational endpoints for running a queue of many discrepancies rather than one at a time.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/reconciliation/incident-management.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/reconciliation/incident-management">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Reconciliation guides · Incident management - PesaGuard docs">
@@ -29,26 +28,26 @@
 <link rel="stylesheet" href="../../css/animations.css">
 <link rel="stylesheet" href="../../css/responsive.css">
 </head>
-<body data-path="/guides/reconciliation/incident-management.html">
+<body data-path="/guides/reconciliation/incident-management">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../../index.html"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../../"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../../getting-started/">Getting started</a>
     <a href="../../concepts/">Concepts</a>
     <a href="../../api/">API</a>
     <a href="../../webhooks/">Webhooks</a>
     <a href="../../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="index.html">Reconciliation guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../">Docs</a><span aria-hidden="true">/</span>
+          <a href="../../guides/">Guides</a><span aria-hidden="true">/</span>
+          <a href="./">Reconciliation guides</a><span aria-hidden="true">/</span>
           <span>Incident management</span></nav>
     <p class="docs-eyebrow">Reconciliation guides</p>
     <h1>Incident management</h1>
@@ -75,10 +74,10 @@ Authorization: Bearer &lt;token&gt;</code></pre>
     { "id": "disc-8f2c...", "trans_id": "QGH7XABC12", "anomaly_type": "missing_payment", "severity": "critical", "assignee": null, "detected_at": "2026-09-20T09:00:11+00:00" }
   ]
 }</code></pre>
-    <p>Unlike <code>GET /discrepancies</code>, this route requires a resolved tenant context and returns <code>403</code> without one. Note <code>assignee</code> here is the raw column value &mdash; <code>null</code> when nothing is assigned &mdash; not the <code>"Unassigned"</code> placeholder string the <a href="discrepancy-actions.html#assignment-queue">assignment queue</a> and CSV export substitute in.</p>
+    <p>Unlike <code>GET /discrepancies</code>, this route requires a resolved tenant context and returns <code>403</code> without one. Note <code>assignee</code> here is the raw column value &mdash; <code>null</code> when nothing is assigned &mdash; not the <code>"Unassigned"</code> placeholder string the <a href="discrepancy-actions#assignment-queue">assignment queue</a> and CSV export substitute in.</p>
 
     <h2>Bulk assign</h2>
-    <p>Assigns many incidents to one owner in one call, the assignment equivalent of <a href="discrepancy-actions.html">bulk-resolve</a>: same <code>ids</code> / <code>skipped_ids</code> shape, one timeline entry per incident, and one audit event for the whole batch (not one per incident), the same convention <a href="discrepancy-actions.html">bulk-resolve</a> uses.</p>
+    <p>Assigns many incidents to one owner in one call, the assignment equivalent of <a href="discrepancy-actions">bulk-resolve</a>: same <code>ids</code> / <code>skipped_ids</code> shape, one timeline entry per incident, and one audit event for the whole batch (not one per incident), the same convention <a href="discrepancy-actions">bulk-resolve</a> uses.</p>
     <div class="code-head"><span class="method">POST</span><code>/incidents/bulk-assign</code></div>
     <pre class="docs-code" data-lang="http"><code>POST /incidents/bulk-assign
 Authorization: Bearer &lt;token&gt;
@@ -129,9 +128,9 @@ Content-Type: application/json
 
     <h2>Related</h2>
     <ul>
-      <li><a href="index.html">Reconciliation guides</a></li>
-      <li><a href="discrepancy-actions.html">Discrepancy actions</a></li>
-      <li><a href="analytics.html">Analytics &amp; reporting</a></li>
+      <li><a href="./">Reconciliation guides</a></li>
+      <li><a href="discrepancy-actions">Discrepancy actions</a></li>
+      <li><a href="analytics">Analytics &amp; reporting</a></li>
     </ul>
   </article>
 </div>
@@ -139,7 +138,7 @@ Content-Type: application/json
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../../js/app.js" defer></script>

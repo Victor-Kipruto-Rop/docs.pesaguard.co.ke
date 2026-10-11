@@ -3,8 +3,8 @@
  * languages, webhook events, security layers, environments, testing topics,
  * migration notes, changelog entries, support topics and guide leaves).
  *
- * A factory exists so a leaf page still carries real, page-specific detail —
- * status codes, header names, field lists, checklists — without restating the
+ * A factory exists so a leaf page still carries real, page-specific detail :
+ * status codes, header names, field lists, checklists: without restating the
  * same scaffolding by hand a hundred times. Every field a factory needs is
  * authored per page below, never inferred.
  */
@@ -16,7 +16,7 @@ const { statusNote } = require("./shared");
 const page = (spec) => spec;
 
 /* ---------------------------------------------------------------------------
- * Errors — one class of failure, end to end.
+ * Errors: one class of failure, end to end.
  * ------------------------------------------------------------------------- */
 
 function errorFamily(spec) {
@@ -49,7 +49,7 @@ function errorFamily(spec) {
 }
 
 /* ---------------------------------------------------------------------------
- * Webhook events — when it fires, what it carries, what a consumer does.
+ * Webhook events: when it fires, what it carries, what a consumer does.
  * ------------------------------------------------------------------------- */
 
 function eventFamily(spec) {
@@ -62,7 +62,7 @@ function eventFamily(spec) {
       ["Header", "Value"],
       ["<code>X-Webhook-Event</code>", `<code>${spec.event}</code>`],
       ["<code>X-Webhook-Timestamp</code>", "Unix seconds; part of the signed payload."],
-      ["<code>X-Webhook-Signature</code>", "<code>t=&lt;timestamp&gt;,v1=&lt;hex&gt;</code> — HMAC-SHA256 over <code>timestamp + \".\" + body</code>."],
+      ["<code>X-Webhook-Signature</code>", "<code>t=&lt;timestamp&gt;,v1=&lt;hex&gt;</code>: HMAC-SHA256 over <code>timestamp + \".\" + body</code>."],
       ["<code>User-Agent</code>", "<code>PesaGuard-Webhook-Dispatcher/2.0</code>"],
       ["<code>Content-Type</code>", "<code>application/json</code>"],
     ]),
@@ -90,7 +90,7 @@ function eventFamily(spec) {
 }
 
 /* ---------------------------------------------------------------------------
- * Security layers — threat, control, evidence, verification.
+ * Security layers: threat, control, evidence, verification.
  * ------------------------------------------------------------------------- */
 
 function securityFamily(spec) {
@@ -123,7 +123,7 @@ function securityFamily(spec) {
 }
 
 /* ---------------------------------------------------------------------------
- * SDK languages — install, configure, call, handle failure, test.
+ * SDK languages: install, configure, call, handle failure, test.
  * ------------------------------------------------------------------------- */
 
 function sdkFamily(spec) {
@@ -161,7 +161,7 @@ function sdkFamily(spec) {
 }
 
 /* ---------------------------------------------------------------------------
- * Environments — one deployment variant.
+ * Environments: one deployment variant.
  * ------------------------------------------------------------------------- */
 
 function environmentFamily(spec) {
@@ -193,7 +193,7 @@ function environmentFamily(spec) {
 }
 
 /* ---------------------------------------------------------------------------
- * Testing topics — one practice per page.
+ * Testing topics: one practice per page.
  * ------------------------------------------------------------------------- */
 
 function testingFamily(spec) {
@@ -226,7 +226,7 @@ function testingFamily(spec) {
 }
 
 /* ---------------------------------------------------------------------------
- * Guides — one task per leaf page.
+ * Guides: one task per leaf page.
  * ------------------------------------------------------------------------- */
 
 function guideFamily(spec) {
@@ -263,7 +263,7 @@ function guideFamily(spec) {
 }
 
 /* ---------------------------------------------------------------------------
- * Operations & governance leaves — migration, changelog, support.
+ * Operations & governance leaves: migration, changelog, support.
  * ------------------------------------------------------------------------- */
 
 function noteFamily(spec) {

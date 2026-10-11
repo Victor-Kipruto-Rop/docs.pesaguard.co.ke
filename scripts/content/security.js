@@ -1,5 +1,5 @@
 /**
- * Security — authentication, authorization, keys, webhooks, encryption,
+ * Security: authentication, authorization, keys, webhooks, encryption,
  * isolation, data protection and responsible disclosure.
  */
 "use strict";

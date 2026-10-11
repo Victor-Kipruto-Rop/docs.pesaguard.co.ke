@@ -6,8 +6,7 @@
 <title>SDKs - PesaGuard docs</title>
 <meta name="description" content="No official SDKs today: generate a client from the OpenAPI document with any HTTP stack.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/sdks/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,14 +31,14 @@
 <body data-path="/sdks/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -47,25 +46,25 @@
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="SDK navigation">
   <div class="docs-nav-group"><p>SDKs</p><ul>
-    <li><a href="index.html" aria-current="page">Overview</a></li>
+    <li><a href="./" aria-current="page">Overview</a></li>
     <li><a href="../api-reference/openapi.json">OpenAPI contract</a></li>
   </ul></div>
   <div class="docs-nav-group"><p>Client examples</p><ul>
-    <li><a href="curl.html">curl</a></li>
-    <li><a href="javascript.html">JavaScript</a></li>
-    <li><a href="typescript.html">TypeScript</a></li>
-    <li><a href="python.html">Python</a></li>
-    <li><a href="java.html">Java</a></li>
+    <li><a href="curl">curl</a></li>
+    <li><a href="javascript">JavaScript</a></li>
+    <li><a href="typescript">TypeScript</a></li>
+    <li><a href="python">Python</a></li>
+    <li><a href="java">Java</a></li>
   </ul></div>
   <div class="docs-nav-group"><p>Integration foundations</p><ul>
-    <li><a href="../api/authentication.html">Authentication</a></li>
-    <li><a href="../api/errors.html">Errors</a></li>
-    <li><a href="../api/idempotency.html">Idempotency</a></li>
-    <li><a href="../api/pagination.html">Pagination</a></li>
+    <li><a href="../api/authentication">Authentication</a></li>
+    <li><a href="../api/errors">Errors</a></li>
+    <li><a href="../api/idempotency">Idempotency</a></li>
+    <li><a href="../api/pagination">Pagination</a></li>
   </ul></div>
 </aside>
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>SDKs</span></nav>
     <p class="docs-eyebrow">SDKs</p>
     <h1>SDKs and client libraries</h1>
@@ -78,13 +77,13 @@
 npx @openapitools/openapi-generator-cli generate \
   -i openapi.json -g python -o ./client</code></pre>
     <p>Official clients (Python, TypeScript, JavaScript) will follow once the v1 contract is verified in production. A client generated from the published spec is the supported path until then.</p>
-    <h2>Choose an integration path</h2><table><thead><tr><th>Path</th><th>Best for</th><th>Guide</th></tr></thead><tbody><tr><td>curl</td><td>Health checks, debugging and reproducible support requests.</td><td><a href="curl.html">curl guide</a></td></tr><tr><td>JavaScript</td><td>Node services and fetch-based integrations.</td><td><a href="javascript.html">JavaScript guide</a></td></tr><tr><td>TypeScript</td><td>Typed application boundaries and generated models.</td><td><a href="typescript.html">TypeScript guide</a></td></tr><tr><td>Python</td><td>Workers, reconciliation jobs and operational tooling.</td><td><a href="python.html">Python guide</a></td></tr><tr><td>Java</td><td>JVM services and generated client workflows.</td><td><a href="java.html">Java guide</a></td></tr></tbody></table>
+    <h2>Choose an integration path</h2><table><thead><tr><th>Path</th><th>Best for</th><th>Guide</th></tr></thead><tbody><tr><td>curl</td><td>Health checks, debugging and reproducible support requests.</td><td><a href="curl">curl guide</a></td></tr><tr><td>JavaScript</td><td>Node services and fetch-based integrations.</td><td><a href="javascript">JavaScript guide</a></td></tr><tr><td>TypeScript</td><td>Typed application boundaries and generated models.</td><td><a href="typescript">TypeScript guide</a></td></tr><tr><td>Python</td><td>Workers, reconciliation jobs and operational tooling.</td><td><a href="python">Python guide</a></td></tr><tr><td>Java</td><td>JVM services and generated client workflows.</td><td><a href="java">Java guide</a></td></tr></tbody></table>
     <h2>Client responsibilities</h2><ol><li>Load the correct environment base URL and credential at runtime.</li><li>Send bearer credentials over HTTPS without logging secrets.</li><li>Apply timeouts and bounded retries with jitter.</li><li>Reuse idempotency keys for uncertain writes.</li><li>Parse stable error codes, preserve request ids and redact payloads.</li><li>Keep tenant context and API version explicit in telemetry.</li></ol>
     <h2>Generated-client review</h2><p>Before production use, inspect generated authentication, timeout, serialization, pagination and exception behavior. Add contract tests for <code>401</code>, <code>403</code>, <code>409</code>, <code>429</code> and 5xx responses, then pin the OpenAPI input used for generation.</p>
     <h2>Related</h2>
     <ul>
       <li><a href="../api-reference/openapi.json">OpenAPI document</a></li>
-      <li><a href="../api/index.html">API reference</a></li>
+      <li><a href="../api/">API reference</a></li>
     </ul>
   </article>
 </div>
@@ -92,7 +91,7 @@ npx @openapitools/openapi-generator-cli generate \
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

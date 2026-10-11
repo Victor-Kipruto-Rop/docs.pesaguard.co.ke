@@ -1,5 +1,5 @@
 /**
- * SDKs and tooling — curl is live today; language clients are generated from
+ * SDKs and tooling: curl is live today; language clients are generated from
  * the OpenAPI document because no official library is published yet.
  */
 "use strict";
@@ -47,7 +47,7 @@ pages.push({
     ]),
     B.h2("What every client must handle"),
     B.checklist([
-      "Timeouts on every request — an unbounded wait is an outage waiting to happen.",
+      "Timeouts on every request, an unbounded wait is an outage waiting to happen.",
       "Bounded retries with backoff and jitter, only for retryable classes (429, 5xx, connection errors).",
       "Error codes parsed from the envelope so the caller can branch without string matching.",
       "The request id captured in logs, so a failure can be traced end to end.",
@@ -78,7 +78,7 @@ pages.push(sdkFamily({
   description:
     "The reference tool for the API: environment-based configuration, explicit headers, and the response envelopes you will see.",
   lede:
-    "curl is the tool every example on this site uses, because it shows exactly what goes on the wire — no library behaviour hiding between you and the contract.",
+    "curl is the tool every example on this site uses, because it shows exactly what goes on the wire, no library behaviour hiding between you and the contract.",
   intro:
     "Set three variables once and the rest of the examples in this documentation become copy-paste. Nothing here needs a client library, which is what makes it useful for runbooks and support.",
   generateNote: "No generation step is needed: curl is the client. For typed models, generate from the contract instead (see the SDK overview).",
@@ -93,10 +93,10 @@ pages.push(sdkFamily({
   errors:
     '# Capture the status and the body separately\nstatus=$(curl -sS -o /tmp/body.json -w "%{http_code}" \\\n  "$PESAGUARD_API_URL/tenant/current" \\\n  -H "Authorization: Bearer $PESAGUARD_TOKEN")\n\ncase "$status" in\n  200) jq . /tmp/body.json ;;\n  401|403) echo "credential problem: $(jq -r .error.code /tmp/body.json)" ;;\n  429|5??) echo "retryable: $(jq -r .request_id /tmp/body.json)" ;;\n  *) echo "unexpected $status"; jq . /tmp/body.json ;;\nesac',
   errorRules: [
-    "Capture the HTTP status and the body separately — <code>jq</code> on an HTML error page is a confusing way to spend an afternoon.",
+    "Capture the HTTP status and the body separately, <code>jq</code> on an HTML error page is a confusing way to spend an afternoon.",
     "Always surface <code>request_id</code> when something fails; it is what the operator searches for.",
     "Use <code>--max-time</code>: an unbounded curl in a cron job is a stuck worker.",
-    "Avoid <code>--retry</code> on writes unless you have read the idempotency page — the retry is safe, but your reconciliation of the result still needs to be deliberate.",
+    "Avoid <code>--retry</code> on writes unless you have read the idempotency page. The retry is safe, but you still need to reconcile the result deliberately.",
   ],
   patterns: [
     ["Health probing", "<code>curl -sS --max-time 5 \"$PESAGUARD_API_URL/health\"</code> and read the per-dependency status."],
@@ -105,7 +105,7 @@ pages.push(sdkFamily({
     ["Posting a callback body", "Send <code>Content-Type: application/json</code> and <code>--data @payload.json</code> so the body is not mangled by shell quoting."],
   ],
   pitfalls: [
-    "Single quotes around a <code>$VARIABLE</code> prevent expansion — a common cause of \"invalid credential\" reports.",
+    "Single quotes around a <code>$VARIABLE</code> prevent expansion. This is a common cause of \"invalid credential\" reports.",
     "On Windows shells, line continuations differ; put the command on one line inside a script file.",
     "Never paste a real credential into a shared terminal history; export it from a secret manager or an ignored env file.",
   ],
@@ -148,7 +148,7 @@ pages.push(sdkFamily({
   errors:
     'try:\n    resp = session.get(f"{BASE_URL}/discrepancies", params={"limit": 25}, timeout=15)\nexcept requests.Timeout:\n    raise  # retry with backoff at the caller, never silently\nexcept requests.RequestException as exc:\n    raise RuntimeError("transport failure") from exc\n\nif resp.status_code >= 400:\n    body = resp.json()\n    code = body["error"]["code"]\n    request_id = body["request_id"]\n    if code in {"RATE_LIMITED", "INTERNAL_ERROR"}:\n        raise RuntimeError(f"retryable {code} ({request_id})")\n    raise ValueError(f"{code}: {body["error"]["message"]}")',
   errorRules: [
-    "Branch on <code>error.code</code> — never on the message text.",
+    "Branch on <code>error.code</code>: never on the message text.",
     "Keep <code>request_id</code> in your logs and in any exception you raise.",
     "Set an explicit timeout on every call, including inside workers.",
     "Treat <code>DUPLICATE_EVENT</code> as success-with-existing-record, not as a failure.",
@@ -161,7 +161,7 @@ pages.push(sdkFamily({
     ["Async work", "Celery or RQ workers: never hold a request open while waiting on another service."],
   ],
   pitfalls: [
-    "Reading credentials from source or notebooks — use the environment or a secret manager.",
+    "Reading credentials from source or notebooks, use the environment or a secret manager.",
     "Catching <code>Exception</code> and continuing, which converts a failed write into silent data loss.",
     "Retrying a 4xx that cannot succeed, doubling load for no benefit.",
   ],
@@ -190,7 +190,7 @@ pages.push(sdkFamily({
   lede:
     "There is no published npm package, so this page shows the pattern that works everywhere: <code>fetch</code> with an abort timeout, a small error class built from the envelope, and bounded retries.",
   intro:
-    "In Node 18+ and every modern browser, <code>fetch</code> is available without a dependency. The only thing it does not give you is a timeout — and an un-timed request is the most common cause of a hanging integration.",
+    "In Node 18+ and every modern browser, <code>fetch</code> is available without a dependency. The only thing it does not give you is a timeout, and an un-timed request is the most common cause of a hanging integration.",
   generateNote:
     "If you want typed models in a Node service, generate them from the deployment contract rather than hand-writing shapes:",
   install:
@@ -217,7 +217,7 @@ pages.push(sdkFamily({
   ],
   pitfalls: [
     "Relying on the platform's default timeout, which is often infinite for outbound calls.",
-    "Using a shared token in client-side code — visible to anyone with devtools.",
+    "Using a shared token in client-side code, visible to anyone with devtools.",
     "Assuming a rejected promise means the write did not happen: check the code before retrying.",
   ],
   note: ["Browser clients need a server", "PesaGuard credentials are bearer tokens for server-to-server use. If a browser needs data, expose it through your own backend so the credential never reaches the client.", "danger"],
@@ -251,7 +251,7 @@ pages.push(sdkFamily({
     'export class ApiError extends Error {\n  constructor(readonly code: string, readonly status: number, readonly requestId: string) {\n    super(`${code} (${requestId})`);\n  }\n}\n\nexport async function call<T>(path: string, init: RequestInit = {}): Promise<T> {\n  const controller = new AbortController();\n  const timer = setTimeout(() => controller.abort(), 15_000);\n  try {\n    const res = await fetch(new URL(path, BASE_URL), {\n      ...init,\n      signal: controller.signal,\n      headers: {\n        Accept: "application/json",\n        Authorization: `Bearer ${TOKEN}`,\n        ...(init.body ? { "Content-Type": "application/json" } : {}),\n      },\n    });\n    const body = (await res.json()) as Envelope<T>;\n    if (body.status === "error") throw new ApiError(body.error.code, res.status, body.request_id);\n    return body.data;\n  } finally {\n    clearTimeout(timer);\n  }\n}',
   requestLabel: "client.ts",
   requestNote:
-    "Narrowing on <code>status</code> rather than the HTTP code means a 4xx or 5xx can never be mistaken for a payload — the type system enforces the envelope contract.",
+    "Narrowing on <code>status</code> rather than the HTTP code means a 4xx or 5xx can never be mistaken for a payload. The type system enforces the envelope contract.",
   errors:
     'try {\n  const tenant = await call<{ tenant_id: string }>("/tenant/current");\n  console.log(tenant.tenant_id);\n} catch (err) {\n  if (err instanceof ApiError) {\n    // branch on err.code only, never on err.message\n    if (["RATE_LIMITED", "INTERNAL_ERROR"].includes(err.code)) await scheduleRetry(err.requestId);\n    else report(err.code, err.requestId);\n    return;\n  }\n  throw err; // transport failure: let the caller decide\n}',
   errorLabel: "usage.ts",
@@ -259,7 +259,7 @@ pages.push(sdkFamily({
     "Model the envelope as a discriminated union so an error can never be read as data.",
     "Branch on the code; treat <code>message</code> as log text only.",
     "Keep <code>request_id</code> on the error object so callers can log it without re-parsing.",
-    "Enable <code>strict</code> and <code>noUncheckedIndexedAccess</code> — the point of the exercise is compile-time certainty.",
+    "Enable <code>strict</code> and <code>noUncheckedIndexedAccess</code>: the point of the exercise is compile-time certainty.",
   ],
   patterns: [
     ["Pagination", "Type <code>meta</code> and iterate to <code>total_pages</code> rather than a fixed page count."],
@@ -269,7 +269,7 @@ pages.push(sdkFamily({
   ],
   pitfalls: [
     "Casting the response with <code>as any</code>, which discards exactly the safety you generated types for.",
-    "Assuming a thrown fetch error means the write failed — check the code, then reconcile.",
+    "Assuming a thrown fetch error means the write failed, check the code, then reconcile.",
     "Committing generated clients without a note recording which deployment contract they came from.",
   ],
   note: ["Regenerate after every contract change", "Generated types are only as current as the contract they came from. Record the spec version in your client's README so the next engineer knows what to regenerate.", "warn"],
@@ -293,7 +293,7 @@ pages.push(sdkFamily({
   lede:
     "No official Java library is published. Generate the client from your deployment's OpenAPI document, then wrap it in one small layer that applies timeouts, retries and error translation consistently.",
   intro:
-    "The API is ordinary JSON over HTTPS, so a generated client plus <code>java.net.http.HttpClient</code> is enough. What matters is not the library choice — it is that timeouts, retry classification and credential handling are decided once rather than per call site.",
+    "The API is ordinary JSON over HTTPS, so a generated client plus <code>java.net.http.HttpClient</code> is enough. What matters is not the library choice but deciding timeouts, retry classification, and credential handling once rather than per call site.",
   generateNote: "Generate a client bound to the contract you actually call:",
   install:
     'npx @openapitools/openapi-generator-cli generate \\\n  -i openapi.json -g java -o ./pesaguard-client \\\n  --library native --api-package ke.pesaguard.client.api \\\n  --model-package ke.pesaguard.client.model',
@@ -302,7 +302,7 @@ pages.push(sdkFamily({
   request:
     'HttpRequest request = auth.uri(URI.create(baseUrl + "/tenant/current")).GET().build();\nHttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());\n\nif (response.statusCode() >= 400) {\n    throw ApiException.from(response.statusCode(), response.body());\n}\nSystem.out.println(response.body());',
   requestNote:
-    "Parse the body into the envelope type rather than a raw map, so a renamed field fails at compile time or at least at the boundary — not three services later.",
+    "Parse the body into the envelope type rather than a raw map, so a renamed field fails at compile time or at least at the boundary, rather than three services later.",
   errors:
     'public final class ApiException extends RuntimeException {\n    private final String code;\n    private final String requestId;\n\n    public static ApiException from(int status, String body) {\n        JsonNode json = mapper.readTree(body);\n        return new ApiException(\n            json.path("error").path("code").asText("HTTP_" + status),\n            json.path("request_id").asText(""));\n    }\n\n    public boolean retryable() {\n        return code.equals("RATE_LIMITED") || code.equals("INTERNAL_ERROR");\n    }\n}',
   errorRules: [

@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Webhook security - PesaGuard docs</title>
 <meta name="description" content="Detailed security guidance for outbound webhook HMAC signatures, SSRF defenses, delivery retries, and inbound provider callback verification.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/security/webhook-security.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/security/webhook-security">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Webhook security - PesaGuard docs">
 <meta property="og:description" content="Detailed security guidance for outbound webhook HMAC signatures, SSRF defenses, delivery retries, and inbound provider callback verification.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/security/webhook-security.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/security/webhook-security">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Webhook security - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/security/webhook-security.html">
+<body data-path="/security/webhook-security">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -60,7 +59,7 @@
       <li>Enforce an acceptable timestamp window using your receiver's clock, then record the event ID and reject duplicate processing idempotently.</li>
       <li>Only after successful verification, validate the event schema and apply the business action. Keep the signing secret and received payload out of logs.</li>
     </ol>
-    <p>Do not assume a generic raw-body signature example matches the outbound canonical-JSON format. Use the exact verification contract for your deployment and test against a real non-production delivery. See <a href="../webhooks/verification.html">Webhook signature verification</a>.</p>
+    <p>Do not assume a generic raw-body signature example matches the outbound canonical-JSON format. Use the exact verification contract for your deployment and test against a real non-production delivery. See <a href="../webhooks/verification">Webhook signature verification</a>.</p>
     <h2>Inbound callbacks</h2>
     <p>Inbound providers do not all use the outbound signing scheme. The communications delivery callback path verifies an HMAC-SHA-256 digest of the raw request bytes, accepts a provider-specific signature header format, and checks timestamps when supplied. Its default maximum age is five minutes. Duplicate provider event IDs are detected before the event is applied again.</p>
     <p>The Daraja callback guard can require a configured shared-secret header, an IP/CIDR allowlist, or both. If neither is configured, it rejects the callback by default. If forwarded client addresses are used, configure <code>PESAGUARD_TRUSTED_PROXY_COUNT</code> to match the actual proxy chain; otherwise the code uses the direct peer address. Never trust a client-supplied forwarded-for header from an untrusted network.</p>
@@ -75,10 +74,10 @@
     <p>Implementation evidence includes <code>webhook_manager.py</code> for outbound delivery and <code>communications/webhooks.py</code> plus <code>security_helpers.py</code> for inbound verification paths. These flows use different formats and must not be conflated.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../webhooks/verification.html">Webhook signature verification</a></li>
-      <li><a href="../webhooks/retries.html">Webhook retries</a></li>
-      <li><a href="../security/index.html">Security overview</a></li>
-      <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
+      <li><a href="../webhooks/verification">Webhook signature verification</a></li>
+      <li><a href="../webhooks/retries">Webhook retries</a></li>
+      <li><a href="../security/">Security overview</a></li>
+      <li><a href="../security/tenant-isolation">Tenant isolation</a></li>
     </ul>
   </article>
 </div>
@@ -86,7 +85,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

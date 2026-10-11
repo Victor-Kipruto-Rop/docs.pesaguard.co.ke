@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Errors · 5xx · Server errors - PesaGuard docs</title>
 <meta name="description" content="Server or gateway failure. Retry with backoff and quote the request id to the operator.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/server-errors.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/server-errors">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Errors · 5xx · Server errors - PesaGuard docs">
 <meta property="og:description" content="Server or gateway failure. Retry with backoff and quote the request id to the operator.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/server-errors.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/server-errors">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Errors · 5xx · Server errors - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/errors/server-errors.html">
+<body data-path="/errors/server-errors">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -49,13 +48,13 @@
     <p class="docs-eyebrow">Errors</p>
     <h1>5xx · Server errors</h1>
     <p class="docs-lede">A service, dependency or gateway could not complete the request. Treat the outcome as uncertain for writes: retry with the same idempotency key, then reconcile instead of creating a second operation.</p>
-    <p>See <a href="../api/errors.html">API · Errors</a> for the envelope and client behaviour.</p>
+    <p>See <a href="../api/errors">API · Errors</a> for the envelope and client behaviour.</p>
     <h2>Failure classes</h2><table><thead><tr><th>Status</th><th>Likely boundary</th><th>Client action</th></tr></thead><tbody><tr><td>500</td><td>Unhandled application failure.</td><td>Bounded retry; escalate repeated request ids.</td></tr><tr><td>502</td><td>Gateway or upstream response invalid.</td><td>Retry with backoff and check dependency health.</td></tr><tr><td>503</td><td>Service unavailable or overloaded.</td><td>Reduce load and honor retry guidance.</td></tr><tr><td>504</td><td>Gateway timeout.</td><td>Assume uncertain write outcome and query safely.</td></tr></tbody></table>
     <h2>Recovery sequence</h2><ol><li>Capture status, request id, timestamp, route and environment.</li><li>Wait using bounded exponential backoff with jitter.</li><li>Retry reads only when safe; retry writes with the same idempotency key.</li><li>Check the resulting resource or reconciliation record.</li><li>Escalate a persistent failure with correlated logs and metrics.</li></ol>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/errors.html">API · Errors</a></li>
-      <li><a href="../errors/error-codes.html">Error codes</a></li>
+      <li><a href="../api/errors">API · Errors</a></li>
+      <li><a href="../errors/error-codes">Error codes</a></li>
     </ul>
   </article>
 </div>
@@ -63,7 +62,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

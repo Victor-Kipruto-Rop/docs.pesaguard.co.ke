@@ -1,5 +1,5 @@
 /**
- * Testing — how PesaGuard validates its own behaviour, and how you validate an
+ * Testing: how PesaGuard validates its own behaviour, and how you validate an
  * integration against staging.
  */
 "use strict";
@@ -20,15 +20,15 @@ pages.push({
     "How to test an integration meaningfully: drive the real paths on staging, assert the invariants, and treat failure recovery as a first-class case.",
   status: "Live",
   lede:
-    "PesaGuard is validated with focused tests for normal paths, boundary conditions, cross-tenant isolation, retries and failure recovery. Test your integration the same way — against real staging behaviour, not against a mock that agrees with you.",
+    "PesaGuard is validated with focused tests for normal paths, boundary conditions, cross-tenant isolation, retries and failure recovery. Test your integration the same way, against real staging behaviour, not against a mock that agrees with you.",
   blocks: [
     B.h2("The invariants worth testing"),
     B.table([
       ["Invariant", "How to prove it", "What it protects"],
-      ["One callback, one record", "Deliver the same Daraja payload twice and assert a single <code>transactions</code> row plus one idempotency record.", "Double-credit — the most expensive class of bug in a ledger."],
+      ["One callback, one record", "Deliver the same Daraja payload twice and assert a single <code>transactions</code> row plus one idempotency record.", "Double-credit is the most expensive class of bug in a ledger."],
       ["Deterministic matching", "Replay the same event and internal records twice; assert identical status and matching rules.", "Month-end explanations that change every time you ask."],
       ["Tenant isolation", "Call a detail route with another tenant's identifier and assert 404, and that no other tenant's rows appear in a list.", "Cross-tenant leakage."],
-      ["No silent loss", "Stop a consumer, publish work, restart, and assert the work completes or lands in dead letters — never vanishes.", "Transactions that exist in the provider's world and not in yours."],
+      ["No silent loss", "Stop a consumer, publish work, restart, and assert the work completes or lands in dead letters; it must never vanish.", "Transactions that exist in the provider's world and not in yours."],
       ["Honest failure", "Fail a downstream dependency and assert a non-2xx with the standard envelope, not a false success.", "False acknowledgements."],
       ["Recovery", "Replay a dead letter and assert exactly one outcome.", "Duplicate processing during recovery."],
     ]),
@@ -44,7 +44,7 @@ pages.push({
     B.steps([
       {
         title: "Prove the connection and the contract",
-        body: "Health probe, contract read, one authenticated call — the quickstart path, run against staging.",
+        body: "Health probe, contract read, and one authenticated call: follow the quickstart path against staging.",
         code: { method: "GET", label: "/health", lang: "bash", text: 'curl -sS "$STAGING_API_URL/health" | python -m json.tool' },
       },
       {
@@ -61,7 +61,7 @@ pages.push({
       },
       {
         title: "Break something on purpose",
-        body: "Stop the consumer, publish, restart, and assert the work completes exactly once — or that it is visible in a dead-letter queue.",
+        body: "Stop the consumer, publish, restart, and assert the work completes exactly once, or that it is visible in a dead-letter queue.",
       },
     ]),
     B.note(
@@ -118,7 +118,7 @@ pages.push(testingFamily({
     },
     {
       title: "Read back the evidence",
-      body: "Assert the match status, the matching rules applied, the score and the audit entry — not just the HTTP code.",
+      body: "Assert the match status, the matching rules applied, the score and the audit entry, not just the HTTP code.",
     },
   ],
   tableRows: [
@@ -129,7 +129,7 @@ pages.push(testingFamily({
     ["Two tenants, same reference text", "Each tenant sees only its own outcome.", "Cross-tenant leakage."],
   ],
   reading: [
-    "Compare the recorded matching rules against what you expected — a match on the wrong rule is a latent bug even when the status is right.",
+    "Compare the recorded matching rules against what you expected. A match on the wrong rule is a latent bug even when the status is right.",
     "Check the audit entry for the decision; if the reason is missing, the run is not reproducible.",
     "Assert counts before and after a replay rather than trusting the response code alone.",
     "Treat a rejected payload as information: it usually means a fixture that does not match the documented contract.",
@@ -179,7 +179,7 @@ pages.push(testingFamily({
     },
     {
       title: "Shift one field at a time",
-      body: "Change the amount, then the time, then the reference — one scenario per run, so a failure identifies itself.",
+      body: "Change the amount, then the time, then the reference, one scenario per run, so a failure identifies itself.",
     },
   ],
   tableRows: [
@@ -195,7 +195,7 @@ pages.push(testingFamily({
     "Read the recorded <code>matching_rules</code>, not just the status: the right answer from the wrong rule is a latent bug.",
     "Check the match score for near matches; a score that drifts over releases signals a rule change.",
     "Compare record counts before and after the replay step.",
-    "Keep failures as fixtures — a payload that broke matching once should be a regression test forever.",
+    "Keep failures as fixtures. A payload that broke matching once should be a regression test forever.",
   ],
   limits:
     "These fixtures prove matching behaviour, not provider behaviour. Timing distributions, retry storms and duplicate delivery patterns come from the provider and are best rehearsed by replaying real production payload shapes into staging.",

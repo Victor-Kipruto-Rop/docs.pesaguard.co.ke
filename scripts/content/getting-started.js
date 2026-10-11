@@ -1,5 +1,5 @@
 /**
- * Getting started — provisioning, first calls, the staging variant and the
+ * Getting started: provisioning, first calls, the staging variant and the
  * production checklist. Grounded in the repository: routes, environment keys,
  * tables and tests.
  */
@@ -20,7 +20,7 @@ pages.push({
     "From a running PesaGuard deployment to a production-ready integration: provisioning, credentials, the first authenticated call and the go-live checklist.",
   status: "Live",
   lede:
-    "Access is provisioned with the pilot team because reconciliation scope is agreed per operation — which Daraja flow, which internal records, which escalation path. These pages take you from a running deployment to a production-ready integration.",
+    "Access is provisioned with the pilot team because reconciliation scope is agreed per operation. That scope includes the Daraja flow, internal records, and escalation path. These pages take you from a running deployment to a production-ready integration.",
   blocks: [
     B.cards([
       { href: "getting-started/quickstart.html", title: "Quickstart", body: "One health probe, one contract read. Five minutes to a proven connection.", go: "Start →" },
@@ -36,9 +36,9 @@ pages.push({
       `PesaGuard is ${FACTS.stack}. ${FACTS.production}. Kafka carries events between them, and Redis backs rate limits, short-lived state and RQ jobs.`
     ),
     B.kv([
-      ["Active payment scope", `${FACTS.scope} — STK Push and PayBill callbacks, validated, de-duplicated, then matched or exceptioned.`],
+      ["Active payment scope", `${FACTS.scope}, STK Push and PayBill callbacks, validated, de-duplicated, then matched or exceptioned.`],
       ["Public API base", "<code>/api/v1</code> for resource routes, with unversioned operational routes for <code>/health</code>, <code>/metrics</code> and the OpenAPI document."],
-      ["Callback endpoints", "<code>/webhook/mpesa/confirmation</code> and <code>/webhook/mpesa/validation</code> — provider-facing, source and payload validated."],
+      ["Callback endpoints", "<code>/webhook/mpesa/confirmation</code> and <code>/webhook/mpesa/validation</code>: provider-facing, source and payload validated."],
       ["Async work", "Redis and RQ (queue <code>transaction_events</code>) for publishing, scheduled reports, retention cleanup and failure handling."],
       ["Schema migrations", "Alembic revisions only. Production schema is never created by <code>Base.metadata.create_all()</code>."],
     ]),
@@ -51,7 +51,7 @@ pages.push({
       },
       {
         title: "Read the contract your deployment publishes",
-        body: "The live OpenAPI document is authoritative — this site mirrors it. Check the version before you generate a client.",
+        body: "The live OpenAPI document is authoritative; this site mirrors it. Check the version before you generate a client.",
         code: {
           method: "GET",
           label: "/openapi.json",
@@ -61,7 +61,7 @@ pages.push({
       },
       {
         title: "Make one authenticated call",
-        body: "Every protected route takes a scoped bearer credential. The first request page shows the envelope to expect — including the failure shape.",
+        body: "Every protected route takes a scoped bearer credential. The first request page shows the envelope to expect, including the failure shape.",
         code: {
           method: "GET",
           label: "/tenant/current",
@@ -77,7 +77,7 @@ pages.push({
     B.h2("What you need before you start"),
     B.checklist([
       "A deployment base URL reachable from your network (staging or production).",
-      "A Daraja flow agreed for the tenant: STK Push shortcode or PayBill, with credentials held by the operator — never in your repository.",
+      "A Daraja flow agreed for the tenant: STK Push shortcode or PayBill, with credentials held by the operator, never in your repository.",
       "The internal record source reconciliation will read: a table, a connector or an export path, plus the field mapping.",
       "Named escalation contacts and the on-call window alerts should respect.",
       "An agreed residency and retention position for the tenant, if it differs from the default.",
@@ -105,12 +105,12 @@ pages.push({
     "Prove the connection in five minutes: probe health, read the OpenAPI document your deployment publishes, and make one authenticated request.",
   status: "Live",
   lede:
-    "Everything here runs against a deployment that already exists. No signup, no key generation, no mocked rail — the point is to prove the real service answers and to see the contract it publishes.",
+    "Everything here runs against a deployment that already exists. There is no signup, key generation, or mocked rail. The point is to prove the real service answers and to inspect its published contract.",
   blocks: [
     B.h2("Before you begin"),
     B.kv([
       ["Base URL", "Exported as <code>PESAGUARD_API_URL</code> in the deployment environment file. Confirm the value with the operator rather than guessing a hostname."],
-      ["Credential", "A scoped bearer token or API key issued during provisioning — see <a href=\"getting-started/create-api-key.html\">Create an API key</a>."],
+      ["Credential", "A scoped bearer token or API key issued during provisioning, see <a href=\"getting-started/create-api-key.html\">Create an API key</a>."],
       ["Network", "Outbound HTTPS to the deployment, plus inbound delivery from Safaricom to the callback endpoints once a live flow is wired."],
     ]),
     B.h2("1 · Probe health"),
@@ -121,12 +121,12 @@ pages.push({
     B.table(
       [
         ["Check", "What it proves", "If it fails"],
-        ["<code>database</code>", "A connection opens and <code>SELECT 1</code> runs.", "Nothing durable can be written — treat as a hard stop."],
+        ["<code>database</code>", "A connection opens and <code>SELECT 1</code> runs.", "Nothing durable can be written, treat as a hard stop."],
         ["<code>kafka</code>", "The producer bootstraps against <code>KAFKA_BOOTSTRAP_SERVERS</code>.", "Callbacks may be accepted but not fanned out; watch consumer lag and the outbox."],
         ["<code>redis</code>", "Rate-limit and short-lived state storage is reachable.", "Rate limiting and queueing degrade: expect 429s and delayed jobs."],
         ["<code>daraja</code>", "An OAuth token can be obtained (cached for <code>PESAGUARD_DARAJA_HEALTH_CACHE_SECONDS</code>, default 180s).", "Outbound Daraja calls fail; inbound callbacks still reconcile."],
       ],
-      { caption: "Optional dependencies count toward overall health only when explicitly required — PESAGUARD_HEALTH_REQUIRE_KAFKA and PESAGUARD_HEALTH_REQUIRE_REDIS." }
+      { caption: "Optional dependencies count toward overall health only when explicitly required, PESAGUARD_HEALTH_REQUIRE_KAFKA and PESAGUARD_HEALTH_REQUIRE_REDIS." }
     ),
     B.h2("2 · Read the contract"),
     B.code(
@@ -142,7 +142,7 @@ pages.push({
       { method: "GET", label: "/tenant/current", lang: "bash" }
     ),
     B.p(
-      "A 200 proves the whole chain: network, TLS, credential verification, scope check and tenant resolution. <a href=\"getting-started/first-request.html\">First request</a> unpacks the response envelope — and the failure envelope you should be handling anyway."
+      "A 200 proves the whole chain: network, TLS, credential verification, scope check and tenant resolution. <a href=\"getting-started/first-request.html\">First request</a> unpacks the response envelope, and the failure envelope you should be handling anyway."
     ),
     B.h2("When the first five minutes go wrong"),
     B.table([
@@ -150,7 +150,7 @@ pages.push({
       ["Connection refused or DNS failure", "Wrong base URL, or the deployment binds to loopback only.", "<code>PESAGUARD_BIND_HOST</code> on the host, and the value of <code>PESAGUARD_API_URL</code>."],
       ["<code>401</code> with a valid-looking token", "Expired, revoked, or issued for a different issuer or audience.", "Reissue the credential, then compare its <code>iss</code> and <code>aud</code> claims with the deployment's configuration."],
       ["<code>403</code>", "Valid credential, insufficient scope.", "Read the scope table in <a href=\"getting-started/create-api-key.html\">Create an API key</a> and request the narrowest scope that works."],
-      ["<code>429</code>", "Rate limit reached for the credential or route.", "Back off and retry — writes are idempotent, so a retry cannot double-post."],
+      ["<code>429</code>", "Rate limit reached for the credential or route.", "Back off and retry. Writes are idempotent, so a retry cannot double-post."],
       ["<code>500</code>", "Unhandled server error.", "Quote <code>request_id</code> from the response body; it is the correlation key for logs and traces."],
     ]),
     B.note(
@@ -176,11 +176,11 @@ pages.push({
     "What provisioning actually creates: a tenant, a provider account, dashboard users, limits, and the settings that govern reconciliation.",
   status: "Live",
   lede:
-    "There is no self-serve signup. A tenant is provisioned with the pilot team because reconciliation scope is an operational decision — which Daraja flow, which internal records, which escalation path — not a form field.",
+    "There is no self-serve signup. A tenant is provisioned with the pilot team because reconciliation scope is an operational decision. That scope includes the Daraja flow, internal records, and escalation path, not a form field.",
   blocks: [
     B.note(
       "Why provisioning is a conversation",
-      "A tenant that is provisioned badly produces exceptions nobody can explain. Fifteen minutes of scoping — flow, shortcode, internal record source, tolerance, escalation contacts — prevents weeks of reconciliation archaeology later.",
+      "A tenant that is provisioned badly produces exceptions nobody can explain. Fifteen minutes of scoping, flow, shortcode, internal record source, tolerance, escalation contacts, prevents weeks of reconciliation archaeology later.",
       "info"
     ),
     B.h2("What provisioning creates"),
@@ -189,7 +189,7 @@ pages.push({
       ["Tenant", "<code>tenant_configurations</code>, <code>tenant_limits</code>, <code>tenant_usage</code>", "The isolation boundary: every query, job and export carries this identifier."],
       ["Provider account", "<code>payment_providers</code>", "The Daraja flow this tenant reconciles: shortcode, environment, credentials reference, connection and health state."],
       ["Dashboard users", "<code>user_accounts</code>, <code>organizations</code>, <code>organization_memberships</code>, <code>teams</code>, <code>departments</code>", "Who can see and resolve what, and in which part of the business."],
-      ["Credentials", "<code>api_key_records</code>", "Scoped, hashed, expiring credentials — one per integration."],
+      ["Credentials", "<code>api_key_records</code>", "One scoped, hashed, expiring credential per integration."],
       ["Alerting configuration", "<code>escalation_rules</code>, <code>on_call_rotations</code>", "Who is told when, and who is on call when nobody answers."],
       ["Webhook endpoints", "<code>webhook_configs</code>", "Where events are delivered, and with which signing secret."],
     ]),
@@ -205,11 +205,11 @@ pages.push({
     ]),
     B.h2("Identity and access"),
     B.p(
-      "Dashboard access is role-based and least-privilege. Roles and permissions are enforced server-side on every route — a hidden button is user experience, not a control. Grants and revocations are themselves recorded as audit events, so the answer to \"who could see this in March?\" is discoverable."
+      "Dashboard access is role-based and least-privilege. Roles and permissions are enforced server-side on every route. Hiding a button is a user-experience choice, not an access control. Grants and revocations are themselves recorded as audit events, so the answer to \"who could see this in March?\" is discoverable."
     ),
     B.kv([
       ["Users and roles", "<code>user_accounts</code> bound to roles through <code>organization_memberships</code>."],
-      ["Sessions", "<code>user_sessions</code> — revoking a session closes access immediately, without waiting for expiry."],
+      ["Sessions", "<code>user_sessions</code>: revoking a session closes access immediately, without waiting for expiry."],
       ["Machine access", "Per-integration credentials with explicit scopes; never a shared admin token."],
       ["SSO", "OpenID Connect providers can be registered per tenant with claim mapping and group restriction."],
     ]),
@@ -218,7 +218,7 @@ pages.push({
       "Receive the deployment base URL and confirm <code>/health</code> answers.",
       "Read <code>/openapi.json</code> and check the version you will build against.",
       "Create your first credential with the narrowest scope that works.",
-      "Make one authenticated call — see <a href=\"getting-started/first-request.html\">First request</a>.",
+      "Make one authenticated call, see <a href=\"getting-started/first-request.html\">First request</a>.",
       "Agree the reconciliation window for the first real payment.",
       "Walk the <a href=\"getting-started/production-checklist.html\">production checklist</a> before go-live.",
     ]),
@@ -299,7 +299,7 @@ pages.push({
     "The bearer pattern, the success envelope, and the failure envelope you should be handling before you need it.",
   status: "Live",
   lede:
-    "One authenticated call proves the whole chain — network, TLS, credential verification, scope check and tenant resolution. It also shows you the envelopes every later call will use.",
+    "One authenticated call proves the whole chain, network, TLS, credential verification, scope check and tenant resolution. It also shows you the envelopes every later call will use.",
   blocks: [
     B.h2("Send it"),
     B.code(
@@ -317,10 +317,10 @@ pages.push({
     B.kv([
       ["<code>data</code>", "The payload. Its shape belongs to the endpoint; this is the only field whose shape varies."],
       ["<code>request_id</code>", "The correlation key. Log it with anything you do with this response."],
-      ["<code>tenant_id</code>", "The tenant you were authorised for — echo, not input."],
+      ["<code>tenant_id</code>", "The tenant you were authorised for, echoed in the response, not accepted as input."],
       ["<code>meta</code>", "Present on list endpoints: <code>page</code>, <code>limit</code>, <code>total</code>, <code>total_pages</code>."],
     ]),
-    B.h2("Failure looks like this — handle it first"),
+    B.h2("Failure looks like this, handle it first"),
     B.code(
       '{\n  "status": "error",\n  "error": {\n    "code": "UNAUTHORIZED",\n    "message": "Authentication failed."\n  },\n  "request_id": "7d2b…",\n  "tenant_id": "…",\n  "ResultCode": 1,\n  "ResultDesc": "Authentication failed."\n}',
       { lang: "json", label: "401 response" }

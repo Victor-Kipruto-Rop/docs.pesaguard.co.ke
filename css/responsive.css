@@ -14,7 +14,7 @@
   .docs-nav-group { margin-bottom: 12px; }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1040px) {
   /* Collapsed to an icon-only button. Tapping it reveals the input as a
      full-width overlay row (see .is-active below) instead of hiding the
      search away with no way to open it again. */

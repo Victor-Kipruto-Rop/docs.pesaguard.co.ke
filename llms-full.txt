@@ -1,4 +1,4 @@
-# PesaGuard Developer Documentation — Full Index
+# PesaGuard Developer Documentation, Full Index
 
 The documentation describes the PesaGuard API and platform for developers and operators. It is a rolling documentation set, not a product certification. Where examples or schemas differ from a target deployment, use the contract and behavior of that deployment.
 
@@ -8,7 +8,7 @@ The documentation describes the PesaGuard API and platform for developers and op
 - Intended product: `https://pesaguard.co.ke`
 - Intended Developer Platform: `https://developers.pesaguard.co.ke`
 - Intended API origin: `https://api.pesaguard.co.ke`
-- Intended status service: `https://status.pesaguard.co.ke`
+- Intended status service: `https://status.pesaguard.victorkipruto.com`
 - Checked-in OpenAPI contract: [`api-reference/openapi.json`](https://docs.pesaguard.co.ke/api-reference/openapi.json)
 - YAML contract: [`api-reference/openapi.yaml`](https://docs.pesaguard.co.ke/api-reference/openapi.yaml)
 - JSON schemas: [`schemas/`](https://docs.pesaguard.co.ke/schemas/)
@@ -19,13 +19,13 @@ The site domain list does not prove that DNS resolves, TLS is valid, a service i
 
 1. Read [Getting started](https://docs.pesaguard.co.ke/getting-started/).
 2. Confirm the provisioned environment and base URL in [Environment guidance](https://docs.pesaguard.co.ke/environments/).
-3. Obtain a credential through the authorized provisioning process described in [API-key guidance](https://docs.pesaguard.co.ke/getting-started/create-api-key.html).
-4. Use [Authentication](https://docs.pesaguard.co.ke/api/authentication.html) and the scopes configured for that credential.
+3. Obtain a credential through the authorized provisioning process described in [API-key guidance](https://docs.pesaguard.co.ke/getting-started/create-api-key).
+4. Use [Authentication](https://docs.pesaguard.co.ke/api/authentication) and the scopes configured for that credential.
 5. Read the exact operation and schema from the target deployment's OpenAPI document.
 6. Implement stable error handling, timeouts, idempotent retries where supported, and request-ID logging.
 7. Configure and verify callbacks using the [Webhook guides](https://docs.pesaguard.co.ke/webhooks/).
 8. Exercise the integration in an explicitly provisioned non-production environment before production use.
-9. Complete the [Production checklist](https://docs.pesaguard.co.ke/getting-started/production-checklist.html) and collect evidence for every deployment dependency.
+9. Complete the [Production checklist](https://docs.pesaguard.co.ke/getting-started/production-checklist) and collect evidence for every deployment dependency.
 
 ## Authentication and secrets
 

@@ -6,8 +6,7 @@
 <title>API · API reference - PesaGuard docs</title>
 <meta name="description" content="The operations API surface: bearer auth, pagination, versioning, rate limits, idempotency and the error envelope.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/api/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,30 +31,30 @@
 <body data-path="/api/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="Section navigation"><div class="docs-nav-group"><p>API</p><ul>
-      <li><a href="../api/index.html">Overview</a></li>
-      <li><a href="../api/authentication.html">Authentication</a></li>
-      <li><a href="../api/pagination.html">Pagination</a></li>
-      <li><a href="../api/versioning.html">Versioning</a></li>
-      <li><a href="../api/rate-limits.html">Rate limits</a></li>
-      <li><a href="../api/idempotency.html">Idempotency</a></li>
-      <li><a href="../api/errors.html">Errors</a></li>
+      <li><a href="../api/">Overview</a></li>
+      <li><a href="../api/authentication">Authentication</a></li>
+      <li><a href="../api/pagination">Pagination</a></li>
+      <li><a href="../api/versioning">Versioning</a></li>
+      <li><a href="../api/rate-limits">Rate limits</a></li>
+      <li><a href="../api/idempotency">Idempotency</a></li>
+      <li><a href="../api/errors">Errors</a></li>
     </ul></div></aside>
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>API</span></nav>
     <p class="docs-eyebrow">API</p>
     <h1>API reference</h1>
@@ -67,15 +66,15 @@
     <table>
       <thead><tr><th>Topic</th><th>Page</th></tr></thead>
       <tbody>
-        <tr><td><a href="authentication.html">Authentication</a></td><td>Credentials, bearer tokens, scopes and tenant context.</td></tr>
-        <tr><td><a href="request-validation.html">Request validation</a></td><td>Shape, type, currency and business-rule validation.</td></tr>
-        <tr><td><a href="filtering.html">Filtering</a></td><td>Tenant-safe query filters and bounded result sets.</td></tr>
-        <tr><td><a href="sorting.html">Sorting</a></td><td>Stable ordering for reproducible reads and exports.</td></tr>
-        <tr><td><a href="pagination.html">Pagination</a></td><td>Page metadata, limits and complete iteration.</td></tr>
-        <tr><td><a href="versioning.html">Versioning</a></td><td>Version prefixes, compatibility and deprecation.</td></tr>
-        <tr><td><a href="rate-limits.html">Rate limits</a></td><td>Bounded request rates and 429 handling.</td></tr>
-        <tr><td><a href="idempotency.html">Idempotency</a></td><td>Safe retries for writes and replayable operations.</td></tr>
-        <tr><td><a href="errors.html">Errors</a></td><td>The normalized error envelope and recovery semantics.</td></tr>
+        <tr><td><a href="authentication">Authentication</a></td><td>Credentials, bearer tokens, scopes and tenant context.</td></tr>
+        <tr><td><a href="request-validation">Request validation</a></td><td>Shape, type, currency and business-rule validation.</td></tr>
+        <tr><td><a href="filtering">Filtering</a></td><td>Tenant-safe query filters and bounded result sets.</td></tr>
+        <tr><td><a href="sorting">Sorting</a></td><td>Stable ordering for reproducible reads and exports.</td></tr>
+        <tr><td><a href="pagination">Pagination</a></td><td>Page metadata, limits and complete iteration.</td></tr>
+        <tr><td><a href="versioning">Versioning</a></td><td>Version prefixes, compatibility and deprecation.</td></tr>
+        <tr><td><a href="rate-limits">Rate limits</a></td><td>Bounded request rates and 429 handling.</td></tr>
+        <tr><td><a href="idempotency">Idempotency</a></td><td>Safe retries for writes and replayable operations.</td></tr>
+        <tr><td><a href="errors">Errors</a></td><td>The normalized error envelope and recovery semantics.</td></tr>
       </tbody>
     </table>
     <h2>Request lifecycle</h2>
@@ -85,8 +84,8 @@
     <p>A static copy of the contract lives at <a href="../api-reference/openapi.json">api-reference/openapi.json</a>. The running deployment is authoritative if the two ever differ.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../webhooks/index.html">Webhooks</a></li>
-      <li><a href="../security/index.html">Security</a></li>
+      <li><a href="../webhooks/">Webhooks</a></li>
+      <li><a href="../security/">Security</a></li>
     </ul>
   </article>
 </div>
@@ -94,7 +93,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

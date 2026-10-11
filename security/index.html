@@ -6,8 +6,7 @@
 <title>Security - PesaGuard docs</title>
 <meta name="description" content="Implemented PesaGuard backend security controls, repository evidence, and deployment responsibilities for authentication, authorization, tenant isolation, encryption, and audit.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/security/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,26 +31,26 @@
 <body data-path="/security/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="Section navigation"><div class="docs-nav-group"><p>Security</p><ul>
-      <li><a href="../security/index.html">Overview</a></li>
-      <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
-      <li><a href="../security/responsible-disclosure.html">Responsible disclosure</a></li>
+      <li><a href="../security/">Overview</a></li>
+      <li><a href="../security/tenant-isolation">Tenant isolation</a></li>
+      <li><a href="../security/responsible-disclosure">Responsible disclosure</a></li>
     </ul></div></aside>
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>Security</span></nav>
     <p class="docs-eyebrow">Security</p>
     <h1>Security <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
@@ -59,13 +58,13 @@
     <table>
       <thead><tr><th>Control area</th><th>Implemented behaviour</th><th>Deployment or operator responsibility</th></tr></thead>
       <tbody>
-        <tr><td><a href="authentication.html">Authentication</a></td><td>JWT verification checks signature, issuer, audience, time claims, token identifier, tenant and current account/session state. API keys are resolved by digest.</td><td>Use production signing keys, protect them, and review authentication requirements on each exposed route.</td></tr>
-        <tr><td><a href="authorization.html">Authorization</a></td><td>Protected routes can enforce named permissions, tenant access and resource-level permissions server-side.</td><td>Assign only the roles and scopes each identity needs; review elevated access and service identities.</td></tr>
-        <tr><td><a href="api-key-security.html">API keys</a></td><td>Tenant-bound records carry role, scopes, expiry/revocation state and a SHA-256 key digest.</td><td>Store credentials in a secret manager, set expiry where appropriate, rotate and revoke promptly.</td></tr>
-        <tr><td><a href="webhook-security.html">Webhooks</a></td><td>Outbound destinations are checked for HTTPS and unsafe addresses; delivery signatures are provided. Inbound flows validate their configured authentication.</td><td>Verify signatures before processing, reject stale/replayed events where timestamps are available, and keep receiver endpoints patched.</td></tr>
-        <tr><td><a href="encryption.html">Encryption</a></td><td>Application helpers encrypt selected sensitive payload values and provider configuration; HTTPS responses receive HSTS when the app recognizes HTTPS.</td><td>Configure TLS termination and storage/backup encryption in the hosting environment; protect and rotate encryption keys.</td></tr>
-        <tr><td><a href="data-protection.html">Data protection</a></td><td>Audit details and provider serialization include redaction paths; a versioned retention policy is present in the backend repository.</td><td>Confirm jobs, storage lifecycle rules, legal holds, and approved deletion are enabled in the deployed environment.</td></tr>
-        <tr><td><a href="tenant-isolation.html">Tenant isolation</a></td><td>Authenticated identity includes tenant context, and route/query helpers can enforce tenant- and resource-scoped access.</td><td>Pass the authenticated tenant context through every query, cache, export, event, and administrative workflow.</td></tr>
+        <tr><td><a href="authentication">Authentication</a></td><td>JWT verification checks signature, issuer, audience, time claims, token identifier, tenant and current account/session state. API keys are resolved by digest.</td><td>Use production signing keys, protect them, and review authentication requirements on each exposed route.</td></tr>
+        <tr><td><a href="authorization">Authorization</a></td><td>Protected routes can enforce named permissions, tenant access and resource-level permissions server-side.</td><td>Assign only the roles and scopes each identity needs; review elevated access and service identities.</td></tr>
+        <tr><td><a href="api-key-security">API keys</a></td><td>Tenant-bound records carry role, scopes, expiry/revocation state and a SHA-256 key digest.</td><td>Store credentials in a secret manager, set expiry where appropriate, rotate and revoke promptly.</td></tr>
+        <tr><td><a href="webhook-security">Webhooks</a></td><td>Outbound destinations are checked for HTTPS and unsafe addresses; delivery signatures are provided. Inbound flows validate their configured authentication.</td><td>Verify signatures before processing, reject stale/replayed events where timestamps are available, and keep receiver endpoints patched.</td></tr>
+        <tr><td><a href="encryption">Encryption</a></td><td>Application helpers encrypt selected sensitive payload values and provider configuration; HTTPS responses receive HSTS when the app recognizes HTTPS.</td><td>Configure TLS termination and storage/backup encryption in the hosting environment; protect and rotate encryption keys.</td></tr>
+        <tr><td><a href="data-protection">Data protection</a></td><td>Audit details and provider serialization include redaction paths; a versioned retention policy is present in the backend repository.</td><td>Confirm jobs, storage lifecycle rules, legal holds, and approved deletion are enabled in the deployed environment.</td></tr>
+        <tr><td><a href="tenant-isolation">Tenant isolation</a></td><td>Authenticated identity includes tenant context, and route/query helpers can enforce tenant- and resource-scoped access.</td><td>Pass the authenticated tenant context through every query, cache, export, event, and administrative workflow.</td></tr>
         <tr><td>Audit evidence</td><td>Audit entries can be append-only, hash-linked, integrity-checked, and optionally signed.</td><td>Configure signing keys and immutable archive destinations; monitor integrity checks and retention jobs.</td></tr>
       </tbody>
     </table>
@@ -86,18 +85,18 @@
       <li>Audit redaction and append-only behavior: backend tests in <code>tests/test_action_audit.py</code>.</li>
       <li>Payload encryption and identifier tokenization: backend tests in <code>tests/test_data_protection.py</code>.</li>
     </ul>
-    <p>For a suspected vulnerability, use the private reporting route on the <a href="responsible-disclosure.html">responsible disclosure</a> page. Do not send credentials, payment data, or customer records in a report.</p>
+    <p>For a suspected vulnerability, use the private reporting route on the <a href="responsible-disclosure">responsible disclosure</a> page. Do not send credentials, payment data, or customer records in a report.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="authentication.html">Authentication</a></li>
-      <li><a href="authorization.html">Authorization</a></li>
-      <li><a href="api-key-security.html">API key security</a></li>
-      <li><a href="webhook-security.html">Webhook security</a></li>
-      <li><a href="encryption.html">Encryption</a></li>
-      <li><a href="data-protection.html">Data protection</a></li>
-      <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
-      <li><a href="../security/responsible-disclosure.html">Responsible disclosure</a></li>
-      <li><a href="../api/authentication.html">Authentication</a></li>
+      <li><a href="authentication">Authentication</a></li>
+      <li><a href="authorization">Authorization</a></li>
+      <li><a href="api-key-security">API key security</a></li>
+      <li><a href="webhook-security">Webhook security</a></li>
+      <li><a href="encryption">Encryption</a></li>
+      <li><a href="data-protection">Data protection</a></li>
+      <li><a href="../security/tenant-isolation">Tenant isolation</a></li>
+      <li><a href="../security/responsible-disclosure">Responsible disclosure</a></li>
+      <li><a href="../api/authentication">Authentication</a></li>
     </ul>
   </article>
 </div>
@@ -105,7 +104,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

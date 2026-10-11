@@ -6,8 +6,7 @@
 <title>Errors · Errors and error codes - PesaGuard docs</title>
 <meta name="description" content="The normalized error envelope, status classes, and how to react to each.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/errors/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,27 +31,27 @@
 <body data-path="/errors/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>Errors</span></nav>
     <p class="docs-eyebrow">Errors</p>
     <h1>Errors and error codes</h1>
     <p class="docs-lede">PesaGuard errors are designed to help a client decide what to fix, what to retry and what to escalate. Every failure carries a stable code, a human-readable message and a request id for operator correlation.</p>
     <div class="api-hero"><div><strong>Failure handling model</strong><p>Classify the status, preserve the request id, apply the documented recovery rule, and never retry a write without idempotency protection.</p></div><div class="api-hero-meta"><span>CLASSIFY</span><span>RECOVER</span><span>TRACE</span></div></div>
-    <p>Full reference: <a href="../api/errors.html">API · Errors</a>: envelope, status classes and client behaviour from 400 through 504.</p>
+    <p>Full reference: <a href="../api/errors">API · Errors</a>: envelope, status classes and client behaviour from 400 through 504.</p>
     <ul>
       <li>Stable codes are part of the public contract; message copy is not.</li>
       <li>409 conflicts usually mean a duplicate under idempotency: re-read rather than re-send.</li>
@@ -73,9 +72,9 @@
     <ol><li>Capture status, code, request id and safe request context.</li><li>Redact authorization headers, secrets and sensitive payloads.</li><li>Apply the status-specific action below.</li><li>Use the same idempotency key for an uncertain write retry.</li><li>Escalate repeated failures with timestamps, environment and request ids.</li></ol>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/errors.html">API · Errors</a></li>
-      <li><a href="../api/rate-limits.html">Rate limits</a></li>
-      <li><a href="../api/idempotency.html">Idempotency</a></li>
+      <li><a href="../api/errors">API · Errors</a></li>
+      <li><a href="../api/rate-limits">Rate limits</a></li>
+      <li><a href="../api/idempotency">Idempotency</a></li>
     </ul>
   </article>
 </div>
@@ -83,7 +82,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

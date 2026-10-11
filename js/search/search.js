@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Search — client-side, privacy-preserving, no external calls.
+   Search, client-side, privacy-preserving, no external calls.
    --------------------------------------------------------------------------
    `search.js` reads data/search-index.json (built by
    scripts/build-search-index.js) and shows ranked title/description matches in

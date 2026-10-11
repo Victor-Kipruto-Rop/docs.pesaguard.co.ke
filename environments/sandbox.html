@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Environments · Sandbox - PesaGuard docs</title>
 <meta name="description" content="There is no mocked sandbox. Staging runs the same reconciliation behaviour, which is what makes testing meaningful.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/environments/sandbox.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/environments/sandbox">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Environments · Sandbox - PesaGuard docs">
 <meta property="og:description" content="There is no mocked sandbox. Staging runs the same reconciliation behaviour, which is what makes testing meaningful.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/environments/sandbox.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/environments/sandbox">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Environments · Sandbox - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/environments/sandbox.html">
+<body data-path="/environments/sandbox">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -57,11 +56,11 @@
     <ul><li>Use synthetic identities, references and amounts.</li><li>Do not paste production credentials or personal data into test requests.</li><li>Mark test transactions so reviewers can distinguish them from operational work.</li><li>Clean up test providers, keys and queued work after a test campaign.</li></ul>
     <h2>Recommended test sequence</h2>
     <ol><li>Confirm the URL is staging and the credential is staging-only.</li><li>Run an authenticated read check.</li><li>Test valid, invalid, duplicate and delayed events.</li><li>Verify matching, exception, retry and audit outcomes.</li><li>Capture request ids and evidence for the production review.</li></ol>
-    <h2>Boundaries</h2><p>Staging may share code and deployment patterns with production, but it must not share databases, broker topics, secrets or tenant data. See <a href="staging.html">staging</a> for the concrete topology and <a href="../testing/index.html">testing guidance</a> for scenarios.</p>
+    <h2>Boundaries</h2><p>Staging may share code and deployment patterns with production, but it must not share databases, broker topics, secrets or tenant data. See <a href="staging">staging</a> for the concrete topology and <a href="../testing/">testing guidance</a> for scenarios.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../environments/index.html">Environments</a></li>
-      <li><a href="../environments/environment-variables.html">Environment variables</a></li>
+      <li><a href="../environments/">Environments</a></li>
+      <li><a href="../environments/environment-variables">Environment variables</a></li>
     </ul>
   </article>
 </div>
@@ -69,7 +68,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

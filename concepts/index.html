@@ -6,8 +6,7 @@
 <title>Concepts - PesaGuard docs</title>
 <meta name="description" content="The ideas PesaGuard is built on: deterministic matching, idempotent writes, enforced tenants and append-only evidence.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/concepts/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,31 +31,31 @@
 <body data-path="/concepts/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="Section navigation"><div class="docs-nav-group"><p>Concepts</p><ul>
-      <li><a href="../concepts/index.html">Overview</a></li>
-      <li><a href="../concepts/architecture.html">Architecture</a></li>
-      <li><a href="../concepts/reconciliation.html">Reconciliation</a></li>
-      <li><a href="../concepts/transaction-lifecycle.html">Transaction lifecycle</a></li>
-      <li><a href="../concepts/idempotency.html">Idempotency</a></li>
-      <li><a href="../concepts/tenants.html">Tenants</a></li>
-      <li><a href="../concepts/anomalies.html">Anomalies</a></li>
-      <li><a href="../concepts/audit-trails.html">Audit trails</a></li>
+      <li><a href="../concepts/">Overview</a></li>
+      <li><a href="../concepts/architecture">Architecture</a></li>
+      <li><a href="../concepts/reconciliation">Reconciliation</a></li>
+      <li><a href="../concepts/transaction-lifecycle">Transaction lifecycle</a></li>
+      <li><a href="../concepts/idempotency">Idempotency</a></li>
+      <li><a href="../concepts/tenants">Tenants</a></li>
+      <li><a href="../concepts/anomalies">Anomalies</a></li>
+      <li><a href="../concepts/audit-trails">Audit trails</a></li>
     </ul></div></aside>
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>Concepts</span></nav>
     <p class="docs-eyebrow">Concepts</p>
     <h1>Concepts</h1>
@@ -64,24 +63,24 @@
     <table>
       <thead><tr><th>Concept</th><th>In one line</th></tr></thead>
       <tbody>
-        <tr><td><a href="architecture.html">Architecture</a></td><td>Ingest, validate, reconcile, analyze, alert, resolve, report.</td></tr>
-        <tr><td><a href="reconciliation.html">Reconciliation</a></td><td>Deterministic matching with exceptions instead of silence.</td></tr>
-        <tr><td><a href="transaction-lifecycle.html">Transaction lifecycle</a></td><td>The states a payment moves through, and what each means.</td></tr>
-        <tr><td><a href="idempotency.html">Idempotency</a></td><td>A retry never becomes a second financial record.</td></tr>
-        <tr><td><a href="tenants.html">Tenants</a></td><td>Database-enforced boundaries, measured with zero leakage.</td></tr>
-        <tr><td><a href="anomalies.html">Anomalies</a></td><td>Named signals to review: never automatic verdicts.</td></tr>
-        <tr><td><a href="audit-trails.html">Audit trails</a></td><td>Append-only evidence for every decision.</td></tr>
+        <tr><td><a href="architecture">Architecture</a></td><td>Ingest, validate, reconcile, analyze, alert, resolve, report.</td></tr>
+        <tr><td><a href="reconciliation">Reconciliation</a></td><td>Deterministic matching with exceptions instead of silence.</td></tr>
+        <tr><td><a href="transaction-lifecycle">Transaction lifecycle</a></td><td>The states a payment moves through, and what each means.</td></tr>
+        <tr><td><a href="idempotency">Idempotency</a></td><td>A retry never becomes a second financial record.</td></tr>
+        <tr><td><a href="tenants">Tenants</a></td><td>Database-enforced boundaries, measured with zero leakage.</td></tr>
+        <tr><td><a href="anomalies">Anomalies</a></td><td>Named signals to review: never automatic verdicts.</td></tr>
+        <tr><td><a href="audit-trails">Audit trails</a></td><td>Append-only evidence for every decision.</td></tr>
       </tbody>
     </table>
     <h2>Recommended reading path</h2>
-    <ol><li><a href="architecture.html">Architecture</a> to understand the components and durable boundaries.</li><li><a href="transaction-lifecycle.html">Transaction lifecycle</a> to learn what each payment state proves.</li><li><a href="reconciliation.html">Reconciliation</a> to see how provider and internal records become a result.</li><li><a href="idempotency.html">Idempotency</a> and <a href="tenants.html">Tenants</a> to understand safe retries and isolation.</li><li><a href="anomalies.html">Anomalies</a>, <a href="fraud-detection.html">Fraud detection</a> and <a href="audit-trails.html">Audit trails</a> to follow review and evidence.</li></ol>
+    <ol><li><a href="architecture">Architecture</a> to understand the components and durable boundaries.</li><li><a href="transaction-lifecycle">Transaction lifecycle</a> to learn what each payment state proves.</li><li><a href="reconciliation">Reconciliation</a> to see how provider and internal records become a result.</li><li><a href="idempotency">Idempotency</a> and <a href="tenants">Tenants</a> to understand safe retries and isolation.</li><li><a href="anomalies">Anomalies</a>, <a href="fraud-detection">Fraud detection</a> and <a href="audit-trails">Audit trails</a> to follow review and evidence.</li></ol>
     <h2>Reference workflow</h2>
     <p>Every capability follows the same boundary sequence: authenticate the caller or verify the provider signature, resolve tenant identity, validate and normalize, enforce idempotency, persist the durable record and audit event in one transaction, publish through the outbox, then reconcile, notify, measure and expose a traceable result.</p>
     <div class="info-grid"><div class="info-card"><h3>Input</h3><p>Provider callbacks and API requests are authenticated, validated and normalized before they are trusted.</p></div><div class="info-card"><h3>Decision</h3><p>Matching, anomaly signals and human review produce explicit states and reasons rather than hidden guesses.</p></div><div class="info-card"><h3>Evidence</h3><p>Tenant context, event identity, request ids and audit records make outcomes explainable later.</p></div></div>
     <h2>Related</h2>
     <ul>
-      <li><a href="../getting-started/index.html">Getting started</a></li>
-      <li><a href="../api/index.html">API reference</a></li>
+      <li><a href="../getting-started/">Getting started</a></li>
+      <li><a href="../api/">API reference</a></li>
     </ul>
   </article>
 </div>
@@ -89,7 +88,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

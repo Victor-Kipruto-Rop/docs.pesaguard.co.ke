@@ -3,35 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
-<title>Idempotency — PesaGuard docs</title>
+<title>Idempotency | PesaGuard docs</title>
 <meta name="description" content="Deduplicate repeated webhook deliveries so retries do not repeat financial effects.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhooks/idempotency.html">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhooks/idempotency.html">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhooks/idempotency">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhooks/idempotency">
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../../css/docs.css">
 </head>
-<body data-path="/guides/webhooks/idempotency.html" data-root="../../">
+<body data-path="/guides/webhooks/idempotency" data-root="../../">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../../index.html"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../../"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd></div>
   <nav class="docs-header-links" aria-label="Primary"><a href="../../getting-started/">Getting started</a>
     <a href="../../concepts/">Concepts</a>
     <a href="../../api/">API</a>
     <a href="../../webhooks/">Webhooks</a>
     <a href="../../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke/">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com/">Status</a></nav>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../index.html">Guides</a><span aria-hidden="true">/</span>
-          <a href="index.html">Webhook guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../">Docs</a><span aria-hidden="true">/</span>
+          <a href="../">Guides</a><span aria-hidden="true">/</span>
+          <a href="./">Webhook guides</a><span aria-hidden="true">/</span>
           <span>Idempotency</span></nav>
     <p class="docs-eyebrow">Webhook guides</p>
     <h1>Idempotency <span class="status-pill" data-tone="live"><i></i>Live</span></h1>
@@ -42,14 +41,14 @@
       <li>Apply business effects once; return an acknowledgement only after the receiver has accepted the event according to its policy.</li>
       <li>Make replay safe by returning the recorded outcome for an already-processed event.</li>
     </ol>
-    <p>See <a href="../../concepts/idempotency.html">the idempotency concept</a>, <a href="../../webhooks/retries.html">retry guidance</a>, and the <a href="../../webhooks/index.html">delivery lifecycle</a>.</p>
+    <p>See <a href="../../concepts/idempotency">the idempotency concept</a>, <a href="../../webhooks/retries">retry guidance</a>, and the <a href="../../webhooks/">delivery lifecycle</a>.</p>
   </article>
 </div>
 </main>
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../../js/app.js" defer></script>

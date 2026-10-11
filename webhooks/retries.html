@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Webhooks · Retries and dead letters - PesaGuard docs</title>
 <meta name="description" content="Bounded backoff, visible attempt history, dead-letter retention and safe replay.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/webhooks/retries.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/webhooks/retries">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Webhooks · Retries and dead letters - PesaGuard docs">
 <meta property="og:description" content="Bounded backoff, visible attempt history, dead-letter retention and safe replay.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/webhooks/retries.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/webhooks/retries">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Webhooks · Retries and dead letters - PesaGuard docs">
@@ -29,31 +28,31 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/webhooks/retries.html">
+<body data-path="/webhooks/retries">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="Section navigation"><div class="docs-nav-group"><p>Webhooks</p><ul>
-      <li><a href="../webhooks/index.html">Overview</a></li>
-      <li><a href="../webhooks/event-catalog.html">Event catalog</a></li>
-      <li><a href="../webhooks/verification.html">Verification</a></li>
-      <li><a href="../webhooks/retries.html">Retries</a></li>
+      <li><a href="../webhooks/">Overview</a></li>
+      <li><a href="../webhooks/event-catalog">Event catalog</a></li>
+      <li><a href="../webhooks/verification">Verification</a></li>
+      <li><a href="../webhooks/retries">Retries</a></li>
     </ul></div></aside>
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../index.html">Webhooks</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
+          <a href="../">Webhooks</a><span aria-hidden="true">/</span>
           <span>Retries</span></nav>
     <p class="docs-eyebrow">Webhooks</p>
     <h1>Retries and dead letters</h1>
@@ -69,8 +68,8 @@
     <h2>Replay procedure</h2><ol><li>Inspect delivery payload, error, attempt count and tenant context.</li><li>Correct receiver, secret or dependency behavior.</li><li>Replay using the original event and delivery identity.</li><li>Confirm one downstream effect and a successful acknowledgement.</li><li>Close the dead-letter record with an operator reason.</li></ol>
     <h2>Related</h2>
     <ul>
-      <li><a href="../webhooks/index.html">Delivery overview</a></li>
-      <li><a href="../concepts/idempotency.html">Idempotency</a></li>
+      <li><a href="../webhooks/">Delivery overview</a></li>
+      <li><a href="../concepts/idempotency">Idempotency</a></li>
     </ul>
   </article>
 </div>
@@ -78,7 +77,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

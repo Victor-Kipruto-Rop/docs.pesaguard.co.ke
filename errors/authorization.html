@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Errors · 403 · Authorization - PesaGuard docs</title>
 <meta name="description" content="Authenticated, but the scope or tenant does not permit this action.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/authorization.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/authorization">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Errors · 403 · Authorization - PesaGuard docs">
 <meta property="og:description" content="Authenticated, but the scope or tenant does not permit this action.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/authorization.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/authorization">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Errors · 403 · Authorization - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/errors/authorization.html">
+<body data-path="/errors/authorization">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -49,13 +48,13 @@
     <p class="docs-eyebrow">Errors</p>
     <h1>403 · Authorization</h1>
     <p class="docs-lede">The server recognized the caller but policy denied the requested operation. The usual causes are insufficient scope, missing role, inactive membership or an attempt to access a resource outside the authenticated tenant.</p>
-    <p>See <a href="../api/errors.html">API · Errors</a> for the envelope and client behaviour.</p>
+    <p>See <a href="../api/errors">API · Errors</a> for the envelope and client behaviour.</p>
     <h2>401 versus 403</h2><table><thead><tr><th>Status</th><th>Meaning</th><th>Fix</th></tr></thead><tbody><tr><td>401</td><td>No valid identity was established.</td><td>Renew or replace the credential.</td></tr><tr><td>403</td><td>Identity is valid but policy denies access.</td><td>Check scope, role and tenant membership.</td></tr></tbody></table>
     <h2>Developer checklist</h2><ul><li>Confirm the principal belongs to the target organization.</li><li>Check the route's required scope and the credential's granted scopes.</li><li>Do not accept a client-supplied tenant id without server membership validation.</li><li>Do not retry unchanged requests; permission will not appear through repetition.</li><li>Record the request id for an operator authorization review.</li></ul>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/errors.html">API · Errors</a></li>
-      <li><a href="../errors/error-codes.html">Error codes</a></li>
+      <li><a href="../api/errors">API · Errors</a></li>
+      <li><a href="../errors/error-codes">Error codes</a></li>
     </ul>
   </article>
 </div>
@@ -63,7 +62,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

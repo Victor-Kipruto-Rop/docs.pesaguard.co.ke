@@ -1,5 +1,5 @@
 /**
- * Components directory — canonical shared fragments.
+ * Components directory: canonical shared fragments.
  *
  * This static tree inlines the header, sidebar, footer and search chrome into
  * every page at generation time (see scripts/generate-pages.js), so these

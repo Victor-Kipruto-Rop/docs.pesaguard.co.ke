@@ -51,8 +51,7 @@ function chrome(file, page, sidebarHtml) {
 <title>${titleText}</title>
 <meta name="description" content="${page.description}">
 <link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -96,7 +95,7 @@ ${bodyFor(page)}
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a> <a href="mailto:support@pesaguard.co.ke">Email support</a></nav>
 </div></footer>
 
 <script src="${appjs}" defer></script>
@@ -991,7 +990,7 @@ const pages = [
     sidebar: null,
     crumbs: crumb(["Docs", "index.html"], ["Status"], null),
     blocks: [
-      { p: "Check the intended status site at <a href=\"https://status.pesaguard.co.ke\">status.pesaguard.co.ke</a>; this documentation does not establish its current availability or health." },
+      { p: "Check the intended status site at <a href=\"https://status.pesaguard.victorkipruto.com\">status.pesaguard.victorkipruto.com</a>; this documentation does not establish its current availability or health." },
       { ul: [
         "The strip above the marketing site mirrors this state: green means the health endpoint answered.",
         "Operators read <code>/metrics</code> on the deployment for request latency, reconciliation health, queue and outbox lag, retry and dead-letter rates.",
@@ -1141,7 +1140,7 @@ const pages = [
         "<strong>Documentation feedback</strong>: open an issue on the <a href=\"https://github.com/Victor-Kipruto-Rop/pesaguard\">source repository</a>.",
         "<strong>Production issues</strong>: quote the <code>request_id</code> from the error response; it is the correlation key operators search for.",
         "<strong>Security issues</strong>: follow <a href=\"../security/responsible-disclosure.html\">responsible disclosure</a>; use private advisories, not public issues.",
-        "<strong>Status questions</strong>: check <a href=\"https://status.pesaguard.co.ke/\">status</a> first; incidents carry scope and duration.",
+        "<strong>Status questions</strong>: check <a href=\"https://status.pesaguard.victorkipruto.com/\">status</a> first; incidents carry scope and duration.",
       ] },
     ],
     related: [["Errors", "api/errors.html"], ["Responsible disclosure", "security/responsible-disclosure.html"], ["Status", "status/index.html"]],

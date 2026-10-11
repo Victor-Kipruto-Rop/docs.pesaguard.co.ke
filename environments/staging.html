@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Environments · Staging - PesaGuard docs</title>
 <meta name="description" content="Staging is an intended isolated integration environment; verify its live reachability and dependencies before use.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/environments/staging.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/environments/staging">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Environments · Staging - PesaGuard docs">
 <meta property="og:description" content="Staging is an intended isolated integration environment; verify its live reachability and dependencies before use.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/environments/staging.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/environments/staging">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Environments · Staging - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/environments/staging.html">
+<body data-path="/environments/staging">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -58,11 +57,11 @@
     <ol><li>Apply the reviewed configuration and migrations.</li><li>Check service health, database connectivity, Redis and Kafka listeners.</li><li>Run contract and integration tests with synthetic data.</li><li>Inspect logs, metrics, audit events and reconciliation reports.</li><li>Record failures and evidence before approving promotion.</li></ol>
     <h2>Staging reset and retention</h2>
     <p>Reset or clean staging deliberately. Preserve enough data to reproduce active failures, but remove expired credentials, stale provider connections and unnecessary personal data. A reset must not invalidate a production credential or affect production brokers.</p>
-    <h2>Promotion gate</h2><p>Production promotion requires passing staging tests, a reviewed artifact, environment-specific secrets, rollback evidence and an owner for post-deployment observation. See <a href="production.html">production</a> and the <a href="../getting-started/production-checklist.html">production checklist</a>.</p>
+    <h2>Promotion gate</h2><p>Production promotion requires passing staging tests, a reviewed artifact, environment-specific secrets, rollback evidence and an owner for post-deployment observation. See <a href="production">production</a> and the <a href="../getting-started/production-checklist">production checklist</a>.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../environments/index.html">Environments</a></li>
-      <li><a href="../environments/environment-variables.html">Environment variables</a></li>
+      <li><a href="../environments/">Environments</a></li>
+      <li><a href="../environments/environment-variables">Environment variables</a></li>
     </ul>
   </article>
 </div>
@@ -70,7 +69,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

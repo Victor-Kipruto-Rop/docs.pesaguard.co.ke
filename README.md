@@ -8,14 +8,19 @@ not-started rather than implied.
 
 ## Site address
 
-The intended canonical host is `https://docs.pesaguard.co.ke`. `CNAME` declares
-that custom host for the static-site deployment. DNS and hosting-provider
-configuration are managed outside this repository; changing `CNAME` does not
-configure DNS or publish the site.
+The intended canonical host is `https://docs.pesaguard.co.ke`. DNS and
+certificate provisioning remain hosting-provider configuration; a `CNAME`
+file does not configure DNS or publish the site.
 
-The site links to the intended `.co.ke` product, developer, API and status
-origins. Those links are not evidence of DNS, deployment, TLS, availability or
-API reachability; verify each target before using it.
+Product and API links use their intended `.co.ke` origins. The status link
+uses `status.pesaguard.victorkipruto.com`. The support quicklinks open
+`support@pesaguard.co.ke` in the visitor's email client. Links in this
+repository are not evidence of DNS, deployment, TLS, availability or API
+reachability; verify each target before using it.
+
+The site uses the PesaGuard public-site green-and-white brand, defaults to
+light mode, and provides a theme toggle in the shared header. A selected theme
+is saved in this browser for future visits.
 
 ## Preview
 
@@ -24,11 +29,30 @@ npm run serve
 # http://localhost:4173/
 ```
 
+Documentation pages use clean URLs: leaf pages omit `.html` and section
+landing pages end in `/`. The local preview resolves these URLs to the static
+HTML files and redirects legacy `.html` URLs to their clean equivalents.
+
 ## Validate
 
-`npm run check` walks every internal link in the HTML tree and fails on a
-target that does not exist. Images, fonts and the OpenAPI files are covered
-by the same walk.
+When adding or renaming pages, run `node scripts/build-search-index.js` to
+refresh the search indexes and sitemap. `npm run check` walks every internal
+link in the HTML tree and fails on a target that does not exist. It also checks
+canonical URLs, search results and sitemap coverage for extension-bearing or
+missing page URLs. Images, fonts and the OpenAPI files are covered by the same
+walk.
+
+## Deploy
+
+The `Docs checks` workflow validates page links, metadata, the OpenAPI mirror,
+and documentation drift before staging and deploying the public site to
+Cloudflare Pages. Pull requests validate but do not deploy. Configure the
+Cloudflare Pages project as `docs-pesaguard`, add repository secrets
+`CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` (Account Cloudflare Pages:
+Edit), and bind `docs.pesaguard.co.ke` to the project in Cloudflare Pages.
+Configure the custom domain's DNS there and verify its HTTPS response after
+the first release. Disable the previous GitHub Pages publishing source and
+move the custom-domain DNS record to Cloudflare as part of the host cutover.
 
 ## Status labels
 

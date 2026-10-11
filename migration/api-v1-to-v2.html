@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Migration · API v1 to v2 - PesaGuard docs</title>
 <meta name="description" content="Developer runbook for comparing and migrating a future PesaGuard API v1 to v2 contract without breaking authentication, tenant safety, retries or reconciliation.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/migration/api-v1-to-v2.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/migration/api-v1-to-v2">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Migration · API v1 to v2 - PesaGuard docs">
 <meta property="og:description" content="Developer runbook for comparing and migrating a future PesaGuard API v1 to v2 contract without breaking authentication, tenant safety, retries or reconciliation.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/migration/api-v1-to-v2.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/migration/api-v1-to-v2">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Migration · API v1 to v2 - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/migration/api-v1-to-v2.html">
+<body data-path="/migration/api-v1-to-v2">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -81,8 +80,8 @@ return api.retrieveTransaction(transactionId);</code></pre>
     <ul><li>Version routes in configuration, not in copied snippets.</li><li>Keep unknown response fields non-fatal.</li><li>Match on stable error codes, never message prose.</li><li>Preserve idempotency keys across retries and migration adapters.</li><li>Record the API version with request, transaction and audit telemetry.</li><li>Delete compatibility code only after the published sunset date and traffic review.</li></ul>
     <h2>Related</h2>
     <ul>
-      <li><a href="../migration/index.html">Migration</a></li>
-      <li><a href="../api/versioning.html">Versioning</a></li>
+      <li><a href="../migration/">Migration</a></li>
+      <li><a href="../api/versioning">Versioning</a></li>
     </ul>
   </article>
 </div>
@@ -90,7 +89,7 @@ return api.retrieveTransaction(transactionId);</code></pre>
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

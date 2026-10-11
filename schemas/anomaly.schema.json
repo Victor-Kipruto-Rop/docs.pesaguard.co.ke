@@ -13,7 +13,7 @@
       "description": "The named pattern behind the flag."
     },
     "severity": { "type": "string", "enum": ["low", "medium", "high"], "description": "Drives routing to the owning team." },
-    "score": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Contextual score — a prompt to look, not a verdict." },
+    "score": { "type": "integer", "minimum": 0, "maximum": 100, "description": "Contextual score, a prompt to look, not a verdict." },
     "detail": { "type": "string", "description": "Human-readable context, e.g. the observed range or count." },
     "detected_at": { "type": "string", "format": "date-time" },
     "reviewed_by": { "type": "string", "description": "Recorded when a human decides." }

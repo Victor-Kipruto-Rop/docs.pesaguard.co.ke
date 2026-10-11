@@ -6,8 +6,7 @@
 <title>Changelog - PesaGuard docs</title>
 <meta name="description" content="Where changes are announced while the public changelog matures.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/changelog/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,32 +31,32 @@
 <body data-path="/changelog/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>Changelog</span></nav>
     <p class="docs-eyebrow">Changelog</p>
     <h1>Changelog</h1>
     <p class="docs-lede">A dated record of documentation, API contract and operational changes that can affect an integration. Each entry identifies the audience, migration impact and source of truth so teams can decide whether action is required.</p>
-    <div class="callout"><strong>How to read this page.</strong> Product behavior changes require an implementation source or release reference. Documentation-only entries improve guidance without changing runtime behavior. When a release affects compatibility, also read <a href="breaking-changes.html">breaking changes</a> and the relevant API page.</div>
+    <div class="callout"><strong>How to read this page.</strong> Product behavior changes require an implementation source or release reference. Documentation-only entries improve guidance without changing runtime behavior. When a release affects compatibility, also read <a href="breaking-changes">breaking changes</a> and the relevant API page.</div>
     <h2>Release archive</h2>
     <table><thead><tr><th>Period</th><th>Focus</th><th>Audience</th></tr></thead><tbody>
-      <tr><td><a href="2026/october.html">October 2026</a></td><td>Documentation usability, canonical links and verification status</td><td>All integrators</td></tr>
-      <tr><td><a href="2026/september.html">September 2026</a></td><td>Public documentation baseline and API guidance</td><td>All integrators</td></tr>
-      <tr><td><a href="2026/august.html">August 2026</a></td><td>Documentation and operational contract preparation</td><td>Platform and integration teams</td></tr>
-      <tr><td><a href="2026/july.html">July 2026</a></td><td>Initial API and security documentation structure</td><td>Early adopters</td></tr>
+      <tr><td><a href="2026/october">October 2026</a></td><td>Documentation usability, canonical links and verification status</td><td>All integrators</td></tr>
+      <tr><td><a href="2026/september">September 2026</a></td><td>Public documentation baseline and API guidance</td><td>All integrators</td></tr>
+      <tr><td><a href="2026/august">August 2026</a></td><td>Documentation and operational contract preparation</td><td>Platform and integration teams</td></tr>
+      <tr><td><a href="2026/july">July 2026</a></td><td>Initial API and security documentation structure</td><td>Early adopters</td></tr>
     </tbody></table>
     <h2>Change categories</h2>
     <table><thead><tr><th>Category</th><th>Meaning</th><th>Expected action</th></tr></thead><tbody>
@@ -70,9 +69,9 @@
     <h2>Release sources</h2>
     <ul>
       <li>Runtime contract: <a href="../api-reference/openapi.json">OpenAPI document</a>.</li>
-      <li>Compatibility policy: <a href="../api/versioning.html">API versioning</a>.</li>
+      <li>Compatibility policy: <a href="../api/versioning">API versioning</a>.</li>
       <li>Repository history: <a href="https://github.com/Victor-Kipruto-Rop/pesaguard/commits">GitHub commits</a>.</li>
-      <li>Service incidents: <a href="https://status.pesaguard.co.ke">status documentation</a>.</li>
+      <li>Service incidents: <a href="https://status.pesaguard.victorkipruto.com">status documentation</a>.</li>
     </ul>
     <h2>How releases are communicated</h2>
     <ol>
@@ -85,14 +84,14 @@
     <h2>Before adopting a change</h2>
     <table><thead><tr><th>Question</th><th>Where to verify</th></tr></thead><tbody>
       <tr><td>Does the route or schema exist?</td><td>Fetch the deployment's <a href="../api-reference/openapi.json">OpenAPI document</a>.</td></tr>
-      <tr><td>Will credentials or scopes change?</td><td>Review <a href="../api/authentication.html">authentication</a> and security guidance.</td></tr>
-      <tr><td>Can the client retry safely?</td><td>Review <a href="../api/idempotency.html">idempotency</a>, errors and rate limits.</td></tr>
-      <tr><td>Could data visibility change?</td><td>Review <a href="../concepts/tenants.html">tenant isolation</a> and authorization behavior.</td></tr>
+      <tr><td>Will credentials or scopes change?</td><td>Review <a href="../api/authentication">authentication</a> and security guidance.</td></tr>
+      <tr><td>Can the client retry safely?</td><td>Review <a href="../api/idempotency">idempotency</a>, errors and rate limits.</td></tr>
+      <tr><td>Could data visibility change?</td><td>Review <a href="../concepts/tenants">tenant isolation</a> and authorization behavior.</td></tr>
     </tbody></table>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/versioning.html">Versioning</a></li>
-      <li><a href="https://status.pesaguard.co.ke">Status</a></li>
+      <li><a href="../api/versioning">Versioning</a></li>
+      <li><a href="https://status.pesaguard.victorkipruto.com">Status</a></li>
     </ul>
   </article>
 </div>
@@ -100,7 +99,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

@@ -15,7 +15,7 @@ const SITE = {
   origin: "https://docs.pesaguard.co.ke",
   name: "PesaGuard docs",
   product: "https://pesaguard.co.ke",
-  status: "https://status.pesaguard.co.ke",
+  status: "https://status.pesaguard.victorkipruto.com",
   repo: "https://github.com/Victor-Kipruto-Rop/pesaguard",
   ogImage: "assets/brand/favicon.svg",
 };
@@ -25,6 +25,15 @@ const ROOT = path.resolve(__dirname, "..");
 /* ---------------------------------------------------------------------------
  * Paths and text utilities.
  * ------------------------------------------------------------------------- */
+
+function cleanPageUrl(value) {
+  const match = String(value).match(/^([^?#]*)([?#].*)?$/);
+  let pathname = match[1];
+  if (pathname === "index.html") pathname = "./";
+  else if (pathname.endsWith("/index.html")) pathname = pathname.slice(0, -"index.html".length);
+  else pathname = pathname.replace(/\.html$/, "");
+  return `${pathname || "./"}${match[2] || ""}`;
+}
 
 /** `../` repeated to reach the docs root from a page's directory. */
 function upFor(file) {
@@ -62,7 +71,7 @@ function escapeHtml(value) {
 }
 
 /* ---------------------------------------------------------------------------
- * Block helpers — content modules author these, the renderer understands them.
+ * Block helpers: content modules author these, the renderer understands them.
  * ------------------------------------------------------------------------- */
 
 const h2 = (text, opts = {}) => ({ h2: text, ...opts });
@@ -446,6 +455,7 @@ const PRIMARY_NAV = [
   ["Webhooks", "webhooks/"],
   ["Security", "security/"],
   ["Support", "support/"],
+  ["Email support", "mailto:support@pesaguard.co.ke"],
 ];
 
 const FOOTER_GROUPS = [
@@ -455,7 +465,7 @@ const FOOTER_GROUPS = [
 ];
 
 function renderHeader(page, up) {
-  const nav = PRIMARY_NAV.map(([label, href]) => `<a href="${up}${href}">${label}</a>`).join("\n    ");
+  const nav = PRIMARY_NAV.map(([label, href]) => `<a href="${href.startsWith("mailto:") ? href : up + href}">${label}</a>`).join("\n    ");
   return [
     `<header class="docs-header">`,
     `  <div class="docs-progress" data-progress aria-hidden="true"><span></span></div>`,
@@ -494,7 +504,7 @@ function renderFooter(page, up) {
     `  <div class="docs-footer-inner">`,
     `    <div class="docs-footer-brand">`,
     `      <img src="${up}assets/brand/favicon.svg" alt="" width="30" height="30">`,
-    `      <p><strong>PesaGuard docs</strong><br>M-Pesa (Safaricom Daraja) reconciliation, documented honestly — every capability carries a status you can check.</p>`,
+    `      <p><strong>PesaGuard docs</strong><br>M-Pesa (Safaricom Daraja) reconciliation, documented honestly: every capability carries a status you can check.</p>`,
     `    </div>`,
     `    <div class="docs-footer-grid">`,
     columns,
@@ -505,6 +515,7 @@ function renderFooter(page, up) {
     `    <nav aria-label="Footer">`,
     `      <a href="${SITE.product}">Product</a>`,
     `      <a href="${SITE.status}">Status</a>`,
+    `      <a href="mailto:support@pesaguard.co.ke">Email support</a>`,
     `      <a href="${SITE.repo}">Source</a>`,
     `      <a href="${up}security/responsible-disclosure.html">Report an issue</a>`,
     `    </nav>`,
@@ -514,8 +525,8 @@ function renderFooter(page, up) {
 }
 
 function renderHead(page, up) {
-  const title = page.title === "PesaGuard developer documentation" ? page.title : `${page.title} — PesaGuard docs`;
-  const canonical = SITE.origin + page.path;
+  const title = page.title === "PesaGuard developer documentation" ? page.title : `${page.title} | PesaGuard docs`;
+  const canonical = SITE.origin + cleanPageUrl(page.path);
   const ld = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -532,8 +543,7 @@ function renderHead(page, up) {
     `<title>${title}</title>`,
     `<meta name="description" content="${page.description}">`,
     `<link rel="canonical" href="${canonical}">`,
-    `<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">`,
-    `<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">`,
+    `<meta name="theme-color" content="#ffffff">`,
     `<meta name="color-scheme" content="light dark">`,
     `<meta property="og:type" content="article">`,
     `<meta property="og:site_name" content="${SITE.name}">`,
@@ -551,14 +561,15 @@ function renderHead(page, up) {
 
 /**
  * Rewrites content-authored internal links (always written relative to the docs
- * root) into page-relative links. External, mail, anchor and explicit `../`
- * links are left untouched.
+ * root) into page-relative links. External, mail and anchor links are left
+ * untouched; local page targets are emitted without their source extension.
  */
 function resolveHrefs(html, up) {
-  if (!up) return html;
   return html.replace(/(href|src)="([^"]+)"/g, (match, attr, target) => {
-    if (/^(https?:|mailto:|tel:|data:|#|\/|\.\.\/|\/\/)/.test(target)) return match;
-    return `${attr}="${up}${target}"`;
+    if (/^(mailto:|tel:|data:|#)/.test(target)) return match;
+    if (/^(https?:|\/\/)/.test(target) && !target.startsWith(`${SITE.origin}/`)) return match;
+    const resolved = /^(https?:|\/\/|\/|\.\.\/)/.test(target) ? target : `${up}${target}`;
+    return `${attr}="${cleanPageUrl(resolved)}"`;
   });
 }
 
@@ -609,13 +620,13 @@ function renderPage(page) {
   const sidebar = wide ? "" : renderSidebar(page, page.__groups, up);
   const toc = wide ? "" : renderToc(page, up);
 
-  return [
+  const rendered = [
     `<!DOCTYPE html>`,
     `<html lang="en">`,
     `<head>`,
     renderHead(page, up),
     `</head>`,
-    `<body data-path="${page.path}" data-root="${up}"${wide ? ` data-layout="${page.layout}"` : ""}>`,
+    `<body data-path="${cleanPageUrl(page.path)}" data-root="${up}"${wide ? ` data-layout="${page.layout}"` : ""}>`,
     `<a class="visually-hidden" href="#main">Skip to content</a>`,
     renderHeader(page, up),
     ``,
@@ -657,6 +668,13 @@ function renderPage(page) {
   ]
     .filter((line) => line !== undefined)
     .join("\n");
+  return rendered
+    .replace(/\b(href|src|data-path|content)="([^"]+)"/g, (match, attr, value) => {
+      if (attr === "content" && !value.startsWith(SITE.origin)) return match;
+      if (/^(https?:|\/\/)/.test(value) && !value.startsWith(`${SITE.origin}/`)) return match;
+      return `${attr}="${cleanPageUrl(value)}"`;
+    })
+    .replace(/https:\/\/docs\.pesaguard\.co\.ke\/[^\s"'\\<>]*?\.html(?=[?#"'\\\s]|$)/g, cleanPageUrl);
 }
 
 /**

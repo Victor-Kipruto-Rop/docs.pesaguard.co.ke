@@ -6,8 +6,7 @@
 <title>Webhooks · Webhook delivery - PesaGuard docs</title>
 <meta name="description" content="Signed outbound events with bounded retries and a dead-letter path you can inspect and replay.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/webhooks/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,32 +31,32 @@
 <body data-path="/webhooks/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="Section navigation"><div class="docs-nav-group"><p>Webhooks</p><ul>
-      <li><a href="../webhooks/index.html">Overview</a></li>
-      <li><a href="../webhooks/event-catalog.html">Event catalog</a></li>
-      <li><a href="../webhooks/verification.html">Verification</a></li>
-      <li><a href="../webhooks/retries.html">Retries</a></li>
-      <li><a href="../webhooks/transaction-created.html">transaction.created</a></li>
-      <li><a href="../webhooks/transaction-matched.html">transaction.matched</a></li>
-      <li><a href="../webhooks/transaction-unmatched.html">transaction.unmatched</a></li>
-      <li><a href="../webhooks/reconciliation-completed.html">reconciliation.completed</a></li>
-      <li><a href="../webhooks/anomaly-detected.html">anomaly.detected</a></li>
+      <li><a href="../webhooks/">Overview</a></li>
+      <li><a href="../webhooks/event-catalog">Event catalog</a></li>
+      <li><a href="../webhooks/verification">Verification</a></li>
+      <li><a href="../webhooks/retries">Retries</a></li>
+      <li><a href="../webhooks/transaction-created">transaction.created</a></li>
+      <li><a href="../webhooks/transaction-matched">transaction.matched</a></li>
+      <li><a href="../webhooks/transaction-unmatched">transaction.unmatched</a></li>
+      <li><a href="../webhooks/reconciliation-completed">reconciliation.completed</a></li>
+      <li><a href="../webhooks/anomaly-detected">anomaly.detected</a></li>
     </ul></div></aside>
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>Webhooks</span></nav>
     <p class="docs-eyebrow">Webhooks</p>
     <h1>Webhook delivery</h1>
@@ -68,15 +67,15 @@
       <li><strong>Exhausted deliveries are retained</strong>: dead letters stay visible for investigation and replay.</li>
       <li><strong>Replay is safe</strong>: idempotency applies to delivery exactly as it does to ingestion.</li>
     </ul>
-    <p>The ops API exposes webhook delivery events (event id, type, source, received and processing times, status, HTTP status, retry count, error and the related transaction) under the integrations scopes: see <a href="../api/index.html">the API reference</a> and the contract at <a href="../api-reference/openapi.json">api-reference/openapi.json</a>.</p>
+    <p>The ops API exposes webhook delivery events (event id, type, source, received and processing times, status, HTTP status, retry count, error and the related transaction) under the integrations scopes: see <a href="../api/">the API reference</a> and the contract at <a href="../api-reference/openapi.json">api-reference/openapi.json</a>.</p>
     <div class="api-hero"><div><strong>Receiver contract</strong><p>Verify the sender, accept durably, process idempotently and expose every attempt for investigation.</p></div><div class="api-hero-meta"><span>VERIFY</span><span>ACKNOWLEDGE</span><span>REPLAY</span></div></div>
     <h2>Delivery lifecycle</h2><ol><li>PesaGuard creates an event with a stable event and delivery identity.</li><li>The payload is signed and sent to the configured receiver.</li><li>The receiver parses bounded JSON as untrusted input and reconstructs the documented canonical representation.</li><li>The receiver verifies the timestamped signature and freshness before persisting or acting on the event.</li><li>The receiver records the event identity and applies business effects idempotently, then acknowledges according to its retry policy.</li><li>Failures are retried with bounded backoff; operators can inspect retained delivery outcomes and replay where supported.</li></ol>
     <h2>Minimum receiver requirements</h2><table><thead><tr><th>Requirement</th><th>Why</th></tr></thead><tbody><tr><td>Bounded JSON parsing and canonicalization</td><td>Reconstructs the exact HMAC input without allowing untrusted data to trigger side effects.</td></tr><tr><td>Timestamped HMAC verification</td><td>Authenticates the sender and supports a freshness window.</td></tr><tr><td>Constant-time comparison</td><td>Avoids early-exit comparisons of signature digests.</td></tr><tr><td>Idempotent event handling</td><td>Retries must not create duplicate financial effects.</td></tr><tr><td>Durable event identity</td><td>Operators can trace attempts, retries, and replay.</td></tr></tbody></table>
     <h2>Related</h2>
     <ul>
-      <li><a href="../webhooks/event-catalog.html">Event catalog</a></li>
-      <li><a href="../webhooks/verification.html">Verification</a></li>
-      <li><a href="../webhooks/retries.html">Retries</a></li>
+      <li><a href="../webhooks/event-catalog">Event catalog</a></li>
+      <li><a href="../webhooks/verification">Verification</a></li>
+      <li><a href="../webhooks/retries">Retries</a></li>
     </ul>
   </article>
 </div>
@@ -84,7 +83,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

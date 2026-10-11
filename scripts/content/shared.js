@@ -27,7 +27,7 @@ const statusNote = (status) =>
     status === "Live" ? "info" : "warn"
   );
 
-/* Ground truth quoted across pages — keep these in sync with the repository. */
+/* Ground truth quoted across pages: keep these in sync with the repository. */
 const FACTS = {
   stack:
     "a Flask and SQLAlchemy backend deployed as separate processes: an M-Pesa webhook receiver, a dashboard API, a Kafka reconciliation consumer and an RQ worker",

@@ -32,9 +32,10 @@ const noteBlock = (status) => ({
 });
 
 function page(file, section, title, lede, status, blocks, related) {
+  const publicPath = file.replace(/index\.html$/, "").replace(/\.html$/, "");
   return {
     file,
-    path: "/" + file.replace(/index\.html$/, ""),
+    path: "/" + publicPath,
     section,
     title,
     lede,

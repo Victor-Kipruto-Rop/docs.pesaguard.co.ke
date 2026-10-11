@@ -51,7 +51,7 @@ const SECTIONS = {
     label: "Support",
     groups: [
       ["Support", [["Overview", "index.html"], ["FAQ", "faq.html"], ["Troubleshooting", "troubleshooting.html"], ["Contact support", "contact.html"]]],
-      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.co.ke/"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]],
+      ["Reference", [["API errors", "../api/errors.html"], ["Service status", "https://status.pesaguard.victorkipruto.com/"], ["Responsible disclosure", "../security/responsible-disclosure.html"]]],
     ],
   },
   guides: {
@@ -92,6 +92,11 @@ function sectionPrefix(file, sectionName) {
   return "../".repeat(depth);
 }
 
+function publicHref(href) {
+  const clean = href.replace(/index\.html$/, "").replace(/\.html$/, "");
+  return clean || "./";
+}
+
 function sidebarHtml(file, sectionName, section) {
   const prefix = sectionPrefix(file, sectionName);
   const pagePath = "/" + path.relative(ROOT, file).split(path.sep).join("/").replace(/index\.html$/, "");
@@ -99,7 +104,7 @@ function sidebarHtml(file, sectionName, section) {
     const items = group[1].map(function (item) {
       const target = ("/" + sectionName + "/" + item[1]).replace(/index\.html$/, "");
       const current = target === pagePath || target === pagePath.replace(/\/$/, "") + "/";
-      return "    <li><a href=\"" + prefix + item[1] + "\"" + (current ? " aria-current=\"page\"" : "") + ">" + item[0] + "</a></li>";
+      return "    <li><a href=\"" + publicHref(prefix + item[1]) + "\"" + (current ? " aria-current=\"page\"" : "") + ">" + item[0] + "</a></li>";
     }).join("\n");
     return "  <div class=\"docs-nav-group\"><p>" + group[0] + "</p><ul>\n" + items + "\n  </ul></div>";
   }).join("\n");

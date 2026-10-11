@@ -1,5 +1,5 @@
 /**
- * Environments — sandbox (does not exist), staging and production, plus the
+ * Environments: sandbox (does not exist), staging and production, plus the
  * configuration variables that separate them.
  */
 "use strict";
@@ -20,7 +20,7 @@ pages.push({
     "What separates staging from production: separate databases, separate Kafka listeners, and the configuration that must change between them.",
   status: "Live",
   lede:
-    "There are two real environments — staging and production — and no mocked sandbox. That is a deliberate choice: a mocked rail proves your code compiles, while a staging deployment proves your integration reconciles.",
+    "There are two real environments, staging and production, and no mocked sandbox. That is a deliberate choice: a mocked rail proves your code compiles, while a staging deployment proves your integration reconciles.",
   blocks: [
     B.h2("The three names, honestly"),
     B.table([
@@ -40,7 +40,7 @@ pages.push({
       ["Database", "Its own database (<code>STAGING_POSTGRES_DB</code>).", "Its own database, with backups, PITR and a tested restore path."],
       ["Kafka", "Its own advertised listeners (<code>STAGING_KAFKA_ADVERTISED_LISTENERS</code>) so consumer groups never cross.", "<code>KAFKA_BOOTSTRAP_SERVERS_DOCKER</code> with <code>KAFKA_REPLICATION_FACTOR</code> of 2 or more."],
       ["Daraja credentials", "Sandbox credentials where the flow allows (<code>DARAJA_BASE_URL=https://sandbox.safaricom.co.ke</code>).", "Live production credentials held by the operator."],
-      ["Secrets", "Throwaway values; never reuse a production secret here.", "Real secrets from a secret manager — <code>JWT_SECRET_KEY</code>, database password, provider credentials."],
+      ["Secrets", "Throwaway values; never reuse a production secret here.", "Real secrets from a secret manager, <code>JWT_SECRET_KEY</code>, database password, provider credentials."],
       ["Exposure", "Internal only, reachable from the team network.", "Public HTTPS, restricted CORS (<code>PESAGUARD_ALLOWED_ORIGIN</code>), bind host set deliberately."],
       ["Backups", "Optional; take one before a destructive test.", "Encrypted, uploaded off-site, freshness monitored (<code>pesaguard_backup_age_seconds</code>)."],
     ]),
@@ -75,7 +75,7 @@ pages.push(environmentFamily({
   lede:
     "PesaGuard has no mocked sandbox, no fake Daraja rail and no self-serve playground. Saying so plainly is more useful than documenting a capability that does not exist.",
   intro:
-    "A mocked rail proves your code compiles and your JSON parses. It cannot prove that your integration reconciles against real callbacks, real timing and real failure behaviour — which is the entire point of the exercise.",
+    "A mocked rail proves your code compiles and your JSON parses. It cannot prove that your integration reconciles against real callbacks, real timing and real failure behaviour, which is the entire point of the exercise.",
   facts: [
     ["Availability", "Not available."],
     ["Why", "A mock would have to invent provider behaviour, and invented provider behaviour is worse than no test at all."],
@@ -94,10 +94,10 @@ pages.push(environmentFamily({
   ],
   cannot: [
     "Generate a throwaway tenant without provisioning.",
-    "Simulate a provider outage from a switch — stop the consumer or the broker instead, which is closer to reality.",
+    "Simulate a provider outage from a switch, stop the consumer or the broker instead. That is closer to reality.",
     "Test against production data volumes without a deliberate decision and a maintenance window.",
   ],
-  note: ["What to say to a stakeholder", "There is no demo mode. Anything that needs to be demonstrated is demonstrated on staging with real reconciliation behaviour — which is a stronger claim than a mock, not a weaker one.", "info"],
+  note: ["What to say to a stakeholder", "There is no demo mode. Anything that needs to be demonstrated is demonstrated on staging with real reconciliation behaviour, which is a stronger claim than a mock, not a weaker one.", "info"],
   related: [
     ["Staging", "environments/staging.html", "The environment to use instead."],
     ["Testing", "testing/index.html", "How to test meaningfully."],
@@ -114,7 +114,7 @@ pages.push(environmentFamily({
   intro:
     "Do the destructive work here. Create records, replay deliveries, stop consumers and watch retries land in dead letters. None of that should ever be rehearsed against live money.",
   facts: [
-    ["State", "Its own PostgreSQL database (<code>STAGING_POSTGRES_DB</code>) — no shared rows with production."],
+    ["State", "Its own PostgreSQL database (<code>STAGING_POSTGRES_DB</code>), no shared rows with production."],
     ["Events", "Its own Kafka advertised listeners (<code>STAGING_KAFKA_ADVERTISED_LISTENERS</code>), so consumer groups never cross environments."],
     ["Access", "Internal to the team, reachable from the development network."],
     ["Data", "Test data only. Never copy production rows into staging without redaction."],
@@ -137,7 +137,7 @@ pages.push(environmentFamily({
     "Rehearse the production checklist item by item before touching production.",
   ],
   cannot: [
-    "Be treated as disposable — a broken staging environment blocks the next rehearsal.",
+    "Be treated as disposable; a broken staging environment blocks the next rehearsal.",
     "Hold production data without redaction and an agreed retention window.",
     "Replace a load test: staging is sized for correctness work, not for peak-volume claims.",
   ],
@@ -155,19 +155,19 @@ pages.push(environmentFamily({
   description: "What production demands before it accepts traffic: required settings, backups, exposure review and monitoring.",
   status: "Live",
   lede:
-    "Production carries live money. Every setting below exists because an incident taught somebody that it mattered — treat the list as the minimum, not as an aspiration.",
+    "Production carries live money. Every setting below exists because an incident taught somebody that it mattered. Treat the list as the minimum, not as an aspiration.",
   intro:
     "Nothing on this page is optional. A deployment missing any of it is not production, whatever hostname it answers on.",
   facts: [
     ["Database", "PostgreSQL with backups, point-in-time recovery and a tested restore path."],
     ["Events", "Kafka with <code>KAFKA_REPLICATION_FACTOR</code> of 2 or more, and consumer lag monitored."],
-    ["Secrets", "From a secret manager or the runtime environment — never in source, never in an image layer."],
+    ["Secrets", "From a secret manager or the runtime environment, never in source, never in an image layer."],
     ["Exposure", "HTTPS only, restricted CORS, deliberate bind host, security headers on every response."],
   ],
   settings: [
     ["<code>DATABASE_URL_DOCKER</code> / <code>POSTGRES_PASSWORD</code>", "Real credentials, rotated on a schedule, never reused from staging."],
     ["<code>JWT_SECRET_KEY</code>", "Signs dashboard sessions. Rotating it invalidates existing sessions, so plan the window."],
-    ["<code>KAFKA_BOOTSTRAP_SERVERS_DOCKER</code>, <code>REDIS_URL_DOCKER</code>", "Durable, monitored dependencies — not a laptop broker."],
+    ["<code>KAFKA_BOOTSTRAP_SERVERS_DOCKER</code>, <code>REDIS_URL_DOCKER</code>", "Durable, monitored dependencies, not a laptop broker."],
     ["<code>PESAGUARD_BIND_HOST_DOCKER</code>", "Where the service listens. Set it deliberately rather than exposing everything."],
     ["<code>PESAGUARD_ALLOWED_ORIGIN</code>", "Restricts browser origins; empty means no cross-origin browser access."],
     ["<code>PESAGUARD_ENVIRONMENT=production</code>", "Labels logs, metrics and error reports so production is never confused with staging."],

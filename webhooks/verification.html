@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Webhooks · Verification - PesaGuard docs</title>
 <meta name="description" content="Verify outbound webhook signatures using PesaGuard's timestamped HMAC-SHA-256 and canonical JSON format; enforce replay checks and idempotent processing.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/webhooks/verification.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/webhooks/verification">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Webhooks · Verification - PesaGuard docs">
 <meta property="og:description" content="Verify outbound webhook signatures using PesaGuard's timestamped HMAC-SHA-256 and canonical JSON format; enforce replay checks and idempotent processing.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/webhooks/verification.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/webhooks/verification">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Webhooks · Verification - PesaGuard docs">
@@ -29,31 +28,31 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/webhooks/verification.html">
+<body data-path="/webhooks/verification">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="Section navigation"><div class="docs-nav-group"><p>Webhooks</p><ul>
-      <li><a href="../webhooks/index.html">Overview</a></li>
-      <li><a href="../webhooks/event-catalog.html">Event catalog</a></li>
-      <li><a href="../webhooks/verification.html">Verification</a></li>
-      <li><a href="../webhooks/retries.html">Retries</a></li>
+      <li><a href="../webhooks/">Overview</a></li>
+      <li><a href="../webhooks/event-catalog">Event catalog</a></li>
+      <li><a href="../webhooks/verification">Verification</a></li>
+      <li><a href="../webhooks/retries">Retries</a></li>
     </ul></div></aside>
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../index.html">Webhooks</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
+          <a href="../">Webhooks</a><span aria-hidden="true">/</span>
           <span>Verification</span></nav>
     <p class="docs-eyebrow">Webhooks</p>
     <h1>Verification</h1>
@@ -77,12 +76,12 @@
     <h2>Verification checklist</h2><table><thead><tr><th>Step</th><th>Requirement</th></tr></thead><tbody><tr><td>Bound input</td><td>Enforce a request-size limit and parse JSON as untrusted input without side effects.</td></tr><tr><td>Resolve secret</td><td>Use the environment-specific endpoint signing secret from protected storage.</td></tr><tr><td>Canonicalize</td><td>Serialize parsed JSON using recursively sorted keys and compact separators, then sign timestamp, dot, and canonical JSON.</td></tr><tr><td>Compare</td><td>Use constant-time digest comparison; reject malformed headers and stale timestamps.</td></tr><tr><td>Process</td><td>Only after verification, deduplicate the event and perform business processing idempotently.</td></tr></tbody></table>
     <h2>Freshness, duplicates, and failures</h2>
     <p>Compare the timestamp against the receiver's clock and reject values outside a short configured window (five minutes is a reasonable default if your integration has no stricter agreement). Use synchronized clocks. Store an event identifier or stable deduplication key with the processing result so sender retries do not repeat business effects.</p>
-    <p>Reject invalid signatures and stale timestamps before persistence or business actions. Record a safe delivery identifier and verification outcome, but never log the shared secret, full authorization material, or sensitive payload. Return a non-success response when verification fails; use the <a href="retries.html">retry guidance</a> to decide receiver behavior for transient failures.</p>
-    <p><strong>Do not use this procedure for incoming provider callbacks.</strong> For example, the communications callback path authenticates the raw request bytes, while Daraja callbacks have separate source-validation settings. See <a href="../security/webhook-security.html">Webhook security</a> for the distinction.</p>
+    <p>Reject invalid signatures and stale timestamps before persistence or business actions. Record a safe delivery identifier and verification outcome, but never log the shared secret, full authorization material, or sensitive payload. Return a non-success response when verification fails; use the <a href="retries">retry guidance</a> to decide receiver behavior for transient failures.</p>
+    <p><strong>Do not use this procedure for incoming provider callbacks.</strong> For example, the communications callback path authenticates the raw request bytes, while Daraja callbacks have separate source-validation settings. See <a href="../security/webhook-security">Webhook security</a> for the distinction.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../webhooks/retries.html">Retries</a></li>
-      <li><a href="../concepts/idempotency.html">Idempotency</a></li>
+      <li><a href="../webhooks/retries">Retries</a></li>
+      <li><a href="../concepts/idempotency">Idempotency</a></li>
     </ul>
   </article>
 </div>
@@ -90,7 +89,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

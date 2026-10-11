@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Migration · Deprecated endpoints - PesaGuard docs</title>
 <meta name="description" content="No endpoints are deprecated today. When one is, it is listed here with its replacement and sunset date.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/migration/deprecated-endpoints.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/migration/deprecated-endpoints">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Migration · Deprecated endpoints - PesaGuard docs">
 <meta property="og:description" content="No endpoints are deprecated today. When one is, it is listed here with its replacement and sunset date.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/migration/deprecated-endpoints.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/migration/deprecated-endpoints">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Migration · Deprecated endpoints - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/migration/deprecated-endpoints.html">
+<body data-path="/migration/deprecated-endpoints">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -52,7 +51,7 @@
     <div class="api-hero"><div><strong>Deprecation is a managed transition</strong><p>An endpoint remains usable during its support window, but new integrations should move to the replacement immediately.</p></div><div class="api-hero-meta"><span>NOTICE</span><span>MIGRATE</span><span>SUNSET</span></div></div>
     <h2>Required deprecation record</h2><table><thead><tr><th>Field</th><th>Why it is required</th></tr></thead><tbody><tr><td>Old route and version</td><td>Defines exactly what consumers must find.</td></tr><tr><td>Replacement route</td><td>Gives teams an actionable destination.</td></tr><tr><td>Behavior differences</td><td>Prevents a path-only migration that misses semantics.</td></tr><tr><td>Notice and sunset dates</td><td>Creates a measurable support window of at least 90 days.</td></tr><tr><td>Owner and support path</td><td>Gives consumers a place to resolve migration blockers.</td></tr></tbody></table>
     <h2>Consumer response</h2><ol><li>Inventory usage of the deprecated route.</li><li>Compare old and replacement contracts.</li><li>Update tests for authentication, validation, errors and retries.</li><li>Roll out the replacement with metrics and rollback.</li><li>Confirm old-route traffic reaches zero before sunset.</li></ol>
-    <h2>Current status</h2><p>No endpoint is listed as deprecated in the current documentation set. Continue using the documented route versions and check the <a href="../changelog/index.html">changelog</a> and running <a href="../api/reference.html">OpenAPI reference</a> for future notices.</p>
+    <h2>Current status</h2><p>No endpoint is listed as deprecated in the current documentation set. Continue using the documented route versions and check the <a href="../changelog/">changelog</a> and running <a href="../api/reference">OpenAPI reference</a> for future notices.</p>
     <h2>How to detect usage</h2><ul><li>Search source code, generated clients and infrastructure configuration for the old route.</li><li>Measure request counts by route, version, tenant, credential and client release.</li><li>Include background workers, scheduled exports and support tools in the inventory.</li><li>Track traffic until it remains at zero through the final support window.</li></ul>
     <h2>Deprecation announcement template</h2><pre class="docs-code" data-lang="text"><code>Deprecated: GET /api/v1/example
   Replacement: GET /api/v2/example
@@ -64,8 +63,8 @@
     <h2>Provider and client impact</h2><p>Deprecation can affect more than direct callers. Review SDKs, webhooks, exports, dashboards, audit queries and reconciliation jobs before declaring a migration complete.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../migration/index.html">Migration</a></li>
-      <li><a href="../api/versioning.html">Versioning</a></li>
+      <li><a href="../migration/">Migration</a></li>
+      <li><a href="../api/versioning">Versioning</a></li>
     </ul>
   </article>
 </div>
@@ -73,7 +72,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

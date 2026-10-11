@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>First webhook — PesaGuard docs</title>
+<title>First webhook | PesaGuard docs</title>
 <meta name="description" content="Receive, verify and idempotently process your first signed webhook in the staging environment.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/getting-started/first-webhook.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/getting-started/first-webhook">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
-<meta property="og:title" content="First webhook — PesaGuard docs">
+<meta property="og:title" content="First webhook | PesaGuard docs">
 <meta property="og:description" content="Receive, verify and idempotently process your first signed webhook in the staging environment.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/getting-started/first-webhook.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/getting-started/first-webhook">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="First webhook — PesaGuard docs">
+<meta name="twitter:title" content="First webhook | PesaGuard docs">
 <meta name="twitter:description" content="Receive, verify and idempotently process your first signed webhook in the staging environment.">
 <meta name="twitter:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
@@ -30,10 +29,10 @@
 <link rel="stylesheet" href="../css/responsive.css">
 <noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
 </head>
-<body data-path="/getting-started/first-webhook.html">
+<body data-path="/getting-started/first-webhook">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav">
     <a href="../getting-started/">Getting started</a>
@@ -41,7 +40,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke/">Status</a>
+    <a href="https://status.pesaguard.victorkipruto.com/">Status</a>
   </nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
@@ -50,29 +49,29 @@
 <div class="docs-shell">
   <aside class="docs-sidebar" aria-label="Getting started navigation">
   <div class="docs-nav-group"><p>Getting started</p><ul>
-    <li><a href="index.html">Overview</a></li>
-    <li><a href="quickstart.html">Quickstart</a></li>
-    <li><a href="create-account.html">Create an account</a></li>
-    <li><a href="create-api-key.html">Create an API key</a></li>
-    <li><a href="first-request.html">First request</a></li>
-    <li><a href="first-transaction.html">First transaction</a></li>
-    <li><a href="first-webhook.html" aria-current="page">First webhook</a></li>
-    <li><a href="first-reconciliation.html">First reconciliation</a></li>
-    <li><a href="test-environment.html">Test environment</a></li>
-    <li><a href="production-checklist.html">Production checklist</a></li>
+    <li><a href="./">Overview</a></li>
+    <li><a href="quickstart">Quickstart</a></li>
+    <li><a href="create-account">Create an account</a></li>
+    <li><a href="create-api-key">Create an API key</a></li>
+    <li><a href="first-request">First request</a></li>
+    <li><a href="first-transaction">First transaction</a></li>
+    <li><a href="first-webhook" aria-current="page">First webhook</a></li>
+    <li><a href="first-reconciliation">First reconciliation</a></li>
+    <li><a href="test-environment">Test environment</a></li>
+    <li><a href="production-checklist">Production checklist</a></li>
   </ul></div>
 </aside>
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="index.html">Getting started</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
+          <a href="./">Getting started</a><span aria-hidden="true">/</span>
           <span>First webhook</span></nav>
     <p class="docs-eyebrow">Getting started</p>
     <h1>First webhook</h1>
-    <p class="docs-lede">Receive one signed delivery in staging and prove that your receiver verifies the sender, accepts durably, handles duplicates and survives replay — before any of this matters in production.</p>
+    <p class="docs-lede">Receive one signed delivery in staging and prove that your receiver verifies the sender, accepts durably, handles duplicates and survives replay, before any of this matters in production.</p>
     <div class="api-hero"><div><strong>Prove the receiver, not just the platform</strong><p>A webhook consumer is an independent reliability boundary. These steps establish that boundary with a real staging delivery.</p></div><div class="api-hero-meta"><span>VERIFY</span><span>ACKNOWLEDGE</span><span>REPLAY</span></div></div>
   <div class="callout" data-tone="info">
     <strong>Prerequisites</strong>
-    <p>A staging receiver you control, the staging signing secret from protected storage, and an environment you can restart safely. See <a href="test-environment.html">test environment</a> and <a href="../testing/webhook-testing.html">webhook testing</a>.</p>
+    <p>A staging receiver you control, the staging signing secret from protected storage, and an environment you can restart safely. See <a href="test-environment">test environment</a> and <a href="../testing/webhook-testing">webhook testing</a>.</p>
   </div>
 
   <h2>1 · Publish the receiver</h2>
@@ -81,12 +80,12 @@
   <h2>2 · Verify the sender before parsing</h2>
   <ol>
     <li>Read the signature header from the delivery.</li>
-    <li>Recompute the signature over the <strong>raw body</strong> using the staging signing secret and the documented algorithm — do not reserialize the JSON first.</li>
+    <li>Recompute the signature over the <strong>raw body</strong> using the staging signing secret and the documented algorithm, do not reserialize the JSON first.</li>
     <li>Compare with a constant-time comparison and reject a mismatch with <code>401</code> before parsing or any business logic.</li>
   </ol>
   <div class="callout" data-tone="danger">
     <strong>Fail closed</strong>
-    <p>An unsigned or unverifiable delivery is not a degraded delivery — it is untrusted input. Reject it and record the verification outcome without logging the secret or the full signature.</p>
+    <p>An unsigned or unverifiable delivery is not a degraded delivery, it is untrusted input. Reject it and record the verification outcome without logging the secret or the full signature.</p>
   </div>
 
   <h2>3 · Persist, then acknowledge</h2>
@@ -104,11 +103,11 @@
 }</code></pre>
 
   <h2>4 · Prove idempotent handling</h2>
-  <p>Deliver the same event twice. The receiver must end with one durable event and one downstream effect — retries and replays must never create duplicate financial effects. Use the event and delivery identity as the deduplication key. See <a href="../concepts/idempotency.html">idempotency</a>.</p>
+  <p>Deliver the same event twice. The receiver must end with one durable event and one downstream effect, retries and replays must never create duplicate financial effects. Use the event and delivery identity as the deduplication key. See <a href="../concepts/idempotency">idempotency</a>.</p>
 
   <h2>5 · Exercise failure and replay</h2>
   <ol>
-    <li>Force the receiver to fail — stop the process or return 5xx.</li>
+    <li>Force the receiver to fail, stop the process or return 5xx.</li>
     <li>Observe bounded retries, then the delivery landing in the dead-letter path with its identity intact.</li>
     <li>Replay the event and confirm the final state matches the original successful run.</li>
   </ol>
@@ -128,9 +127,9 @@
 
   <h2>Next</h2>
   <ul>
-    <li><a href="../webhooks/event-catalog.html">Event catalog</a> — the event families that flow to your receiver.</li>
-    <li><a href="test-environment.html">Test environment</a> — where every step above should run first.</li>
-    <li><a href="production-checklist.html">Production checklist</a> — what must be true before go-live.</li>
+    <li><a href="../webhooks/event-catalog">Event catalog</a>: the event families that flow to your receiver.</li>
+    <li><a href="test-environment">Test environment</a>: where every step above should run first.</li>
+    <li><a href="production-checklist">Production checklist</a>: what must be true before go-live.</li>
   </ul>
 </article>
 </div>
@@ -140,7 +139,7 @@
   <span>© 2026 PesaGuard</span>
   <nav aria-label="Footer">
     <a href="https://pesaguard.co.ke">Product</a>
-    <a href="https://status.pesaguard.co.ke">Status</a>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a>
     <a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a>
   </nav>
 </div></footer>

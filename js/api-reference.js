@@ -58,11 +58,11 @@
     parameters.forEach(function (parameter) {
       var tr = document.createElement("tr");
       [
-        parameter.name || "—",
-        parameter.in || "—",
+        parameter.name || "Not specified",
+        parameter.in || "Not specified",
         parameter.required ? "Yes" : "No",
         schemaLabel(parameter.schema),
-        parameter.description || "—"
+        parameter.description || "Not specified"
       ].forEach(function (value) {
         tr.appendChild(node("td", value));
       });
@@ -89,7 +89,7 @@
       var content = response.content || {};
       var media = content["application/json"] || content["application/*"] || {};
       var tr = document.createElement("tr");
-      [code, response.description || "—", schemaLabel(media.schema)].forEach(function (value) {
+      [code, response.description || "Not specified", schemaLabel(media.schema)].forEach(function (value) {
         tr.appendChild(node("td", value));
       });
       body.appendChild(tr);

@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Errors · 401 · Authentication - PesaGuard docs</title>
 <meta name="description" content="The caller was not authenticated. Refresh or reissue the credential.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/authentication.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/authentication">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Errors · 401 · Authentication - PesaGuard docs">
 <meta property="og:description" content="The caller was not authenticated. Refresh or reissue the credential.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/authentication.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/authentication">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Errors · 401 · Authentication - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/errors/authentication.html">
+<body data-path="/errors/authentication">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -49,18 +48,18 @@
     <p class="docs-eyebrow">Errors</p>
     <h1>401 · Authentication</h1>
     <p class="docs-lede">The server could not establish a valid identity for the request. The credential may be missing, malformed, expired, revoked, issued for another audience or sent to the wrong environment.</p>
-    <p>See <a href="../api/errors.html">API · Errors</a> for the envelope and client behaviour.</p>
+    <p>See <a href="../api/errors">API · Errors</a> for the envelope and client behaviour.</p>
     <h2>Common causes</h2><ul><li>No <code>Authorization</code> header was sent.</li><li>The scheme is not <code>Bearer</code> or the token contains extra whitespace.</li><li>The token is expired, revoked, signed by an unknown issuer or intended for another audience.</li><li>A sandbox credential was sent to production or the reverse.</li></ul>
     <h2>Recovery procedure</h2><ol><li>Confirm the base URL and environment.</li><li>Check the header without logging the secret.</li><li>Renew or replace the credential once.</li><li>Retry the original request only after authentication succeeds.</li><li>Escalate repeated failures with the request id and token metadata, never the raw token.</li></ol>
     <h2>Example</h2><pre class="docs-code" data-lang="http"><code>HTTP/1.1 401 Unauthorized
   Content-Type: application/json
 
   {"error":"authentication_failed","message":"Valid bearer authentication is required."}</code></pre>
-    <p>Expired, revoked or badly signed tokens return <code>authentication_failed</code>. Other authentication failures use <code>missing_auth_header</code>, <code>invalid_auth_header</code>, <code>invalid_token</code> and <code>invalid_api_key</code> (all <code>401</code>), and <code>authentication_unavailable</code> (<code>503</code>). See <a href="../api/authentication.html">Authentication</a>.</p>
+    <p>Expired, revoked or badly signed tokens return <code>authentication_failed</code>. Other authentication failures use <code>missing_auth_header</code>, <code>invalid_auth_header</code>, <code>invalid_token</code> and <code>invalid_api_key</code> (all <code>401</code>), and <code>authentication_unavailable</code> (<code>503</code>). See <a href="../api/authentication">Authentication</a>.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/errors.html">API · Errors</a></li>
-      <li><a href="../errors/error-codes.html">Error codes</a></li>
+      <li><a href="../api/errors">API · Errors</a></li>
+      <li><a href="../errors/error-codes">Error codes</a></li>
     </ul>
   </article>
 </div>
@@ -68,7 +67,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

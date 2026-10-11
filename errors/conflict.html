@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Errors · 409 · Conflict - PesaGuard docs</title>
 <meta name="description" content="Usually a duplicate under idempotency. Read the existing record instead of re-sending.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/conflict.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/errors/conflict">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Errors · 409 · Conflict - PesaGuard docs">
 <meta property="og:description" content="Usually a duplicate under idempotency. Read the existing record instead of re-sending.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/conflict.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/errors/conflict">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Errors · 409 · Conflict - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/errors/conflict.html">
+<body data-path="/errors/conflict">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -49,13 +48,13 @@
     <p class="docs-eyebrow">Errors</p>
     <h1>409 · Conflict</h1>
     <p class="docs-lede">The request is valid but cannot be applied to the current resource state. In write paths, this commonly means an idempotency key or provider reference already represents an existing operation.</p>
-    <p>See <a href="../api/errors.html">API · Errors</a> for the envelope and client behaviour.</p>
+    <p>See <a href="../api/errors">API · Errors</a> for the envelope and client behaviour.</p>
     <h2>Conflict categories</h2><table><thead><tr><th>Category</th><th>Example</th><th>Correct response</th></tr></thead><tbody><tr><td>Duplicate operation</td><td>Same idempotency key with the same or completed request.</td><td>Retrieve or return the original outcome.</td></tr><tr><td>Key mismatch</td><td>Same key reused with a different request body.</td><td>Stop and create a new logical operation.</td></tr><tr><td>State conflict</td><td>Attempt to resolve an already resolved record.</td><td>Read current state and preserve history.</td></tr></tbody></table>
     <h2>Safe recovery</h2><ol><li>Preserve the response body and request id.</li><li>Read the resource using the same tenant and authorization context.</li><li>Compare the server outcome with the intended operation.</li><li>Never create a second record merely because the first response was lost.</li><li>Escalate ambiguous financial state for reconciliation review.</li></ol>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/errors.html">API · Errors</a></li>
-      <li><a href="../errors/error-codes.html">Error codes</a></li>
+      <li><a href="../api/errors">API · Errors</a></li>
+      <li><a href="../errors/error-codes">Error codes</a></li>
     </ul>
   </article>
 </div>
@@ -63,7 +62,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

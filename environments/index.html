@@ -6,8 +6,7 @@
 <title>Environments - PesaGuard docs</title>
 <meta name="description" content="Staging and production deployment variants, and the settings each one requires.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/environments/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,27 +31,27 @@
 <body data-path="/environments/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>Environments</span></nav>
     <p class="docs-eyebrow">Environments</p>
     <h1>Environments</h1>
     <p class="docs-lede">Staging and production are distinct intended environments with separate data, credentials and operational risk. This documentation describes the boundaries and verification steps; it does not assert either deployment is currently reachable or ready.</p>
     <div class="api-hero"><div><strong>Environment status: verification required</strong><p>Confirm the base URL, effective configuration and operator-provided evidence before using either environment.</p></div><div class="api-hero-meta"><span>STAGING · VERIFY</span><span>PRODUCTION · VERIFY</span></div></div>
-    <div class="info-grid"><div class="info-panel"><h2>Staging</h2><p>Use only after its reachability, isolated data, test credentials and dependencies have been confirmed by the operator.</p><p><a href="staging.html">Read staging guide →</a></p></div><div class="info-panel"><h2>Production</h2><p>Production use requires verified deployment, operational dependencies, monitoring, rollback and recovery evidence.</p><p><a href="production.html">Read production guide →</a></p></div></div>
+    <div class="info-grid"><div class="info-panel"><h2>Staging</h2><p>Use only after its reachability, isolated data, test credentials and dependencies have been confirmed by the operator.</p><p><a href="staging">Read staging guide →</a></p></div><div class="info-panel"><h2>Production</h2><p>Production use requires verified deployment, operational dependencies, monitoring, rollback and recovery evidence.</p><p><a href="production">Read production guide →</a></p></div></div>
     <table>
       <thead><tr><th>Variant</th><th>Purpose</th><th>Owns</th></tr></thead>
       <tbody>
@@ -64,12 +63,12 @@
     <ol><li>Confirm the base URL and DNS or tunnel target.</li><li>Confirm the credential belongs to the same environment and tenant.</li><li>Check database, Redis and Kafka endpoints before starting workers.</li><li>Use synthetic or approved data in staging; never copy production secrets into it.</li><li>Run an authenticated health or read check before enabling writes.</li></ol>
     <h2>Promotion path</h2>
     <p>Promote configuration and application artifacts through staging before production. Re-run migrations, contract tests, retry tests and reconciliation checks in the destination environment. Promotion means issuing destination credentials and validating destination dependencies, not copying a <code>.env</code> file.</p>
-    <p>Settings live in the git-ignored root <code>.env</code>. Validate with <code>config --quiet</code>; bring up with <code>up -d --build</code> only after reviewing the merged configuration. Full list: <a href="environment-variables.html">environment variables</a>.</p>
+    <p>Settings live in the git-ignored root <code>.env</code>. Validate with <code>config --quiet</code>; bring up with <code>up -d --build</code> only after reviewing the merged configuration. Full list: <a href="environment-variables">environment variables</a>.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../environments/environment-variables.html">Environment variables</a></li>
-      <li><a href="../getting-started/production-checklist.html">Production checklist</a></li>
-      <li><a href="https://status.pesaguard.co.ke">Status</a></li>
+      <li><a href="../environments/environment-variables">Environment variables</a></li>
+      <li><a href="../getting-started/production-checklist">Production checklist</a></li>
+      <li><a href="https://status.pesaguard.victorkipruto.com">Status</a></li>
     </ul>
   </article>
 </div>
@@ -77,7 +76,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

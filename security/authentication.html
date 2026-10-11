@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · Authentication - PesaGuard docs</title>
 <meta name="description" content="How PesaGuard verifies short-lived JWTs, tenant-bound API keys, user sessions, and provider-specific callback credentials.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/security/authentication.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/security/authentication">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · Authentication - PesaGuard docs">
 <meta property="og:description" content="How PesaGuard verifies short-lived JWTs, tenant-bound API keys, user sessions, and provider-specific callback credentials.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/security/authentication.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/security/authentication">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · Authentication - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/security/authentication.html">
+<body data-path="/security/authentication">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -60,7 +59,7 @@
     <p>Keep access tokens in process memory where practical; never place them in a URL, browser history, source control, screenshots, or logs. Send them only over HTTPS and only to the intended API origin.</p>
     <h2>API-key authentication</h2>
     <p>Where an endpoint supports API keys, send the key in <code>X-API-Key</code>. Keys are tenant-bound and resolved using a SHA-256 digest. Their records include a role, an explicit scope list, an active/revoked state, optional expiry, and last-used time. The verifier intersects the permissions associated with the role and the key's explicit scopes; having a key does not grant every permission in the role.</p>
-    <p>Use a different key for each application or integration. Restrict access to the smallest permitted scope, store the key in a secret manager, avoid printing it in diagnostics, and revoke it immediately if it may have been exposed. See <a href="api-key-security.html">API key security</a> for lifecycle and incident guidance.</p>
+    <p>Use a different key for each application or integration. Restrict access to the smallest permitted scope, store the key in a secret manager, avoid printing it in diagnostics, and revoke it immediately if it may have been exposed. See <a href="api-key-security">API key security</a> for lifecycle and incident guidance.</p>
     <h2>Interactive users and sessions</h2>
     <p>User JWTs are linked to persisted account and session state. Session checks include active state and expiry information, including the configured idle timeout. Refresh tokens are persisted and rotated; reuse of an already-rotated token causes the associated token family to be revoked. Clients should replace a refresh token atomically after a successful refresh and discard the old value.</p>
     <h2>Provider callbacks are a separate trust boundary</h2>
@@ -76,11 +75,11 @@
     <p>The exact routes that require authentication are determined by the route configuration and deployment settings. The API's health and documentation routes may have intentionally different exposure rules; review <code>PESAGUARD_PUBLIC_API_DOCS</code> and the production route policy before deployment.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/authentication.html">API authentication and request headers</a></li>
-      <li><a href="api-key-security.html">API key security</a></li>
-      <li><a href="webhook-security.html">Webhook security</a></li>
-      <li><a href="../security/index.html">Security overview</a></li>
-      <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
+      <li><a href="../api/authentication">API authentication and request headers</a></li>
+      <li><a href="api-key-security">API key security</a></li>
+      <li><a href="webhook-security">Webhook security</a></li>
+      <li><a href="../security/">Security overview</a></li>
+      <li><a href="../security/tenant-isolation">Tenant isolation</a></li>
     </ul>
   </article>
 </div>
@@ -88,7 +87,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

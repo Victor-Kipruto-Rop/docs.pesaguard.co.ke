@@ -6,9 +6,9 @@ This documentation is a rolling set of guides. The OpenAPI document served by th
 
 ## Start here
 
-- [Quickstart](https://docs.pesaguard.co.ke/getting-started/quickstart.html): verify an API deployment and retrieve its contract.
+- [Quickstart](https://docs.pesaguard.co.ke/getting-started/quickstart): verify an API deployment and retrieve its contract.
 - [Getting started](https://docs.pesaguard.co.ke/getting-started/): provisioning, first requests, and production checklist.
-- [Authentication](https://docs.pesaguard.co.ke/api/authentication.html): bearer tokens, API keys, and provider callback boundaries.
+- [Authentication](https://docs.pesaguard.co.ke/api/authentication): bearer tokens, API keys, and provider callback boundaries.
 - [Environment guide](https://docs.pesaguard.co.ke/environments/): staging and production distinctions.
 - [OpenAPI reference](https://docs.pesaguard.co.ke/api-reference/): interactive contract browser and JSON/YAML downloads.
 
@@ -35,6 +35,6 @@ This documentation is a rolling set of guides. The OpenAPI document served by th
 - [Product](https://pesaguard.co.ke/)
 - [Developer Platform](https://developers.pesaguard.co.ke/)
 - [API origin](https://api.pesaguard.co.ke/)
-- [System status](https://status.pesaguard.co.ke/)
+- [System status](https://status.pesaguard.victorkipruto.com/)
 
 These links identify the intended product domains; this file does not assert DNS, deployment, uptime, or API reachability.

@@ -1,4 +1,4 @@
-/* Reset — the smallest set that makes the rest predictable. */
+/* Reset: the smallest set that makes the rest predictable. */
 
 *, *::before, *::after { box-sizing: border-box; }
 

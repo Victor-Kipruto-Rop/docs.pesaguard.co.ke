@@ -10,6 +10,7 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
 const OUT = path.join(ROOT, "data", "search-index.json");
+const ORIGIN = "https://docs.pesaguard.co.ke";
 
 function walk(dir, files = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -19,6 +20,13 @@ function walk(dir, files = []) {
     else if (entry.name.endsWith(".html")) files.push(full);
   }
   return files;
+}
+
+function publicUrl(file) {
+  const rel = path.relative(ROOT, file).split(path.sep).join("/");
+  if (rel === "index.html") return "/";
+  if (rel.endsWith("/index.html")) return `/${rel.slice(0, -"index.html".length)}`;
+  return `/${rel.replace(/\.html$/, "")}`;
 }
 
 const index = [];
@@ -31,8 +39,8 @@ for (const file of walk(ROOT)) {
   const section = rel.includes("/") ? rel.split("/")[0] : "docs";
   const eyebrow = (html.match(/<p class="docs-eyebrow">([^<]+)<\/p>/) || [])[1] || section;
   index.push({
-    href: rel,
-    title: title.replace(/ — PesaGuard docs$/, ""),
+    href: publicUrl(file),
+    title: title.replace(/ \| PesaGuard docs$/, ""),
     description,
     section: eyebrow
   });
@@ -43,4 +51,12 @@ fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, JSON.stringify(index, null, 2) + "\n", "utf8");
 // Mirror for the /search/ route, which is served as a directory.
 fs.writeFileSync(path.join(ROOT, "search", "search-index.json"), JSON.stringify(index, null, 2) + "\n", "utf8");
+const sitemap = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  ...index.map((entry) => `  <url><loc>${ORIGIN}${entry.href}</loc></url>`),
+  "</urlset>",
+  "",
+].join("\n");
+fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemap, "utf8");
 console.log(`search index: ${index.length} pages`);

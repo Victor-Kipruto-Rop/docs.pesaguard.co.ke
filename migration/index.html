@@ -6,8 +6,7 @@
 <title>Migration · Migrations - PesaGuard docs</title>
 <meta name="description" content="Schema migration discipline and the deprecation policy that governs API changes.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/migration/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,14 +31,14 @@
 <body data-path="/migration/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -47,14 +46,14 @@
 <div class="docs-shell">
 <aside class="docs-sidebar" aria-label="Migration navigation">
   <div class="docs-nav-group"><p>Migration</p><ul>
-    <li><a href="index.html" aria-current="page">Overview</a></li>
-    <li><a href="api-v1-to-v2.html">API v1 to v2</a></li>
-    <li><a href="deprecated-endpoints.html">Deprecated endpoints</a></li>
-    <li><a href="webhook-migrations.html">Webhook migrations</a></li>
+    <li><a href="./" aria-current="page">Overview</a></li>
+    <li><a href="api-v1-to-v2">API v1 to v2</a></li>
+    <li><a href="deprecated-endpoints">Deprecated endpoints</a></li>
+    <li><a href="webhook-migrations">Webhook migrations</a></li>
   </ul></div>
 </aside>
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../index.html">Docs</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span>
           <span>Migration</span></nav>
     <p class="docs-eyebrow">Migration</p>
     <h1>Migrations</h1>
@@ -65,15 +64,15 @@
       <li><strong>API</strong>: breaking changes require a new versioned prefix; the previous version stays supported for at least 90 days after notice.</li>
       <li><strong>Deprecations</strong>: announced in release notes and the OpenAPI document.</li>
     </ul>
-    <h2>Migration tracks</h2><table><thead><tr><th>Track</th><th>Use when</th><th>Guide</th></tr></thead><tbody><tr><td>API version</td><td>Routes, schemas, scopes or response semantics change.</td><td><a href="api-v1-to-v2.html">API v1 to v2</a></td></tr><tr><td>Endpoint deprecation</td><td>An existing route will be replaced or removed.</td><td><a href="deprecated-endpoints.html">Deprecated endpoints</a></td></tr><tr><td>Webhook consumer</td><td>Signature, payload, retry or event behavior changes.</td><td><a href="webhook-migrations.html">Webhook migrations</a></td></tr><tr><td>Database schema</td><td>Persistent data shape or index changes.</td><td><a href="../concepts/architecture.html">Architecture and durable boundaries</a></td></tr></tbody></table>
+    <h2>Migration tracks</h2><table><thead><tr><th>Track</th><th>Use when</th><th>Guide</th></tr></thead><tbody><tr><td>API version</td><td>Routes, schemas, scopes or response semantics change.</td><td><a href="api-v1-to-v2">API v1 to v2</a></td></tr><tr><td>Endpoint deprecation</td><td>An existing route will be replaced or removed.</td><td><a href="deprecated-endpoints">Deprecated endpoints</a></td></tr><tr><td>Webhook consumer</td><td>Signature, payload, retry or event behavior changes.</td><td><a href="webhook-migrations">Webhook migrations</a></td></tr><tr><td>Database schema</td><td>Persistent data shape or index changes.</td><td><a href="../concepts/architecture">Architecture and durable boundaries</a></td></tr></tbody></table>
     <h2>Universal migration sequence</h2><ol><li>Identify affected tenants, clients, workers and consumers.</li><li>Compare the old and new contract or schema.</li><li>Make the change additive and backward-compatible where possible.</li><li>Test data, authorization, retries, idempotency and reconciliation outcomes in staging.</li><li>Roll out gradually with metrics and rollback ready.</li><li>Remove compatibility behavior only after the support window and traffic review.</li></ol>
     <h2>Change classification</h2><table><thead><tr><th>Class</th><th>Example</th><th>Required control</th></tr></thead><tbody><tr><td>Additive</td><td>New optional response field or new event type.</td><td>Tolerant consumers and contract tests.</td></tr><tr><td>Behavioral</td><td>Same route, but changed defaults, ordering or validation.</td><td>Representative data comparison and operator review.</td></tr><tr><td>Breaking</td><td>Removed field, route, scope or accepted request format.</td><td>New version, notice and supported migration window.</td></tr><tr><td>Data migration</td><td>Backfill, index or persistent shape change.</td><td>Backup, reversible migration and capacity test.</td></tr></tbody></table>
     <h2>Go / no-go review</h2><ul><li>Go only when the affected consumer inventory is complete.</li><li>Go only when staging tests cover success, failure, retry and replay.</li><li>Go only when dashboards show errors, latency, queue lag and reconciliation outcomes.</li><li>No-go when rollback would lose event identity, duplicate a write or hide an exception.</li></ul>
     <h2>Migration evidence</h2><p>Retain the contract versions, test results, owner, approval, deployment timestamp, request ids and rollback decision. A successful deployment is not proof that consumers have migrated.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="../api/versioning.html">Versioning</a></li>
-      <li><a href="../changelog/index.html">Changelog</a></li>
+      <li><a href="../api/versioning">Versioning</a></li>
+      <li><a href="../changelog/">Changelog</a></li>
     </ul>
   </article>
 </div>
@@ -81,7 +80,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

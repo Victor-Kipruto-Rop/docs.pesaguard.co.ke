@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PesaGuard docs — stylesheet entry point
+   PesaGuard docs, stylesheet entry point
    --------------------------------------------------------------------------
    Pages link this one file. Import order matters: tokens and reset first,
    layout before components, responsive last so its overrides win.

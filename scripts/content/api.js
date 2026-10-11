@@ -1,5 +1,5 @@
 /**
- * API — the operations surface for integrations. Envelopes, auth, pagination,
+ * API: the operations surface for integrations. Envelopes, auth, pagination,
  * filtering, sorting, versioning, rate limits, idempotency, validation, errors.
  */
 "use strict";
@@ -19,7 +19,7 @@ pages.push({
     "The PesaGuard operations API: base path, authentication, the response envelope, pagination and the status codes you should handle.",
   status: "Live",
   lede:
-    "The operations API exposes the same data the dashboard runs on — transactions, discrepancies, providers, tenant configuration — so integrations never have to scrape a screen or read the database.",
+    "The operations API exposes the same data the dashboard runs on: transactions, discrepancies, providers, and tenant configuration. Integrations never have to scrape a screen or read the database.",
   blocks: [
     B.h2("Base path and shape"),
     B.kv([
@@ -64,7 +64,7 @@ pages.push({
       [["Code", "Code name", "Meaning and the correct reaction"]].concat(
         FACTS.errors.map(([code, name, meaning]) => [code, `<code>${name}</code>`, meaning])
       ),
-      { caption: "Codes are part of the public contract. Message copy is not — match on the code, never on the prose." }
+      { caption: "Codes are part of the public contract. Message copy is not part of the contract. Match on the code, never the prose." }
     ),
     B.h2("Where to go next"),
     B.cards([
@@ -92,13 +92,13 @@ pages.push({
     "How to handle API failures in code: the envelope, the classes, a reference retry implementation, and what not to do.",
   status: "Live",
   lede:
-    "Every failure returns the same envelope, so error handling is one decision per class rather than one branch per endpoint. This page is the implementation view — see the Errors section for one page per class.",
+    "Every failure returns the same envelope, so error handling is one decision per class rather than one branch per endpoint. This page is the implementation view; see the Errors section for one page per class.",
   blocks: [
     B.h2("The three fields that matter"),
     B.table([
       ["Field", "Use it for", "Never use it for"],
-      ["<code>error.code</code>", "Branching, alerting, retry classification.", "—"],
-      ["<code>request_id</code>", "Correlation, support, log linking.", "—"],
+      ["<code>error.code</code>", "Branching, alerting, retry classification.", "Not specified"],
+      ["<code>request_id</code>", "Correlation, support, log linking.", "Not specified"],
       ["<code>error.message</code>", "Log text and operator hints.", "Branching: copy changes without notice."],
       ["<code>error.details</code>", "Pointing at the offending field or conflicting key.", "Parsing as a stable schema."],
     ]),
@@ -106,9 +106,9 @@ pages.push({
     B.table([
       ["Class", "Codes", "Action"],
       ["Retryable", "<code>RATE_LIMITED</code>, <code>INTERNAL_ERROR</code>, gateway timeouts", "Exponential backoff with jitter, bounded attempts. Safe on write paths because writes are idempotent."],
-      ["Terminal — fix the request", "<code>VALIDATION_FAILED</code>, <code>UNAUTHORIZED</code>, <code>FORBIDDEN</code>", "Change the payload or the credential. Retrying unchanged is waste."],
-      ["Terminal — resolve", "<code>DUPLICATE_EVENT</code>", "Read the existing record and continue. This is a success in disguise."],
-      ["Terminal — investigate", "<code>TRANSACTION_NOT_FOUND</code>", "Confirm the identifier belongs to your tenant before escalating."],
+      ["Terminal, fix the request", "<code>VALIDATION_FAILED</code>, <code>UNAUTHORIZED</code>, <code>FORBIDDEN</code>", "Change the payload or the credential. Retrying unchanged is waste."],
+      ["Terminal, resolve", "<code>DUPLICATE_EVENT</code>", "Read the existing record and continue. This is a success in disguise."],
+      ["Terminal, investigate", "<code>TRANSACTION_NOT_FOUND</code>", "Confirm the identifier belongs to your tenant before escalating."],
     ]),
     B.h2("A reference implementation"),
     B.p(
@@ -119,7 +119,7 @@ pages.push({
       { lang: "python", label: "client_errors.py" }
     ),
     B.ul([
-      "The request id is logged at the point of failure, not only where the exception is caught — otherwise the context is gone by the time anyone sees it.",
+      "The request id is logged at the point of failure, not only where the exception is caught; otherwise the context is gone by the time anyone sees it.",
       "Only 429, 5xx and transport failures are retried. A 422 retried five times is five times the log volume and zero progress.",
       "Backoff includes jitter, so a hundred workers failing at once do not retry in lockstep.",
     ]),
@@ -152,7 +152,7 @@ pages.push({
   description: "Stable iteration over large result sets: page and limit, the meta object, and how to walk a list without missing or repeating rows.",
   status: "Live",
   lede:
-    "List endpoints return pages with a <code>meta</code> object that describes the whole set. Walk it forwards from page one to <code>total_pages</code> and you will see every row exactly once — the contract's promise, not an implementation detail to lean on.",
+    "List endpoints return pages with a <code>meta</code> object that describes the whole set. Walk it forwards from page one to <code>total_pages</code> and you will see every row exactly once. That is the contract's promise, not an implementation detail to lean on.",
   blocks: [
     B.h2("The shape"),
     B.code(
@@ -163,7 +163,7 @@ pages.push({
       ["Field", "Means", "Rules"],
       ["<code>page</code>", "The page you are looking at, 1-based.", "Defaults sensibly; beyond <code>total_pages</code> returns an empty set, not an error."],
       ["<code>limit</code>", "Rows per page.", "Bounded server-side: requesting a million rows gets you the documented maximum instead."],
-      ["<code>total</code>", "Rows in the filtered set.", "Computed for the tenant-scoped, filter-scoped query — not the whole table."],
+      ["<code>total</code>", "Rows in the filtered set.", "Computed for the tenant-scoped, filter-scoped query, not the whole table."],
       ["<code>total_pages</code>", "Pages available at this limit.", "The number to loop to, not a guess from row counts."],
     ]),
     B.h2("Walking a list correctly"),
@@ -174,7 +174,7 @@ pages.push({
     B.ul([
       "Iterate to <code>total_pages</code> rather than looping until a short page arrives: a boundary-alignment bug looks exactly like a short page.",
       "Keep the filters identical across pages. Changing a filter between page 2 and page 3 redefines the set you are walking.",
-      "Do not treat the order as stable unless the endpoint documents ordering — see sorting for the deterministic variant.",
+      "Do not treat the order as stable unless the endpoint documents ordering, see sorting for the deterministic variant.",
     ]),
     B.h2("Paginating writes and exports"),
     B.p(
@@ -197,13 +197,13 @@ pages.push({
   description: "Query parameters that narrow list endpoints: exact names come from the endpoint contract, and filters can never widen tenant scope.",
   status: "Live",
   lede:
-    "Filters narrow a list to the rows you care about. They compose with pagination, they never widen your tenant scope, and their exact names are whatever the endpoint contract says — not whatever you guess.",
+    "Filters narrow a list to the rows you care about. They compose with pagination and never widen your tenant scope, and their exact names are whatever the endpoint contract says, not whatever you guess.",
   blocks: [
     B.h2("How filters behave"),
     B.table([
       ["Behaviour", "Rule"],
       ["Tenant first", "Every filter runs inside the caller's tenant. No parameter can reach another tenant's rows."],
-      ["Unknown parameters", "Per endpoint: ignored or rejected — read the spec rather than assuming, and treat a rejected parameter as information, not defiance."],
+      ["Unknown parameters", "Per endpoint, parameters may be ignored or rejected. Read the spec rather than assuming, and treat a rejected parameter as information, not defiance."],
       ["Composition", "Filters AND together and compose with pagination: the <code>meta.total</code> you receive describes the filtered set."],
       ["Stability", "Filter names are part of the endpoint contract. A name that worked last month still works unless the changelog and the OpenAPI document say otherwise."],
     ]),
@@ -243,7 +243,7 @@ pages.push({
   section: "API",
   title: "Idempotency",
   description:
-    "The interface contract for safe retries: same key, same logical event, one record — and a 409 that resolves to the original.",
+    "The interface contract for safe retries: same key, same logical event, one record, and a 409 that resolves to the original.",
   status: "Live",
   lede:
     "At the API level, idempotency is a contract about effects, not requests: delivering the same logical event twice must produce one record. The key is derived server-side, so callers participate by retrying deliberately rather than by manufacturing keys.",
@@ -254,11 +254,11 @@ pages.push({
       ["Same logical event, any number of deliveries", "Exactly one financial record."],
       ["Concurrent deliveries of the same event", "Exactly one record: the claim is a unique-constraint race the database settles, not a check-then-act the application can lose."],
       ["A duplicate after the fact", "<code>409 DUPLICATE_EVENT</code>; the original record is untouched and authoritative."],
-      ["A replay from a dead letter", "The same key, the same record — replay is safe by construction."],
+      ["A replay from a dead letter", "Use the same key for the same record; replay is safe by construction."],
     ]),
     B.h2("What the client should do"),
     B.ol([
-      "Retry transport failures and 429s with bounded backoff — server-side derivation makes repeats safe.",
+      "Retry transport failures and 429s with bounded backoff, server-side derivation makes repeats safe.",
       "On <code>409</code>, fetch the existing record by the identifier you sent and continue with it.",
       "Do not mutate a payload to escape a 409. If the payment is genuinely different it carries its own transaction id; if it does not, forcing a second write is exactly the failure the guard exists to prevent.",
       "Log conflicts at info level. A steady 409 rate is usually the sign of a healthy retry pattern, not an incident.",
@@ -272,7 +272,7 @@ pages.push({
       ["Reads", "Naturally idempotent: no side effects, nothing to guard."],
     ]),
     B.p(
-      "For the full derivation — normalisation of msisdn, amount and time, and the claim ordering that makes the guard race-safe — see <a href=\"concepts/idempotency.html\">Concepts · Idempotency</a>."
+      "For the full derivation, including normalisation of msisdn, amount and time and the claim ordering that makes the guard race-safe, see <a href=\"concepts/idempotency.html\">Concepts · Idempotency</a>."
     ),
     statusNote("Live"),
   ],
@@ -288,7 +288,7 @@ pages.push({
   group: GROUP,
   section: "API",
   title: "Sorting",
-  description: "Where ordering is supported it is documented in the endpoint contract. Everything else is unstable — and this page explains how to cope.",
+  description: "Where ordering is supported it is documented in the endpoint contract. Everything else is unstable, and this page explains how to cope.",
   status: "Draft",
   lede:
     "Unless an endpoint documents its ordering, treat the row order as unstable. The principle is live; the per-endpoint sort keys are still being settled into the OpenAPI document, so this page is marked draft and deliberately vague.",
@@ -297,12 +297,12 @@ pages.push({
     B.table([
       ["Case", "Behaviour"],
       ["The endpoint documents a default order", "Trust it. It is part of the contract."],
-      ["The endpoint accepts a sort parameter", "Use it for deterministic iteration — see the endpoint's contract for the accepted keys."],
+      ["The endpoint accepts a sort parameter", "Use it for deterministic iteration, see the endpoint's contract for the accepted keys."],
       ["Neither is documented", "Assume unstable. Paginate for completeness, never for sequence."],
     ]),
     B.h2("Why unstable ordering exists"),
     B.p(
-      "Rows arrive through concurrent workers, database plans change with data volume, and a replica answers read traffic with its own lag. Any of these can move a row between two identical queries. The service promises completeness (the set), not sequence (the order) — unless it says otherwise."
+      "Rows arrive through concurrent workers, database plans change with data volume, and a replica answers read traffic with its own lag. Any of these can move a row between two identical queries. The service promises completeness (the set), not sequence (the order), unless it says otherwise."
     ),
     B.h2("Patterns that survive"),
     B.ul([
@@ -312,7 +312,7 @@ pages.push({
     ]),
     B.note(
       "Confirm before you code",
-      "If your use case needs an ordering guarantee — a chronological export, a change feed, a report boundary — confirm the exact sort key against your deployment's OpenAPI document before building on it.",
+      "If your use case needs an ordering guarantee for a chronological export, change feed, or report boundary, confirm the exact sort key against your deployment's OpenAPI document before building on it.",
       "warn"
     ),
     statusNote("Draft"),

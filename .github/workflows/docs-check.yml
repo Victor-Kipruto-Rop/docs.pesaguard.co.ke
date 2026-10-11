@@ -1,6 +1,6 @@
 name: Docs checks
 
-# Validation only. This workflow does not build or deploy anything.
+# Validate every change before the production Cloudflare Pages deployment.
 on:
   push:
     branches: [main]
@@ -17,10 +17,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Build search index and sitemap
+        run: node scripts/build-search-index.js
       - name: Links, metadata and OpenAPI structure
         run: npm run check
-      - name: Docs vs OpenAPI drift (report only)
-        run: npm run check:drift
+      - name: Docs vs OpenAPI drift
+        run: npm run check:drift -- --strict
 
   # Signals when api-reference/routes.snapshot.json no longer matches the
   # backend's main branch. Advisory: backend commits should not block docs CI.
@@ -73,3 +75,52 @@ jobs:
               raise SystemExit("openapi.json is stale: run scripts/generate-openapi.py (or merge the sync PR)")
           print("openapi.json is current")
           PY
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment:
+      name: cloudflare-pages
+    concurrency:
+      group: cloudflare-pages
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build search index and sitemap
+        run: node scripts/build-search-index.js
+
+      - name: Stage public documentation files
+        run: |
+          mkdir -p "$RUNNER_TEMP/docs-site"
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='scripts/' \
+            --exclude='tests/' \
+            --exclude='components/' \
+            --exclude='CNAME' \
+            --exclude='README.md' \
+            --exclude='package.json' \
+            ./ "$RUNNER_TEMP/docs-site/"
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "CLOUDFLARE_ACCOUNT_ID secret is required"; exit 1; }
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "CLOUDFLARE_API_TOKEN secret is required"; exit 1; }
+          npx --yes wrangler@4 pages deploy "$RUNNER_TEMP/docs-site" \
+            --project-name=docs-pesaguard \
+            --branch=main

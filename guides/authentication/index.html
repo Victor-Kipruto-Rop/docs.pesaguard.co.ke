@@ -6,8 +6,7 @@
 <title>Authentication guides - PesaGuard docs</title>
 <meta name="description" content="Authentication guides for PesaGuard integrations.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/guides/authentication/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
@@ -32,22 +31,22 @@
 <body data-path="/guides/authentication/">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../../index.html"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../../"><img src="../../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../../getting-started/">Getting started</a>
     <a href="../../concepts/">Concepts</a>
     <a href="../../api/">API</a>
     <a href="../../webhooks/">Webhooks</a>
     <a href="../../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
 <main id="main">
 <div class="docs-shell">
   <article class="docs-article docs-content-wide api-page">
-    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../index.html">Docs</a><span aria-hidden="true">/</span>
-          <a href="../../guides/index.html">Guides</a><span aria-hidden="true">/</span>
+    <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../../">Docs</a><span aria-hidden="true">/</span>
+          <a href="../../guides/">Guides</a><span aria-hidden="true">/</span>
           <span>Authentication guides</span></nav>
     <p class="docs-eyebrow">Authentication guides</p>
     <h1>Authentication guides</h1>
@@ -56,17 +55,17 @@
     <table>
       <thead><tr><th>Page</th><th>Focus</th></tr></thead>
       <tbody>
-        <tr><td><a href="api-keys.html">API keys</a></td><td>Scopes, expiry, rotation metadata, and one credential per integration.</td></tr>
-        <tr><td><a href="bearer-tokens.html">Bearer tokens</a></td><td>The Authorization header, tenant claims, and what a rejected token returns.</td></tr>
-        <tr><td><a href="oauth.html">OAuth</a></td><td>Not supported today. Service access uses scoped bearer tokens issued per deployment.</td></tr>
-        <tr><td><a href="key-rotation.html">Key rotation</a></td><td>Rotate on a schedule and on suspicion; revocation takes effect immediately.</td></tr>
+        <tr><td><a href="api-keys">API keys</a></td><td>Scopes, expiry, rotation metadata, and one credential per integration.</td></tr>
+        <tr><td><a href="bearer-tokens">Bearer tokens</a></td><td>The Authorization header, tenant claims, and what a rejected token returns.</td></tr>
+        <tr><td><a href="oauth">OAuth</a></td><td>Not supported today. Service access uses scoped bearer tokens issued per deployment.</td></tr>
+        <tr><td><a href="key-rotation">Key rotation</a></td><td>Rotate on a schedule and on suspicion; revocation takes effect immediately.</td></tr>
       </tbody>
     </table>
-    <h2>Recommended sequence</h2><ol><li>Review <a href="../../getting-started/create-api-key.html">credential provisioning</a> and tenant scope.</li><li>Use <a href="bearer-tokens.html">bearer tokens</a> or <a href="api-keys.html">API keys</a> according to the integration type.</li><li>Test an authenticated read in staging.</li><li>Follow <a href="key-rotation.html">rotation</a> before production rollout.</li><li>Do not implement OAuth based on assumptions; see the <a href="oauth.html">support boundary</a>.</li></ol>
+    <h2>Recommended sequence</h2><ol><li>Review <a href="../../getting-started/create-api-key">credential provisioning</a> and tenant scope.</li><li>Use <a href="bearer-tokens">bearer tokens</a> or <a href="api-keys">API keys</a> according to the integration type.</li><li>Test an authenticated read in staging.</li><li>Follow <a href="key-rotation">rotation</a> before production rollout.</li><li>Do not implement OAuth based on assumptions; see the <a href="oauth">support boundary</a>.</li></ol>
     <h2>Related</h2>
     <ul>
-      <li><a href="../../guides/index.html">Guides</a></li>
-      <li><a href="../../getting-started/index.html">Getting started</a></li>
+      <li><a href="../../guides/">Guides</a></li>
+      <li><a href="../../getting-started/">Getting started</a></li>
     </ul>
   </article>
 </div>
@@ -74,7 +73,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../../js/app.js" defer></script>

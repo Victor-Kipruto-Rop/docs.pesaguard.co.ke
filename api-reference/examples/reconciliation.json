@@ -14,7 +14,7 @@
       "internal": { "source": "INTERNAL LEDGER", "amount": "KES 4,500", "reference": "INV-19407", "time": "10:26:43" },
       "match_keys": { "amount_matched": false, "reference_matched": true, "timestamp_within_tolerance": true },
       "difference": 500,
-      "reason": "Amount mismatch — difference KES 500. Queued for reviewer."
+      "reason": "Amount mismatch, difference KES 500. Queued for reviewer."
     }
   ]
 }

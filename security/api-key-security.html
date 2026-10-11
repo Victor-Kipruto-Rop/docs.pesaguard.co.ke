@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security · API key security - PesaGuard docs</title>
 <meta name="description" content="How tenant-scoped API keys are verified, scoped, expired and revoked, with operational guidance for secure storage and rotation.">
-<link rel="canonical" href="https://docs.pesaguard.co.ke/security/api-key-security.html">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/security/api-key-security">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="Security · API key security - PesaGuard docs">
 <meta property="og:description" content="How tenant-scoped API keys are verified, scoped, expired and revoked, with operational guidance for secure storage and rotation.">
-<meta property="og:url" content="https://docs.pesaguard.co.ke/security/api-key-security.html">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/security/api-key-security">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Security · API key security - PesaGuard docs">
@@ -29,17 +28,17 @@
 <link rel="stylesheet" href="../css/animations.css">
 <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body data-path="/security/api-key-security.html">
+<body data-path="/security/api-key-security">
 <a class="visually-hidden" href="#main">Skip to content</a>
 <header class="docs-header"><div class="docs-header-inner">
-  <a class="docs-brand" href="../index.html"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+  <a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
   <div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
   <nav class="docs-header-links" aria-label="Primary" id="primary-nav"><a href="../getting-started/">Getting started</a>
     <a href="../concepts/">Concepts</a>
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.co.ke">Status</a></nav>
+    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -82,10 +81,10 @@
     <p>Backend implementation evidence includes the <code>ApiKeyRecord</code> model, the tenant-key hardening migration, and API-key verification in <code>auth_rbac.py</code>. The SHA-256 hash is an identifier for a high-entropy generated key; it is not a substitute for limiting access to the record store or protecting the key in transit.</p>
     <h2>Related</h2>
     <ul>
-      <li><a href="authentication.html">Authentication</a></li>
-      <li><a href="authorization.html">Authorization</a></li>
-      <li><a href="../security/index.html">Security overview</a></li>
-      <li><a href="../security/tenant-isolation.html">Tenant isolation</a></li>
+      <li><a href="authentication">Authentication</a></li>
+      <li><a href="authorization">Authorization</a></li>
+      <li><a href="../security/">Security overview</a></li>
+      <li><a href="../security/tenant-isolation">Tenant isolation</a></li>
     </ul>
   </article>
 </div>
@@ -93,7 +92,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>
