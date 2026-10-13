@@ -70,6 +70,7 @@ jobs:
         run: |
           python scripts/dump-flask-routes.py backend
           python scripts/generate-openapi.py backend
+          cp api-reference/openapi.json api-reference/openapi.yaml
 
       - name: Skip changes that only move the commit stamp
         run: python scripts/discard-stamp-only-changes.py
@@ -88,6 +89,7 @@ jobs:
           delete-branch: true
           add-paths: |
             api-reference/openapi.json
+            api-reference/openapi.yaml
             api-reference/routes.snapshot.json
           commit-message: "Sync API reference with backend ${{ steps.backend.outputs.sha }}"
           title: "Sync API reference with backend ${{ steps.backend.outputs.sha }}"
