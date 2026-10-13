@@ -107,7 +107,7 @@ Authorization: Bearer &lt;token&gt;</code></pre>
     <p>This is a synchronous sweep triggered by the caller, not a background job &mdash; call it on a schedule (a cron hitting this endpoint every few minutes) if you want continuous auto-escalation rather than a one-off catch-up run.</p>
 
     <h2>Filter presets</h2>
-    <p>Three built-in presets always exist: <code>critical_open</code>, <code>needs_review</code> and <code>all</code>. <code>GET</code> returns these built-ins overlaid with presets persisted for the resolved tenant. <code>POST</code> adds or replaces a named preset in that tenant; a fresh <code>GET</code> sees the persisted result. These behaviors are implemented in the current route handler, but the checked-in route snapshot still needs regeneration against the latest backend commit.</p>
+    <p>Three built-in presets always exist: <code>critical_open</code>, <code>needs_review</code> and <code>all</code>. <code>GET</code> returns these built-ins overlaid with presets persisted for the resolved tenant. <code>POST</code> adds or replaces a named preset in that tenant; a fresh <code>GET</code> sees the persisted result. These behaviors are implemented in the checked-in route handler. Before production integration, confirm the same contract in the deployed `/openapi.json`.</p>
     <div class="code-head"><span class="method">GET</span><code>/incidents/filters/presets</code></div>
     <pre class="docs-code" data-lang="http"><code>GET /incidents/filters/presets
 Authorization: Bearer &lt;token&gt;</code></pre>
