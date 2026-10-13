@@ -3,10 +3,8 @@
   "info": {
     "title": "PesaGuard Dashboard & Reconciliation API",
     "version": "2.0.0",
-    "description": "Implementation-derived OpenAPI snapshot last generated from backend commit 8c50cad38e5176aec2513a6ef4584493364a1d42. It has not yet been successfully regenerated against the current backend main branch and may omit routes added since that commit. Do not treat this snapshot as a complete current route inventory; verify the deployed /openapi.json and wait for a successful docs sync before integrating.",
-    "x-documentation": "https://docs.pesaguard.co.ke/api/",
-    "x-snapshot-status": "stale-pending-regeneration",
-    "x-snapshot-warning": "Implementation-derived OpenAPI snapshot last generated from backend commit 8c50cad38e5176aec2513a6ef4584493364a1d42. It has not yet been successfully regenerated against the current backend main branch and may omit routes added since that commit. Do not treat this snapshot as a complete current route inventory; verify the deployed /openapi.json and wait for a successful docs sync before integrating."
+    "description": "PesaGuard API contract metadata and hand-maintained operation summaries for the implementation-derived route inventory. The deployed /openapi.json is authoritative for a specific environment; generated route coverage must be refreshed from the canonical backend before use.",
+    "x-documentation": "https://docs.pesaguard.co.ke/api/"
   },
   "servers": [
     {
