@@ -55,6 +55,12 @@
     <li><a href="production-go-live">Production go-live</a></li>
     <li><a href="troubleshooting">Troubleshooting</a></li>
   </ul></div>
+  <div class="docs-nav-group"><p>Customer and operations</p><ul>
+    <li><a href="customer-dashboard-operations">Customer Dashboard operations</a></li>
+    <li><a href="data-quality-and-ingestion">Data quality and ingestion</a></li>
+    <li><a href="risk-alerts-and-fraud-review">Risk alerts and fraud review</a></li>
+    <li><a href="mpesa-integration-guide">M-Pesa integration guide</a></li>
+  </ul></div>
   <div class="docs-nav-group"><p>Authentication</p><ul>
     <li><a href="authentication/">Authentication overview</a></li>
     <li><a href="authentication/api-keys">API keys</a></li>
@@ -105,6 +111,15 @@
         <div class="info-card"><h3>Reconciliation operations</h3><p>Normalize financial records, apply matching policy and make exceptions explainable.</p><a href="reconciliation-operations">Read reconciliation guidance →</a></div>
         <div class="info-card"><h3>Webhook engineering</h3><p>Verify signatures, deduplicate events, handle retries and make replay safe.</p><a href="webhook-engineering">Read webhook guidance →</a></div>
         <div class="info-card"><h3>Production and troubleshooting</h3><p>Use evidence-based go-live gates and diagnose failures without unsafe retries.</p><a href="production-go-live">Production checklist →</a> · <a href="troubleshooting">Troubleshooting →</a></div>
+      </div>
+    </section>
+    <section aria-labelledby="customer-ops-title">
+      <div class="section-kicker">For finance and operations teams</div><h2 id="customer-ops-title">Operate PesaGuard with evidence</h2>
+      <div class="info-grid">
+        <div class="info-card"><h3>Dashboard operations</h3><p>Investigate transactions, interpret states, resolve exceptions and share reports safely.</p><a href="customer-dashboard-operations">Open the operations handbook →</a></div>
+        <div class="info-card"><h3>Data quality</h3><p>Monitor ingestion completeness, normalization, duplicates, freshness and quarantined records.</p><a href="data-quality-and-ingestion">Open the data quality guide →</a></div>
+        <div class="info-card"><h3>Risk review</h3><p>Triage anomaly signals, review evidence, document dispositions and measure false positives.</p><a href="risk-alerts-and-fraud-review">Open the risk operations guide →</a></div>
+        <div class="info-card"><h3>M-Pesa integration</h3><p>Understand callback validation, idempotency, reconciliation and production checks.</p><a href="mpesa-integration-guide">Open the M-Pesa guide →</a></div>
       </div>
     </section>
     <section aria-labelledby="operating-loop-title"><div class="section-kicker">Implementation sequence</div><h2 id="operating-loop-title">The operating loop</h2><ol class="guide-operating-loop"><li><span>01</span><div><strong>Choose the environment</strong><p>Confirm the base URL, tenant, credential and data boundary before sending a request.</p></div></li><li><span>02</span><div><strong>Read the contract</strong><p>Use the running OpenAPI document for route, schema, scope and error behavior.</p></div></li><li><span>03</span><div><strong>Make one safe change</strong><p>Use validation, idempotency and bounded retries for every state-changing operation.</p></div></li><li><span>04</span><div><strong>Verify the durable result</strong><p>Check state, provider evidence, audit events, request ids and reconciliation outcome.</p></div></li><li><span>05</span><div><strong>Promote with proof</strong><p>Carry test evidence, secret ownership, rollback and observability into production review.</p></div></li></ol></section>
