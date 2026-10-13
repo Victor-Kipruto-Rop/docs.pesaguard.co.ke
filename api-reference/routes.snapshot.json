@@ -2,7 +2,9 @@
   "source": {
     "repository": "Victor-Kipruto-Rop/api.pesaguard",
     "commit": "8c50cad38e5176aec2513a6ef4584493364a1d42",
-    "entrypoint": "pesaguard_backend_pipeline.canonical_app:app"
+    "entrypoint": "pesaguard_backend_pipeline.canonical_app:app",
+    "status": "stale-pending-regeneration",
+    "warning": "This route snapshot was generated from backend commit 8c50cad38e5176aec2513a6ef4584493364a1d42. The canonical FastAPI app mounts authentication and dashboard Flask applications; this older snapshot may omit mounted/direct routes added or exposed after its generation. Regenerate and review against current backend main before treating it as complete."
   },
   "routes": [
     {
