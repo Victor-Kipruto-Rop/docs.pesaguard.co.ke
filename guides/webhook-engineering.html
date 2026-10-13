@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Webhook engineering and event consumers - PesaGuard docs</title>
+<meta name="description" content="A detailed guide to webhook verification, replay safety, idempotent consumers, delivery failures, retries, observability and event versioning.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/webhook-engineering">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Webhook engineering and event consumers - PesaGuard docs">
+<meta property="og:description" content="A detailed guide to webhook verification, replay safety, idempotent consumers, delivery failures, retries, observability and event versioning.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/webhook-engineering">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/guides/webhook-engineering">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="../concepts/">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="./">All developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Integration guides</p><ul>
+<li><a href="platform-lifecycle">Platform lifecycle</a></li><li><a href="api-authentication">API authentication</a></li><li><a href="dashboard-integration">Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live</a></li><li><a href="troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">Status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Guides</a><span aria-hidden="true">/</span><span>Webhook engineering and event consumers</span></nav>
+<p class="docs-eyebrow">Integration patterns · Event delivery</p><h1>Webhook engineering and event consumers</h1><p class="docs-lede">Webhooks help external systems react to supported PesaGuard events. Reliable integrations treat each delivery as untrusted input, verify authenticity, tolerate duplicates, persist before acknowledging and reconcile webhook observations against authoritative API state.</p>
+<div class="callout"><strong>Contract-first rule:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for the developer workflows that are enabled for your account. Confirm exact methods, paths, security schemes, request fields and response schemas in the <a href="../api-reference/">published OpenAPI contract</a> before calling <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. A documented design or domain name does not prove a feature is deployed.</div>
+<h2 id="availability">1. Verify the event capability first</h2>
+<p>Use <a href="../api-reference/">the OpenAPI contract</a> and the webhook documentation to confirm whether webhook configuration, the requested event type, signature headers and delivery inspection are actually supported. Manage the enabled configuration workflow at <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a>. Do not invent event names, headers, retry intervals or signing algorithms.</p>
+<h2 id="delivery-model">2. Design for at-least-once delivery</h2>
+<p>Network failures create ambiguity: a consumer may process an event successfully but fail before the sender receives the acknowledgement. The sender may retry, so the same event can arrive more than once. Consumers must be idempotent. Delivery order may also differ from business-event order unless the contract explicitly guarantees ordering.</p>
+<h2 id="receiver">3. Receiver processing sequence</h2>
+<ol><li>Accept HTTPS requests only on the intended route and enforce a request-size limit.</li><li>Read the raw request body exactly as received if signature verification depends on raw bytes.</li><li>Verify the documented signature and timestamp/replay window before trusting event contents.</li><li>Validate content type, schema version, event identifier, event type and required fields.</li><li>Atomically record the event identifier in a deduplication store and persist the accepted delivery.</li><li>Return the documented successful acknowledgement promptly after durable acceptance.</li><li>Process business logic asynchronously from the durable record; isolate retries from the request thread.</li><li>Record success, permanent failure or retry state with correlation identifiers and redacted diagnostics.</li></ol>
+<h2 id="signature">4. Signature verification</h2>
+<p>Follow the exact algorithm, canonicalization and header names documented for the deployed integration. Common implementation mistakes include verifying a parsed-and-reserialized JSON body instead of the original bytes, comparing signatures with ordinary string equality, ignoring timestamps, accepting unsigned payloads in production, and logging the signing secret.</p>
+<ul><li>Use constant-time comparison where the signature scheme requires it.</li><li>Reject invalid signatures before performing business actions.</li><li>Keep signing secrets outside source control and rotate them using the supported process.</li><li>Use a documented replay window if timestamps are part of the signature scheme.</li><li>Test key rotation, stale timestamps, malformed encodings and duplicate delivery.</li></ul>
+<h2 id="dedupe">5. Idempotency and deduplication</h2>
+<p>Use the provider's stable event ID as the primary deduplication key when guaranteed by the contract. Scope the key appropriately to the sender/account/environment if IDs are not globally unique. Enforce uniqueness in durable storage, not only in process memory. If an event causes a mutation in another system, make that mutation idempotent too; deduplicating the inbound HTTP request alone does not prevent downstream duplicates.</p>
+<pre><code>receive request
+  -> verify signature
+  -> validate schema
+  -> insert event_id with unique constraint
+       -> inserted: persist event, acknowledge, process
+       -> duplicate: acknowledge safely without repeating side effect
+       -> storage failure: do not claim durable acceptance</code></pre>
+<h2 id="retries">6. Retries, backoff and dead letters</h2>
+<p>Use the retry policy published for the actual sender. If you control the consumer's internal retry, use bounded exponential backoff with jitter, cap attempts or elapsed time, distinguish transient from permanent failures, and move exhausted work into an inspectable dead-letter state. Do not invent an upstream retry schedule when one is not documented.</p>
+<ul><li>Transient: network reset, temporary dependency outage, rate limit where retry is allowed.</li><li>Permanent: invalid signature, unsupported schema version, malformed required field or business rejection that cannot succeed unchanged.</li><li>Ambiguous: timeout after a downstream side effect. Query the downstream state or use idempotency before replay.</li></ul>
+<h2 id="replay">7. Replay and ordering</h2>
+<p>Replay should reuse the stable event identity and be visible in operational logs. A replay tool must require authorization, preserve the original payload and event timestamp, and record who initiated it. Do not assume events arrive in order. If ordering matters, use sequence/version fields when provided, detect stale updates, and retrieve current resource state from the Core API when needed.</p>
+<h2 id="operations">8. Monitoring and alerting</h2>
+<ul><li>Delivery attempts, success ratio and latency.</li><li>Age and count of pending events.</li><li>Signature failures and invalid schema rate.</li><li>Duplicate rate and deduplication-store errors.</li><li>Retry count, dead-letter count and oldest failed item.</li><li>Consumer processing lag and downstream error rate.</li></ul>
+<p>Never put payment details, bearer credentials or signing secrets in logs. Correlate by event/request IDs where available and provide a safe way to inspect delivery state in the Developer Platform if that capability is implemented.</p>
+<h2 id="testing">9. Required test cases</h2>
+<ul><li>Valid signature and valid schema.</li><li>Invalid signature, wrong secret, altered body and stale timestamp where applicable.</li><li>Same event delivered twice concurrently.</li><li>Receiver crash after persistence but before acknowledgement.</li><li>Database unavailable during acceptance.</li><li>Downstream timeout after a successful side effect.</li><li>Out-of-order and unsupported-version events.</li><li>Large payload, unexpected content type and rate-limited sender.</li><li>Replay from a dead-letter state with audit traceability.</li></ul>
+<hr>
+<h2 id="related-resources">Related resources</h2>
+<ul><li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li><li><a href="api-authentication">API authentication and credential safety</a></li><li><a href="dashboard-integration">Customer Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live checklist</a></li><li><a href="troubleshooting">Troubleshooting guide</a></li></ul>
+<p class="docs-note">Accuracy boundary: examples in this guide explain integration patterns. They are not guarantees that a named route, event, header, scope, SDK, or environment is live. The deployed API and current OpenAPI contract are authoritative for supported operations.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/app.js" defer></script>
+</body></html>

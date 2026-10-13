@@ -38,7 +38,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -47,6 +47,19 @@
 <aside class="docs-sidebar" aria-label="Guides navigation">
   <div class="docs-nav-group"><p>Guides</p><ul>
     <li><a href="./" aria-current="page">Overview</a></li>
+    <li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li>
+    <li><a href="api-authentication">API authentication and credential safety</a></li>
+    <li><a href="dashboard-integration">Customer Dashboard integration</a></li>
+    <li><a href="reconciliation-operations">Reconciliation operations</a></li>
+    <li><a href="webhook-engineering">Webhook engineering</a></li>
+    <li><a href="production-go-live">Production go-live</a></li>
+    <li><a href="troubleshooting">Troubleshooting</a></li>
+  </ul></div>
+  <div class="docs-nav-group"><p>Customer and operations</p><ul>
+    <li><a href="customer-dashboard-operations">Customer Dashboard operations</a></li>
+    <li><a href="data-quality-and-ingestion">Data quality and ingestion</a></li>
+    <li><a href="risk-alerts-and-fraud-review">Risk alerts and fraud review</a></li>
+    <li><a href="mpesa-integration-guide">M-Pesa integration guide</a></li>
   </ul></div>
   <div class="docs-nav-group"><p>Authentication</p><ul>
     <li><a href="authentication/">Authentication overview</a></li>
@@ -87,6 +100,28 @@
       <div class="guide-route"><span class="guide-route-index">02</span><div><h3>Move a transaction</h3><p>Validate the request, create one logical operation, retrieve its state and recover from uncertainty without duplicating financial records.</p><a href="transactions/">Transaction playbooks <span aria-hidden="true">→</span></a></div><span class="guide-route-owner">Integrators + operators</span></div>
       <div class="guide-route"><span class="guide-route-index">03</span><div><h3>Explain the outcome</h3><p>Apply deterministic matching, keep unmatched work visible, resolve exceptions with reasons and report from durable records.</p><a href="reconciliation/">Reconciliation playbooks <span aria-hidden="true">→</span></a></div><span class="guide-route-owner">Finance + operations</span></div>
     </section>
+    <section aria-labelledby="deep-playbooks-title">
+      <div class="section-kicker">Detailed technical playbooks</div>
+      <h2 id="deep-playbooks-title">Go beyond the quickstart</h2>
+      <p>Use these guides for architecture decisions, implementation boundaries, incident diagnosis and production release evidence. They are deliberately detailed and distinguish conceptual guidance from verified live API behavior.</p>
+      <div class="info-grid">
+        <div class="info-card"><h3>Platform lifecycle</h3><p>Trace developer access, API requests, tenant authorization, durable processing and Dashboard results.</p><a href="platform-lifecycle">Read the architecture guide →</a></div>
+        <div class="info-card"><h3>Credential safety</h3><p>Separate authentication from authorization, protect keys, isolate environments and rehearse rotation.</p><a href="api-authentication">Read credential guidance →</a></div>
+        <div class="info-card"><h3>Dashboard integration</h3><p>Design tenant-safe screens, data contracts, pagination, errors and secure browser behavior.</p><a href="dashboard-integration">Read Dashboard guidance →</a></div>
+        <div class="info-card"><h3>Reconciliation operations</h3><p>Normalize financial records, apply matching policy and make exceptions explainable.</p><a href="reconciliation-operations">Read reconciliation guidance →</a></div>
+        <div class="info-card"><h3>Webhook engineering</h3><p>Verify signatures, deduplicate events, handle retries and make replay safe.</p><a href="webhook-engineering">Read webhook guidance →</a></div>
+        <div class="info-card"><h3>Production and troubleshooting</h3><p>Use evidence-based go-live gates and diagnose failures without unsafe retries.</p><a href="production-go-live">Production checklist →</a> · <a href="troubleshooting">Troubleshooting →</a></div>
+      </div>
+    </section>
+    <section aria-labelledby="customer-ops-title">
+      <div class="section-kicker">For finance and operations teams</div><h2 id="customer-ops-title">Operate PesaGuard with evidence</h2>
+      <div class="info-grid">
+        <div class="info-card"><h3>Dashboard operations</h3><p>Investigate transactions, interpret states, resolve exceptions and share reports safely.</p><a href="customer-dashboard-operations">Open the operations handbook →</a></div>
+        <div class="info-card"><h3>Data quality</h3><p>Monitor ingestion completeness, normalization, duplicates, freshness and quarantined records.</p><a href="data-quality-and-ingestion">Open the data quality guide →</a></div>
+        <div class="info-card"><h3>Risk review</h3><p>Triage anomaly signals, review evidence, document dispositions and measure false positives.</p><a href="risk-alerts-and-fraud-review">Open the risk operations guide →</a></div>
+        <div class="info-card"><h3>M-Pesa integration</h3><p>Understand callback validation, idempotency, reconciliation and production checks.</p><a href="mpesa-integration-guide">Open the M-Pesa guide →</a></div>
+      </div>
+    </section>
     <section aria-labelledby="operating-loop-title"><div class="section-kicker">Implementation sequence</div><h2 id="operating-loop-title">The operating loop</h2><ol class="guide-operating-loop"><li><span>01</span><div><strong>Choose the environment</strong><p>Confirm the base URL, tenant, credential and data boundary before sending a request.</p></div></li><li><span>02</span><div><strong>Read the contract</strong><p>Use the running OpenAPI document for route, schema, scope and error behavior.</p></div></li><li><span>03</span><div><strong>Make one safe change</strong><p>Use validation, idempotency and bounded retries for every state-changing operation.</p></div></li><li><span>04</span><div><strong>Verify the durable result</strong><p>Check state, provider evidence, audit events, request ids and reconciliation outcome.</p></div></li><li><span>05</span><div><strong>Promote with proof</strong><p>Carry test evidence, secret ownership, rollback and observability into production review.</p></div></li></ol></section>
     <section class="guide-principles" aria-labelledby="guide-principles-title"><div class="section-kicker">Working contract</div><h2 id="guide-principles-title">Guidelines that do not change between workflows</h2><div class="guide-principle-grid"><div><strong>Tenant first</strong><p>Identity determines which organization a request may see. Client filters never widen that boundary.</p></div><div><strong>Durability before acknowledgement</strong><p>Do not claim success before the required record, idempotency state or audit evidence is durable.</p></div><div><strong>Exceptions stay visible</strong><p>Unmatched events and differences are work queues with reasons, not errors to hide.</p></div><div><strong>Every decision is traceable</strong><p>Keep request, event, transaction and audit identifiers connected through retries and review.</p></div></div></section>
     <div class="callout" data-tone="info"><strong>Start here</strong><p>New integration? Begin with <a href="../getting-started/">Getting started</a>. Need an exact route or response shape? Use the <a href="../api/">API reference</a>. Investigating a business outcome? Start with <a href="../concepts/">Concepts</a> before opening a task guide.</p></div>
@@ -102,7 +137,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

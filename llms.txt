@@ -39,3 +39,22 @@ This documentation is a rolling set of guides. The OpenAPI document served by th
 - [System status](https://status.pesaguard.co.ke/)
 
 These links identify the intended product domains; this file does not assert DNS, deployment, uptime, or API reachability.
+
+
+## Detailed integration playbooks
+- [Platform lifecycle and architecture](https://docs.pesaguard.co.ke/guides/platform-lifecycle): boundaries across developer access, Core API, Dashboard and backend services.
+- [API authentication and credential safety](https://docs.pesaguard.co.ke/guides/api-authentication): authentication, authorization, secret storage, rotation and environment isolation.
+- [Customer Dashboard integration](https://docs.pesaguard.co.ke/guides/dashboard-integration): tenant-safe reads and mutations, UI states, pagination and browser security.
+- [Reconciliation operations](https://docs.pesaguard.co.ke/guides/reconciliation-operations): input normalization, matching, exception resolution and metrics.
+- [Webhook engineering](https://docs.pesaguard.co.ke/guides/webhook-engineering): signature verification, idempotent consumers, retries and replay.
+- [Production go-live](https://docs.pesaguard.co.ke/guides/production-go-live): release gates, security, observability and recovery evidence.
+- [Troubleshooting](https://docs.pesaguard.co.ke/guides/troubleshooting): diagnostics for HTTP, authentication, reconciliation and webhook failures.
+
+Platform links: [Developer Platform](https://developers.pesaguard.co.ke/), [Core API](https://api.pesaguard.co.ke/), [Customer Dashboard](https://app.pesaguard.co.ke/).
+
+
+## Customer and operational handbooks
+- [Customer Dashboard operations](https://docs.pesaguard.co.ke/guides/customer-dashboard-operations): transaction investigation, reconciliation exceptions, reports, roles and safe escalation.
+- [Data quality and ingestion](https://docs.pesaguard.co.ke/guides/data-quality-and-ingestion): source completeness, schema validation, normalization, duplicate handling and freshness monitoring.
+- [Risk alerts and fraud review](https://docs.pesaguard.co.ke/guides/risk-alerts-and-fraud-review): signal triage, evidence, false positives, escalation and auditability.
+- [M-Pesa integration guide](https://docs.pesaguard.co.ke/guides/mpesa-integration-guide): callback safety, idempotency, reconciliation and production testing.

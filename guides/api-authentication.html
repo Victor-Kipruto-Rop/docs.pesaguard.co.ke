@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API authentication and credential safety - PesaGuard docs</title>
+<meta name="description" content="Practical guidance for PesaGuard API credentials, tenant authorization, sandbox isolation, secret storage, rotation, and common authentication failures.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/api-authentication">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="API authentication and credential safety - PesaGuard docs">
+<meta property="og:description" content="Practical guidance for PesaGuard API credentials, tenant authorization, sandbox isolation, secret storage, rotation, and common authentication failures.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/api-authentication">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/guides/api-authentication">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="../concepts/">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="./">All developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Integration guides</p><ul>
+<li><a href="platform-lifecycle">Platform lifecycle</a></li><li><a href="api-authentication">API authentication</a></li><li><a href="dashboard-integration">Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live</a></li><li><a href="troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">Status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Guides</a><span aria-hidden="true">/</span><span>API authentication and credential safety</span></nav>
+<p class="docs-eyebrow">Security · Identity and access</p><h1>API authentication and credential safety</h1><p class="docs-lede">Authentication establishes who or what is calling. Authorization determines what that caller may access. Both must be enforced by the Core API, even when requests originate from the Developer Platform or Customer Dashboard.</p>
+<div class="callout"><strong>Contract-first rule:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for the developer workflows that are enabled for your account. Confirm exact methods, paths, security schemes, request fields and response schemas in the <a href="../api-reference/">published OpenAPI contract</a> before calling <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. A documented design or domain name does not prove a feature is deployed.</div>
+<h2 id="start">1. Start with the supported authentication scheme</h2>
+<p>Open <a href="../api-reference/">the OpenAPI contract</a> and inspect the security requirements for the exact operation. Do not assume every route accepts a bearer API key. Some user-facing routes may use session cookies or another scheme. Use the <a href="https://developers.pesaguard.co.ke/">Developer Platform</a> to obtain credentials through the currently enabled workflow.</p>
+<pre><code># Illustrative only: use the exact scheme and endpoint from OpenAPI.
+curl --request GET \
+  --url 'https://api.pesaguard.co.ke/REPLACE_WITH_DOCUMENTED_PATH' \
+  --header 'Authorization: Bearer $PESAGUARD_API_KEY' \
+  --header 'Accept: application/json'</code></pre>
+<p>This template intentionally does not name a concrete endpoint. Replace the path and headers only after confirming the deployed contract. Do not paste real secrets into shell history, screenshots, tickets, chat, or source control.</p>
+<h2 id="auth-vs-authz">2. Authentication is not authorization</h2>
+<p>A valid credential proves that the caller controls a credential. It does not grant unrestricted access. The API should evaluate at least the following context where relevant to the implemented model:</p>
+<ul><li>Credential status: active, expired, revoked or otherwise invalid.</li><li>Environment: sandbox and production must be isolated.</li><li>Project or client association, if the Developer Platform uses projects.</li><li>Tenant association and resource ownership, resolved from trusted server-side data.</li><li>Scopes, roles or operation-level grants supported by the service.</li><li>Operational restrictions such as rate limits, production approval and risk controls.</li></ul>
+<p>Never authorize access solely from a caller-supplied <code>tenant_id</code>, organization name, role, or environment string. If the request includes such a value, compare it with the authenticated principal's grants and resource ownership.</p>
+<h2 id="secret-storage">3. Store secrets safely</h2>
+<ul><li>Keep API keys in server-side environment configuration or a secrets manager; use least-privilege file and runtime permissions.</li><li>Do not include a secret in frontend bundles, mobile app packages, public repositories, query parameters, analytics events or client-visible error messages.</li><li>Use separate credentials for local development, CI, staging and production. Do not share personal credentials across team members.</li><li>Restrict who can view or rotate production credentials and record security-relevant changes.</li><li>Redact authorization headers and secret-bearing environment variables from logs, traces and crash reports.</li></ul>
+<h2 id="rotation">4. Rotate or revoke a compromised key</h2>
+<ol><li>Identify the affected credential and the environment/project it can access.</li><li>Use the supported key-management workflow in <a href="https://developers.pesaguard.co.ke/">the Developer Platform</a> or the authorized administrative process to revoke it. If self-service revocation is unavailable, follow the verified support/security escalation route.</li><li>Create a replacement credential with only the necessary grants.</li><li>Deploy it to the server-side secret store, restart or reload consumers as required, and verify a harmless request against the correct environment.</li><li>Review audit and request logs for unexpected use during the exposure window. Rotate any other secrets that were exposed with it.</li><li>Confirm the old key no longer works, then document the incident without copying the secret into the report.</li></ol>
+<h2 id="environments">5. Sandbox and production are separate security domains</h2>
+<div class="table-wrap"><table><thead><tr><th>Control</th><th>Sandbox</th><th>Production</th></tr></thead><tbody><tr><td>Data</td><td>Synthetic or explicitly isolated test records</td><td>Authorized live business records</td></tr><tr><td>Credentials</td><td>Test-only credentials</td><td>Separately issued and approved credentials</td></tr><tr><td>Permissions</td><td>Limited to test operations</td><td>Least privilege for the approved workload</td></tr><tr><td>Callbacks</td><td>Test endpoints and test secrets</td><td>Verified production receiver and production signing material</td></tr><tr><td>Release</td><td>Used to validate behavior</td><td>Requires release and operational readiness checks</td></tr></tbody></table></div>
+<p>Only describe staging or production key creation as available if the corresponding environment and workflow are actually deployed. A UI label or roadmap item is not evidence of provisioning.</p>
+<h2 id="http-errors">6. Interpret authentication errors</h2>
+<ul><li><strong>401:</strong> missing, malformed, expired or revoked credentials, or wrong authentication scheme.</li><li><strong>403:</strong> recognized identity but insufficient scope, role, tenant grant, environment access or approval.</li><li><strong>404:</strong> resource does not exist, or the service intentionally hides resources the caller is not allowed to see.</li><li><strong>429:</strong> rate or usage limit; use documented retry guidance.</li></ul>
+<p>Check the actual response body and request ID, if provided, before deciding the cause. Avoid retry loops for deterministic authentication failures.</p>
+<h2 id="security-checklist">7. Credential review checklist</h2>
+<ul><li>Credential never reaches a browser or client-side source bundle.</li><li>Scope and tenant grants are tested with both allowed and forbidden examples.</li><li>Revocation takes effect within the documented operational expectation.</li><li>Rotation is rehearsed and does not require posting secrets in tickets.</li><li>Logs redact credential material and personal/financial data not required for diagnosis.</li><li>Sandbox credentials cannot read or mutate production data.</li><li>Production access and credential changes produce an auditable event where implemented.</li></ul>
+<hr>
+<h2 id="related-resources">Related resources</h2>
+<ul><li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li><li><a href="api-authentication">API authentication and credential safety</a></li><li><a href="dashboard-integration">Customer Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live checklist</a></li><li><a href="troubleshooting">Troubleshooting guide</a></li></ul>
+<p class="docs-note">Accuracy boundary: examples in this guide explain integration patterns. They are not guarantees that a named route, event, header, scope, SDK, or environment is live. The deployed API and current OpenAPI contract are authoritative for supported operations.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/app.js" defer></script>
+</body></html>

@@ -13,7 +13,7 @@ certificate provisioning remain hosting-provider configuration; a `CNAME`
 file does not configure DNS or publish the site.
 
 Product and API links use their intended `.co.ke` origins. The status link
-uses `status.pesaguard.victorkipruto.com`. The support quicklinks open
+uses `status.pesaguard.co.ke`. The support quicklinks open
 `support@pesaguard.co.ke` in the visitor's email client. Links in this
 repository are not evidence of DNS, deployment, TLS, availability or API
 reachability; verify each target before using it.
@@ -32,6 +32,10 @@ npm run serve
 Documentation pages use clean URLs: leaf pages omit `.html` and section
 landing pages end in `/`. The local preview resolves these URLs to the static
 HTML files and redirects legacy `.html` URLs to their clean equivalents.
+
+## Detailed integration playbooks
+
+The Guides section includes detailed, contract-first playbooks for the platform lifecycle, API authentication and credential safety, Customer Dashboard integration, reconciliation operations, webhook engineering, production go-live, troubleshooting, Customer Dashboard operations, data quality and ingestion, risk alert review, and M-Pesa integration. Start at [docs.pesaguard.co.ke/guides](https://docs.pesaguard.co.ke/guides/). These guides distinguish conceptual patterns from verified API behavior and direct developers to [developers.pesaguard.co.ke](https://developers.pesaguard.co.ke/) for enabled developer workflows and [api.pesaguard.co.ke](https://api.pesaguard.co.ke/) plus the published OpenAPI contract for exact request/response behavior.
 
 ## Validate
 

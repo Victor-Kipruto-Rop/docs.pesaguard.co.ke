@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platform lifecycle and architecture - PesaGuard docs</title>
+<meta name="description" content="Detailed lifecycle across PesaGuard developer access, API requests, customer Dashboard, reconciliation processing, events, and documentation.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/platform-lifecycle">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Platform lifecycle and architecture - PesaGuard docs">
+<meta property="og:description" content="Detailed lifecycle across PesaGuard developer access, API requests, customer Dashboard, reconciliation processing, events, and documentation.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/platform-lifecycle">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/guides/platform-lifecycle">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="../concepts/">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="./">All developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Integration guides</p><ul>
+<li><a href="platform-lifecycle">Platform lifecycle</a></li><li><a href="api-authentication">API authentication</a></li><li><a href="dashboard-integration">Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live</a></li><li><a href="troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">Status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Guides</a><span aria-hidden="true">/</span><span>Platform lifecycle and architecture</span></nav>
+<p class="docs-eyebrow">Architecture · System boundaries</p><h1>Platform lifecycle and architecture</h1><p class="docs-lede">A system-level guide to how an integration is provisioned, how an API call is authorized and processed, how results reach the customer experience, and which PesaGuard surface owns each responsibility.</p>
+<div class="callout"><strong>Contract-first rule:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for the developer workflows that are enabled for your account. Confirm exact methods, paths, security schemes, request fields and response schemas in the <a href="../api-reference/">published OpenAPI contract</a> before calling <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. A documented design or domain name does not prove a feature is deployed.</div>
+<h2 id="surfaces">1. The six surfaces and their ownership</h2>
+<div class="table-wrap"><table><thead><tr><th>Surface</th><th>What it owns</th><th>What it must not become</th></tr></thead><tbody>
+<tr><td><a href="https://pesaguard.co.ke/">Public site</a></td><td>Product explanation, trust information, contact and onboarding entry points.</td><td>A place to store privileged credentials or execute financial business rules in browser code.</td></tr>
+<tr><td><a href="https://developers.pesaguard.co.ke/">Developer Platform</a></td><td>Developer identity and integration workspace; credential, environment, webhook and go-live workflows where implemented.</td><td>The source of truth for transaction state or a bypass around API authorization.</td></tr>
+<tr><td><a href="https://api.pesaguard.co.ke/">Core API</a></td><td>Server-side contract, validation, tenant authorization, business operations, durable state transitions and integration responses.</td><td>A thin proxy that trusts client-supplied tenant IDs or browser decisions.</td></tr>
+<tr><td><a href="https://app.pesaguard.co.ke/">Customer Dashboard</a></td><td>Business-facing views, transaction investigation, exception resolution, alerts, reports and team workflows where implemented.</td><td>A privileged database client or the sole place where authorization is enforced.</td></tr>
+<tr><td><a href="https://docs.pesaguard.co.ke/">Documentation</a></td><td>Contract descriptions, examples, guides, error semantics, migration notes and supportable troubleshooting.</td><td>A request proxy, credential issuer, or independent authority for live API behavior.</td></tr>
+<tr><td><a href="https://status.pesaguard.co.ke/">Status site</a></td><td>Published availability and incident communication, subject to its actual deployment.</td><td>A substitute for application-level timeouts, retries, health checks or observability.</td></tr>
+</tbody></table></div>
+<h2 id="end-to-end">2. End-to-end lifecycle</h2>
+<ol><li><strong>Provision access.</strong> A developer visits <a href="https://developers.pesaguard.co.ke/">the Developer Platform</a>, completes the supported onboarding and creates or requests the appropriate environment credential.</li><li><strong>Read the contract.</strong> The developer checks the <a href="../api-reference/">OpenAPI reference</a> for the exact endpoint, security scheme, schema and errors.</li><li><strong>Send a request.</strong> Their server sends HTTPS to the documented API origin. Secrets remain server-side; the browser never receives a server-to-server API key.</li><li><strong>Authenticate and authorize.</strong> The Core API validates the credential and derives tenant/project/environment context from trusted server-side records. It rejects access outside the credential's grants.</li><li><strong>Validate and persist.</strong> Input validation, business invariants, idempotency and durable state updates run server-side. Long-running work may be asynchronous if the contract says so.</li><li><strong>Return a traceable result.</strong> The API responds with documented status and payload; clients log a request identifier where provided, without logging secrets or unnecessary personal data.</li><li><strong>Expose and notify.</strong> Authorized Dashboard users see permitted records. Configured webhooks can notify external systems; consumers verify and deduplicate delivery.</li><li><strong>Operate and improve.</strong> Developers monitor errors and usage, rotate credentials, test recovery, and review changelog and status communications.</li></ol>
+<h2 id="trust-boundaries">3. Trust boundaries</h2>
+<ul><li>Browser input, webhook payloads, uploaded statements, provider callbacks and caller-supplied identifiers are untrusted until verified.</li><li>Tenant isolation must be enforced on every query and mutation, not only by hiding UI controls.</li><li>Secrets are stored and used on server-side systems. Documentation examples use placeholders and synthetic identifiers.</li><li>Webhook delivery is at-least-once in many systems; consumers must tolerate duplicates even if the implementation also attempts deduplication.</li><li>Reconciliation outcomes, fraud signals and settlement status are different concepts and should not be collapsed into a single “success” flag.</li></ul>
+<h2 id="authority">4. Which source wins when information differs?</h2>
+<p>For exact request shape, use the current OpenAPI contract and verify it against the deployed API. For actual developer onboarding or key management, use the workflows exposed by the <a href="https://developers.pesaguard.co.ke/">Developer Platform</a>. For operational behavior, the backend implementation and deployment configuration are authoritative. Documentation is a maintained explanation, and any mismatch should be reported and corrected.</p>
+<h2 id="architecture-decisions">5. Integration design decisions</h2>
+<ul><li>Keep business logic in the Core API or dedicated backend services; do not duplicate matching rules independently in each client.</li><li>Make request and event identifiers stable enough to support investigation and idempotent processing.</li><li>Separate sandbox and production credentials, records, queues, callbacks and permissions.</li><li>Use explicit lifecycle states and reason codes so finance teams can explain why a record matched or became an exception.</li><li>Version the API contract and publish breaking changes with migration instructions.</li></ul>
+<hr>
+<h2 id="related-resources">Related resources</h2>
+<ul><li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li><li><a href="api-authentication">API authentication and credential safety</a></li><li><a href="dashboard-integration">Customer Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live checklist</a></li><li><a href="troubleshooting">Troubleshooting guide</a></li></ul>
+<p class="docs-note">Accuracy boundary: examples in this guide explain integration patterns. They are not guarantees that a named route, event, header, scope, SDK, or environment is live. The deployed API and current OpenAPI contract are authoritative for supported operations.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/app.js" defer></script>
+</body></html>

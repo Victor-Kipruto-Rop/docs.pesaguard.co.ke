@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production go-live and release readiness - PesaGuard docs</title>
+<meta name="description" content="Evidence-based checklist for promoting a PesaGuard integration from sandbox to production, covering access, API contracts, reliability, security, monitoring and recovery.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/production-go-live">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Production go-live and release readiness - PesaGuard docs">
+<meta property="og:description" content="Evidence-based checklist for promoting a PesaGuard integration from sandbox to production, covering access, API contracts, reliability, security, monitoring and recovery.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/production-go-live">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/guides/production-go-live">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="../concepts/">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="./">All developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Integration guides</p><ul>
+<li><a href="platform-lifecycle">Platform lifecycle</a></li><li><a href="api-authentication">API authentication</a></li><li><a href="dashboard-integration">Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live</a></li><li><a href="troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">Status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Guides</a><span aria-hidden="true">/</span><span>Production go-live and release readiness</span></nav>
+<p class="docs-eyebrow">Operations · Production controls</p><h1>Production go-live and release readiness</h1><p class="docs-lede">Production readiness is a set of verifiable gates, not a button or a successful sandbox request. Use this checklist to establish that the integration, the API, the tenant configuration and the operating team are prepared for real financial workloads.</p>
+<div class="callout"><strong>Contract-first rule:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for the developer workflows that are enabled for your account. Confirm exact methods, paths, security schemes, request fields and response schemas in the <a href="../api-reference/">published OpenAPI contract</a> before calling <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. A documented design or domain name does not prove a feature is deployed.</div>
+<h2 id="eligibility">1. Confirm access and environment</h2>
+<ul><li>Developer identity and project ownership are verified through the enabled process in <a href="https://developers.pesaguard.co.ke/">the Developer Platform</a>.</li><li>Production access is explicitly approved under the current policy; sandbox credentials are not reused.</li><li>The tenant, allowed operations, callback URLs and credential grants match the approved workload.</li><li>The API origin and TLS certificate are verified in the target environment.</li><li>Any required M-Pesa/provider credentials are provisioned in the correct environment and are not committed to source control.</li></ul>
+<h2 id="contract">2. Contract and integration correctness</h2>
+<ul><li>Pin the OpenAPI contract version or commit used for implementation.</li><li>Confirm every used method, path, request/response schema, enum, error code and security requirement against the current contract.</li><li>Test required and optional fields, boundary values, malformed values and unknown enum values.</li><li>Confirm idempotency behavior for every mutating operation before enabling automatic retries.</li><li>Define how the integration distinguishes accepted, processed, matched, failed, reversed and settled outcomes, based on actual supported states.</li><li>Verify pagination, rate-limit headers and retry guidance if provided.</li></ul>
+<h2 id="security">3. Security review</h2>
+<ul><li>Secrets are stored in an approved server-side secret store and redacted from logs.</li><li>Tenant isolation and resource-level permissions have positive and negative tests.</li><li>API keys are least privilege and revocation has been tested.</li><li>Webhook signature verification and deduplication are tested where webhooks are used.</li><li>Callback endpoints validate requests, enforce size/time limits and avoid open redirects or server-side request forgery patterns.</li><li>Sensitive exports and administrative actions are authorized and auditable.</li><li>Dependency, container and source scans have been reviewed according to the project's release policy.</li></ul>
+<h2 id="reliability">4. Reliability and failure handling</h2>
+<ul><li>Set explicit connection and response timeouts.</li><li>Retry only operations whose contract makes retry safe; use idempotency and bounded backoff with jitter.</li><li>Handle 401/403 without infinite retries; handle 429 using documented limits; treat 5xx/timeouts as potentially ambiguous for mutations.</li><li>Use durable queues and dead-letter handling if the integration is asynchronous.</li><li>Verify duplicate webhook handling and replay procedures.</li><li>Define degraded-mode behavior when the API, database, provider or event consumer is unavailable.</li></ul>
+<h2 id="observability">5. Observability and incident response</h2>
+<ul><li>Log request IDs, event IDs, operation names and safe status codes; never log credentials or unnecessary personal/financial data.</li><li>Monitor error rates, latency, rate limits, ingestion freshness, reconciliation exceptions and webhook failures.</li><li>Set alerts with owners and actionable thresholds rather than paging on every transient failure.</li><li>Document who can revoke keys, disable an integration, pause ingestion and communicate an incident.</li><li>Know how to consult <a href="https://status.pesaguard.co.ke/">the status site</a>, while remembering that it does not replace application monitoring.</li></ul>
+<h2 id="data-recovery">6. Data and recovery</h2>
+<ul><li>Establish the authoritative source for transaction evidence and reconciliation results.</li><li>Verify backup coverage, retention, restore procedure and recovery objectives for systems your team operates.</li><li>Rehearse reprocessing and reconciliation after a source outage without duplicating financial records.</li><li>Preserve original source references, policy versions and audit records during repair operations.</li><li>Define retention and deletion behavior according to documented legal, contractual and product requirements; do not assume an undocumented retention period.</li></ul>
+<h2 id="release-gate">7. Go/no-go decision</h2>
+<div class="table-wrap"><table><thead><tr><th>Gate</th><th>Required evidence</th><th>Block release if</th></tr></thead><tbody><tr><td>Contract</td><td>Tested against current OpenAPI and target environment.</td><td>Used paths or response semantics are guessed or drifting.</td></tr><tr><td>Access</td><td>Correct production identity, tenant and grants verified.</td><td>Sandbox credentials or unverified access are used.</td></tr><tr><td>Financial safety</td><td>Duplicate, timeout, retry and reversal scenarios tested.</td><td>A retry can create duplicate financial effects.</td></tr><tr><td>Isolation</td><td>Cross-tenant and role-boundary tests pass.</td><td>Unauthorized resource access is possible.</td></tr><tr><td>Operations</td><td>Monitoring, ownership, incident and recovery procedures tested.</td><td>No one can detect or safely recover from failure.</td></tr><tr><td>Provider</td><td>Provider callbacks and credentials verified in the correct environment.</td><td>Provider integration is assumed rather than tested.</td></tr></tbody></table></div>
+<h2 id="after-launch">8. After launch</h2>
+<p>Use a staged rollout where possible. Start with a bounded workload, compare source and PesaGuard totals, watch error and exception rates, and define a rollback or disable procedure before increasing volume. Review credential use and permissions regularly. Record the deployed contract version and operational owner. Production approval does not mean a system is permanently ready; each material change should repeat the relevant gates.</p>
+<h2 id="status">9. Where to perform each task</h2>
+<p>Use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for production-access workflows that are actually enabled. Use <a href="../api-reference/">the OpenAPI reference</a> for exact API semantics and send requests to <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. For business operations, use the authenticated <a href="https://app.pesaguard.co.ke/">Customer Dashboard</a>. Do not infer approval, API reachability or live readiness from a successful documentation build.</p>
+<hr>
+<h2 id="related-resources">Related resources</h2>
+<ul><li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li><li><a href="api-authentication">API authentication and credential safety</a></li><li><a href="dashboard-integration">Customer Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live checklist</a></li><li><a href="troubleshooting">Troubleshooting guide</a></li></ul>
+<p class="docs-note">Accuracy boundary: examples in this guide explain integration patterns. They are not guarantees that a named route, event, header, scope, SDK, or environment is live. The deployed API and current OpenAPI contract are authoritative for supported operations.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/app.js" defer></script>
+</body></html>
