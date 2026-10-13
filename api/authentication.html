@@ -187,7 +187,7 @@
     <h3>Required and optional headers</h3>
     <table><thead><tr><th>Header</th><th>Required</th><th>Purpose</th></tr></thead><tbody>
       <tr><td><code>Authorization</code></td><td>Protected routes</td><td>Bearer access token.</td></tr>
-      <tr><td><code>X-API-Key</code></td><td>Alternative to Authorization</td><td>A provisioned <code>pk_</code> or <code>pgk_</code> API key. Not used when an <code>Authorization</code> header is present.</td></tr>
+      <tr><td><code>X-API-Key</code></td><td>Alternative to Authorization</td><td>A provisioned <code>pk_</code> or <code>pgk_</code> API key. Send one credential mechanism per request; do not combine <code>X-API-Key</code> with <code>Authorization</code>.</td></tr>
       <tr><td><code>Content-Type: application/json</code></td><td>JSON request bodies</td><td>Declares the representation being sent.</td></tr>
       <tr><td><code>Accept: application/json</code></td><td>Recommended</td><td>Requests the documented JSON response shape.</td></tr>
       <tr><td><code>Idempotency-Key</code></td><td>Communication send routes</td><td>Required by <code>POST /api/v1/communications/sms</code> and <code>/email</code>; see the idempotency guide.</td></tr>
