@@ -93,3 +93,18 @@ Treat this file as an index, not an authority over a deployment's runtime contra
 - Customer Dashboard: https://app.pesaguard.co.ke/
 
 The guide documents responsibility boundaries and safe integration practices. It does not assert that a domain is reachable or that a planned capability is deployed. Confirm endpoint availability and request/response schemas against the published OpenAPI contract and target deployment.
+
+
+## Detailed integration playbooks
+
+The following guides are intentionally more detailed than quickstarts. Treat examples as patterns unless the endpoint, header, event, or schema is present in the current OpenAPI contract and deployed environment.
+
+- Platform lifecycle: https://docs.pesaguard.co.ke/guides/platform-lifecycle
+- API authentication and credential safety: https://docs.pesaguard.co.ke/guides/api-authentication
+- Customer Dashboard and Core API integration: https://docs.pesaguard.co.ke/guides/dashboard-integration
+- Reconciliation operations and exception handling: https://docs.pesaguard.co.ke/guides/reconciliation-operations
+- Webhook engineering and event consumers: https://docs.pesaguard.co.ke/guides/webhook-engineering
+- Production go-live and release readiness: https://docs.pesaguard.co.ke/guides/production-go-live
+- Troubleshooting and integration diagnostics: https://docs.pesaguard.co.ke/guides/troubleshooting
+
+Use https://developers.pesaguard.co.ke/ for developer workflows that are enabled for the account. Use https://api.pesaguard.co.ke/ as the intended Core API origin, and verify concrete endpoint behavior against https://docs.pesaguard.co.ke/api-reference/. The Customer Dashboard is https://app.pesaguard.co.ke/.
