@@ -1,6 +1,6 @@
 {
   "source": {
-    "repository": "Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com",
+    "repository": "Victor-Kipruto-Rop/api.pesaguard",
     "commit": "8c50cad38e5176aec2513a6ef4584493364a1d42",
     "entrypoint": "pesaguard_backend_pipeline.canonical_app:app"
   },
