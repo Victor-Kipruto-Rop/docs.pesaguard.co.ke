@@ -108,3 +108,13 @@ The following guides are intentionally more detailed than quickstarts. Treat exa
 - Troubleshooting and integration diagnostics: https://docs.pesaguard.co.ke/guides/troubleshooting
 
 Use https://developers.pesaguard.co.ke/ for developer workflows that are enabled for the account. Use https://api.pesaguard.co.ke/ as the intended Core API origin, and verify concrete endpoint behavior against https://docs.pesaguard.co.ke/api-reference/. The Customer Dashboard is https://app.pesaguard.co.ke/.
+
+
+## Customer and operational handbooks
+
+- Customer Dashboard operations: https://docs.pesaguard.co.ke/guides/customer-dashboard-operations
+- Data quality, ingestion and source completeness: https://docs.pesaguard.co.ke/guides/data-quality-and-ingestion
+- Risk alerts, anomaly signals and fraud review: https://docs.pesaguard.co.ke/guides/risk-alerts-and-fraud-review
+- M-Pesa integration and payment evidence: https://docs.pesaguard.co.ke/guides/mpesa-integration-guide
+
+These guides are operating instructions and safety patterns, not claims that every UI action, alert workflow, provider product or connector is enabled. Confirm live capabilities in the Customer Dashboard and actual API behavior against the OpenAPI contract.
