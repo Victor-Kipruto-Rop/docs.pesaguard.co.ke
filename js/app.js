@@ -59,6 +59,31 @@
     }
   }
 
+  /* Keep the two authoritative integration destinations visible throughout
+   * the static docs tree, including older pages with hand-written headers. */
+  safe(function () {
+    var nav = document.querySelector(".docs-header-links");
+    if (nav) {
+      [
+        ["Developer Platform ↗", "https://developers.pesaguard.co.ke/"],
+        ["Core API ↗", "https://api.pesaguard.co.ke/"]
+      ].forEach(function (item) {
+        var exists = Array.prototype.some.call(nav.querySelectorAll("a"), function (link) {
+          return link.href.replace(/\/$/, "") === item[1].replace(/\/$/, "");
+        });
+        if (!exists) {
+          var link = document.createElement("a");
+          link.href = item[1];
+          link.textContent = item[0];
+          nav.appendChild(link);
+        }
+      });
+    }
+    document.querySelectorAll('a[href^="https://status.pesaguard.victorkipruto.com"]').forEach(function (link) {
+      link.href = link.href.replace(/^https:\/\/status\.pesaguard\.victorkipruto\.com/i, "https://status.pesaguard.co.ke");
+    });
+  });
+
   safe(function () {
     var headerInner = document.querySelector(".docs-header-inner");
     if (!headerInner) return;
