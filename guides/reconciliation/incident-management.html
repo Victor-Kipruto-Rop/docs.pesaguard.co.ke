@@ -118,13 +118,14 @@ Authorization: Bearer &lt;token&gt;</code></pre>
     "all": {}
   }
 }</code></pre>
+    <p>This is a minimal example: tenant-persisted custom presets are included in the same <code>presets</code> object when present.</p>
     <div class="code-head"><span class="method">POST</span><code>/incidents/filters/presets</code></div>
     <pre class="docs-code" data-lang="http"><code>POST /incidents/filters/presets
 Authorization: Bearer &lt;token&gt;
 Content-Type: application/json
 
 { "name": "my_view", "filters": { "severity": "warning" } }</code></pre>
-    <p>Returns <code>201</code> with the full preset dictionary, including the one just added, merged over the three built-in presets. Posting the same <code>name</code> again for the same tenant replaces its filters rather than creating a duplicate &mdash; it's an upsert keyed on tenant and name. <code>GET</code> only needs <code>read:discrepancies</code>, but <code>POST</code> additionally checks for <code>write:discrepancies</code> in the handler itself rather than in the route decorator &mdash; the two methods on this one route do not share a single permission requirement.</p>
+    <p>Returns <code>201</code> with <code>{ "status": "saved", "presets": { ... } }</code>. The name defaults to <code>custom_preset</code> when omitted or empty; a whitespace-only name is rejected after trimming. <code>filters</code> defaults to an empty object. Posting the same <code>name</code> again for the same tenant replaces its filters rather than creating a duplicate &mdash; it is an upsert keyed on tenant and name. The route decorator requires <code>read:discrepancies</code>; when API authentication is required, the handler also checks <code>write:discrepancies</code>. The current handler falls back to tenant id <code>default</code> when no tenant context resolves, so production requests must always resolve an authorized tenant and must not rely on that fallback for tenant isolation.</p>
 
     <h2>Related</h2>
     <ul>
