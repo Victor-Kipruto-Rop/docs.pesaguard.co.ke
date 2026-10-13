@@ -30,7 +30,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BACKEND_REPO: Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com
+  BACKEND_REPO: Victor-Kipruto-Rop/api.pesaguard
 
 jobs:
   sync:
