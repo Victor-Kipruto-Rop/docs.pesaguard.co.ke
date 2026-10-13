@@ -437,9 +437,11 @@ def main():
     sys.path.insert(0, backend)
     os.environ.setdefault("JWT_SECRET_KEY", secrets.token_hex(32))
     from pesaguard_backend_pipeline.canonical_app import app  # noqa: E402
+    from backend_routes import collect_route_registry  # noqa: E402
 
     base = json.load(open(BASE, encoding="utf-8"))
-    spec = build(base, app)
+    registry = collect_route_registry(app)
+    spec = build(base, registry)
     try:
         commit = subprocess.check_output(["git", "-C", backend, "rev-parse", "HEAD"], text=True,
                                          stderr=subprocess.DEVNULL).strip()
