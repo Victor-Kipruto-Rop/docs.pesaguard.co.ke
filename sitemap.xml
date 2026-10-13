@@ -138,4 +138,8 @@
   <url><loc>https://docs.pesaguard.co.ke/guides/webhook-engineering</loc></url>
   <url><loc>https://docs.pesaguard.co.ke/guides/production-go-live</loc></url>
   <url><loc>https://docs.pesaguard.co.ke/guides/troubleshooting</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/customer-dashboard-operations</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/data-quality-and-ingestion</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/risk-alerts-and-fraud-review</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/mpesa-integration-guide</loc></url>
 </urlset>
