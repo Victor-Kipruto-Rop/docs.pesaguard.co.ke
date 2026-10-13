@@ -78,7 +78,8 @@ Checks (Node only, no dependencies):
 
 - `npm run check` validates links, metadata, OpenAPI structure, and exact JSON/YAML contract parity.
 - `npm run check:drift` compares the docs and the spec with the backend's real routes.
-- `npm run check:openapi` validates OpenAPI structure and JSON/YAML parity.\n- `npm run check:strict` fails on warnings and drift too.
+- `npm run check:openapi` validates OpenAPI structure and JSON/YAML parity.
+- `npm run check:strict` fails on warnings and drift too.
 
 AI-assistant indexes are published at `llms.txt` and `llms-full.txt`. They
 repeat the same contract and environment caveats as the human-readable pages;
