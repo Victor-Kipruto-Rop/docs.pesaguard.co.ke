@@ -396,10 +396,22 @@
     "section": "Authentication guides"
   },
   {
+    "href": "/guides/customer-dashboard-operations",
+    "title": "Customer Dashboard operations handbook - PesaGuard docs",
+    "description": "Detailed handbook for finance officers and managers using PesaGuard's customer Dashboard for transaction review, reconciliation exceptions, alerts, reports and team-safe workflows.",
+    "section": "Customer help · Daily operations"
+  },
+  {
     "href": "/guides/dashboard-integration",
     "title": "Customer Dashboard and Core API integration - PesaGuard docs",
     "description": "Detailed guidance for connecting PesaGuard's customer Dashboard to the Core API without exposing secrets or bypassing tenant authorization.",
     "section": "Client architecture · Customer operations"
+  },
+  {
+    "href": "/guides/data-quality-and-ingestion",
+    "title": "Data quality, ingestion and source completeness - PesaGuard docs",
+    "description": "Detailed guidance for source ingestion, schema validation, canonicalization, duplicate handling, data freshness, completeness checks and data quality investigations in PesaGuard.",
+    "section": "Data operations · Quality controls"
   },
   {
     "href": "/guides/integrations/",
@@ -436,6 +448,12 @@
     "title": "Point of sale",
     "description": "Point-of-sale terminal feeds are planned; no PesaGuard ingestion adapter is documented today.",
     "section": "Integration guides"
+  },
+  {
+    "href": "/guides/mpesa-integration-guide",
+    "title": "M-Pesa integration and payment evidence guide - PesaGuard docs",
+    "description": "Detailed guide to integrating M-Pesa payment evidence with PesaGuard, including callback validation, idempotency, transaction lifecycle, reconciliation, failure handling and production checks.",
+    "section": "Payments · M-Pesa"
   },
   {
     "href": "/guides/platform-lifecycle",
@@ -508,6 +526,12 @@
     "title": "Reconciliation guides · Unmatched transactions - PesaGuard docs",
     "description": "Queue with the reason attached: never silently discarded.",
     "section": "Reconciliation guides"
+  },
+  {
+    "href": "/guides/risk-alerts-and-fraud-review",
+    "title": "Risk alerts, anomaly signals and fraud review - PesaGuard docs",
+    "description": "Detailed operating guide for risk signals, alert triage, evidence review, false positives, escalation, auditability and safe fraud-related decisions in PesaGuard.",
+    "section": "Risk operations · Investigation"
   },
   {
     "href": "/guides/transactions/",
