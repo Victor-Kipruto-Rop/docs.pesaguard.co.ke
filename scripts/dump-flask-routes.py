@@ -62,7 +62,7 @@ def main() -> int:
 
     snapshot = {
         "source": {
-            "repository": "Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com",
+            "repository": "Victor-Kipruto-Rop/api.pesaguard",
             "commit": commit,
             "entrypoint": "pesaguard_backend_pipeline.canonical_app:app",
         },
