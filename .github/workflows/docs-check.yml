@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          repository: Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com
+          repository: Victor-Kipruto-Rop/api.pesaguard
           path: backend
       - uses: actions/setup-python@v5
         with:
