@@ -35,7 +35,7 @@ HTML files and redirects legacy `.html` URLs to their clean equivalents.
 
 ## Detailed integration playbooks
 
-The Guides section includes detailed, contract-first playbooks for the platform lifecycle, API authentication and credential safety, Customer Dashboard integration, reconciliation operations, webhook engineering, production go-live, and troubleshooting. Start at [docs.pesaguard.co.ke/guides](https://docs.pesaguard.co.ke/guides/). These guides distinguish conceptual patterns from verified API behavior and direct developers to [developers.pesaguard.co.ke](https://developers.pesaguard.co.ke/) for enabled developer workflows and [api.pesaguard.co.ke](https://api.pesaguard.co.ke/) plus the published OpenAPI contract for exact request/response behavior.
+The Guides section includes detailed, contract-first playbooks for the platform lifecycle, API authentication and credential safety, Customer Dashboard integration, reconciliation operations, webhook engineering, production go-live, troubleshooting, Customer Dashboard operations, data quality and ingestion, risk alert review, and M-Pesa integration. Start at [docs.pesaguard.co.ke/guides](https://docs.pesaguard.co.ke/guides/). These guides distinguish conceptual patterns from verified API behavior and direct developers to [developers.pesaguard.co.ke](https://developers.pesaguard.co.ke/) for enabled developer workflows and [api.pesaguard.co.ke](https://api.pesaguard.co.ke/) plus the published OpenAPI contract for exact request/response behavior.
 
 ## Validate
 
