@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reconciliation operations and exception handling - PesaGuard docs</title>
+<meta name="description" content="Operational guide to reconciliation inputs, normalization, matching, exceptions, auditability, settlement distinctions and safe exception resolution.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/reconciliation-operations">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Reconciliation operations and exception handling - PesaGuard docs">
+<meta property="og:description" content="Operational guide to reconciliation inputs, normalization, matching, exceptions, auditability, settlement distinctions and safe exception resolution.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/reconciliation-operations">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/guides/reconciliation-operations">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="../concepts/">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="./">All developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Integration guides</p><ul>
+<li><a href="platform-lifecycle">Platform lifecycle</a></li><li><a href="api-authentication">API authentication</a></li><li><a href="dashboard-integration">Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live</a></li><li><a href="troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">Status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Guides</a><span aria-hidden="true">/</span><span>Reconciliation operations and exception handling</span></nav>
+<p class="docs-eyebrow">Financial operations · Reconciliation</p><h1>Reconciliation operations and exception handling</h1><p class="docs-lede">A reconciliation system should produce explainable outcomes, preserve source evidence and make unresolved differences visible. This guide describes the operational model without pretending every matching algorithm or endpoint is already enabled.</p>
+<div class="callout"><strong>Contract-first rule:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for the developer workflows that are enabled for your account. Confirm exact methods, paths, security schemes, request fields and response schemas in the <a href="../api-reference/">published OpenAPI contract</a> before calling <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. A documented design or domain name does not prove a feature is deployed.</div>
+<h2 id="purpose">1. What reconciliation proves—and what it does not</h2>
+<p>Reconciliation compares records that are expected to represent the same business event: for example, a payment-provider transaction and a merchant's order or ledger entry. It determines whether the available records agree under the configured matching policy. A match does not by itself prove settlement, and an unmatched record is not automatically fraud.</p>
+<h2 id="inputs">2. Required input discipline</h2>
+<p>Before matching, define the authoritative source and expected schema for each feed. Depending on the integration, useful fields may include provider transaction reference, internal order or ledger reference, amount in integer minor units, currency, event/booking timestamp, payer or account reference, transaction type, status, and source provenance. The exact required fields are defined by the deployed integration contract.</p>
+<ul><li>Preserve the original source payload or a governed evidence reference where lawful and necessary; store normalized values separately.</li><li>Normalize timestamps to a documented timezone convention while retaining original provider timestamps.</li><li>Use decimal-safe or integer-minor-unit arithmetic; never use binary floating point for money comparisons.</li><li>Normalize identifiers carefully. Do not strip characters or change case unless the source contract says those transformations are safe.</li><li>Record source system, ingestion time, source event time, and a stable source record identifier.</li><li>Reject or quarantine malformed records with a reason rather than silently dropping them.</li></ul>
+<h2 id="matching">3. Matching sequence</h2>
+<ol><li><strong>Validate.</strong> Confirm schema, required values, supported currency and acceptable business state.</li><li><strong>Deduplicate.</strong> Use a stable provider/source identifier and documented idempotency rule to prevent repeated delivery becoming duplicate financial records.</li><li><strong>Normalize.</strong> Create canonical fields while preserving source evidence.</li><li><strong>Apply deterministic keys first.</strong> Where an authoritative reference exists, prefer it over a loose heuristic.</li><li><strong>Apply configured secondary criteria.</strong> Amount, currency, date window, account, transaction type or other policy-approved fields may narrow candidates.</li><li><strong>Resolve ambiguity.</strong> If multiple candidates satisfy the rule, flag an exception rather than arbitrarily selecting one.</li><li><strong>Persist the outcome.</strong> Store status, rule/version, evidence references, timestamps and reason codes.</li><li><strong>Publish the result.</strong> Expose it through authorized reads and supported events; preserve the ability to audit later changes.</li></ol>
+<h2 id="states">4. Use explicit, non-overlapping states</h2>
+<div class="table-wrap"><table><thead><tr><th>Concept</th><th>Meaning</th><th>Operational treatment</th></tr></thead><tbody><tr><td>Received</td><td>Input was accepted at the ingestion boundary.</td><td>Not proof of validation or reconciliation.</td></tr><tr><td>Validated</td><td>Input passed schema and basic business checks.</td><td>Can proceed to processing according to the workflow.</td></tr><tr><td>Matched</td><td>Records satisfy a defined matching policy.</td><td>Retain the evidence and rule that justified the match.</td></tr><tr><td>Exception / unmatched</td><td>No reliable match or a conflict/ambiguity was found.</td><td>Route for investigation with reason codes and source evidence.</td></tr><tr><td>Failed</td><td>Processing could not complete under the documented failure semantics.</td><td>Determine whether safe retry is possible; preserve diagnostics.</td></tr><tr><td>Reversed / refunded</td><td>A later financial event changes the original transaction's business meaning.</td><td>Represent as a related lifecycle event; do not erase the original evidence.</td></tr><tr><td>Settled</td><td>Authoritative settlement evidence confirms funds movement under the relevant rail's definition.</td><td>Keep separate from a simple API response or a reconciliation match.</td></tr></tbody></table></div>
+<p>Use the exact status names and transitions exposed by the current API contract. This table is a conceptual guide, not a claim that every state is a live enum.</p>
+<h2 id="exceptions">5. Exception queue and investigation</h2>
+<p>An exception record should help a finance officer answer: what did we expect, what arrived, why did matching fail, what evidence is available, who is allowed to resolve it, and what happened afterward?</p>
+<ul><li>Show source references and safely masked identifying details.</li><li>Explain the specific mismatch: missing counterpart, amount mismatch, currency mismatch, date-window mismatch, duplicate, conflicting candidate or invalid input.</li><li>Allow assignment and notes only if the current product implements them.</li><li>Require an authorized resolution action and a reason when appropriate.</li><li>Record the actor, timestamp, previous state, new state and evidence references in an append-only or otherwise tamper-evident audit design.</li><li>Separate “manual match”, “ignored with reason”, “needs more evidence” and “confirmed duplicate” decisions if those decisions are supported.</li></ul>
+<h2 id="safe-replay">6. Replay and reprocessing</h2>
+<p>Reprocessing should be deterministic and traceable. Keep the original source identifier, use idempotent ingestion, record the matching-policy version, and avoid mutating historical results without an audit event. If rules change, define whether the operation creates a new evaluation version or replaces a current derived result. Test replay against duplicates, reversals and out-of-order events.</p>
+<h2 id="metrics">7. Reconciliation quality metrics</h2>
+<ul><li>Match rate with a clearly defined denominator and time window.</li><li>Exception count and aging distribution.</li><li>Amount/value of unmatched items, using a defined currency aggregation strategy.</li><li>Duplicate and malformed input rates.</li><li>Time from ingestion to completed evaluation.</li><li>Manual resolution rate and resolution age.</li><li>Reprocessing volume and policy-version distribution.</li><li>Source feed freshness and completeness.</li></ul>
+<p>Never present a ratio without explaining its denominator, date range, timezone, excluded states and source completeness. A sudden increase in match rate may reflect missing data rather than improved reconciliation.</p>
+<h2 id="access">8. API and Dashboard access</h2>
+<p>Use <a href="../api-reference/">OpenAPI</a> to confirm the available transaction and reconciliation operations. Developers manage enabled access workflows at <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a>; the actual business operation runs through <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. The Customer Dashboard at <a href="https://app.pesaguard.co.ke/">app.pesaguard.co.ke</a> should call authenticated backend operations and never decide a financial match solely in browser code.</p>
+<hr>
+<h2 id="related-resources">Related resources</h2>
+<ul><li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li><li><a href="api-authentication">API authentication and credential safety</a></li><li><a href="dashboard-integration">Customer Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live checklist</a></li><li><a href="troubleshooting">Troubleshooting guide</a></li></ul>
+<p class="docs-note">Accuracy boundary: examples in this guide explain integration patterns. They are not guarantees that a named route, event, header, scope, SDK, or environment is live. The deployed API and current OpenAPI contract are authoritative for supported operations.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/search.js" defer></script><script src="../js/navigation.js" defer></script><script src="../js/theme.js" defer></script><script src="../js/animations.js" defer></script>
+</body></html>
