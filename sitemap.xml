@@ -130,4 +130,12 @@
   <url><loc>https://docs.pesaguard.co.ke/webhooks/transaction-matched</loc></url>
   <url><loc>https://docs.pesaguard.co.ke/webhooks/transaction-unmatched</loc></url>
   <url><loc>https://docs.pesaguard.co.ke/webhooks/verification</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/concepts/platform-architecture</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/platform-lifecycle</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/api-authentication</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/dashboard-integration</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/reconciliation-operations</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/webhook-engineering</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/production-go-live</loc></url>
+  <url><loc>https://docs.pesaguard.co.ke/guides/troubleshooting</loc></url>
 </urlset>
