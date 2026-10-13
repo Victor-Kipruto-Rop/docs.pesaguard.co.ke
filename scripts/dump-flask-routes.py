@@ -10,7 +10,7 @@ Usage:
         [--out api-reference/routes.snapshot.json]
 
 Needs the backend's Python dependencies installed. No database, broker or
-credentials are contacted: routes are read from app.url_map after import.
+credentials are contacted: routes are collected from the canonical FastAPI app, including its direct routes and routes exposed through mounted Flask WSGI apps.
 A throwaway JWT_SECRET_KEY is generated in-process when none is set, because
 the backend refuses to import without one.
 """
