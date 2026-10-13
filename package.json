@@ -5,9 +5,9 @@
   "description": "PesaGuard developer documentation",
   "scripts": {
     "serve": "python scripts/serve.py",
-    "check": "node scripts/check-docs.js && node scripts/validate-openapi.js",
-    "check:openapi": "node scripts/validate-openapi.js",
+    "check": "node scripts/check-docs.js && node scripts/validate-openapi.js && node scripts/check-openapi-parity.js",
+    "check:openapi": "node scripts/validate-openapi.js && node scripts/check-openapi-parity.js",
     "check:drift": "node scripts/check-drift.js",
-    "check:strict": "node scripts/check-docs.js && node scripts/validate-openapi.js --strict && node scripts/check-drift.js --strict"
+    "check:strict": "node scripts/check-docs.js && node scripts/validate-openapi.js --strict && node scripts/check-openapi-parity.js && node scripts/check-drift.js --strict"
   }
 }
