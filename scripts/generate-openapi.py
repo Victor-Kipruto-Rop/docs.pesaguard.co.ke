@@ -5,10 +5,10 @@
 
 Inputs
   api-reference/openapi.base.json   hand-written summaries, descriptions, info
-  the backend checkout              routes come from the canonical Flask app's
-                                    url_map; parameters, request bodies, response
-                                    codes and permissions are read from each
-                                    handler's source with the ast module
+  the backend checkout              routes come from the canonical FastAPI app
+                                    and its mounted Flask applications; parameters,
+                                    request bodies, response codes and permissions
+                                    are read from handler source with the ast module
 
 Output
   api-reference/openapi.json        deterministic: same base + same backend
