@@ -24,11 +24,10 @@ jobs:
       - name: Docs vs OpenAPI drift
         run: npm run check:drift -- --strict
 
-  # Signals when api-reference/routes.snapshot.json no longer matches the
-  # backend's main branch. Advisory: backend commits should not block docs CI.
+  # Required release gate: generated API docs and route inventory must match
+  # the current backend main branch before the site can be deployed.
   routes-snapshot:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
@@ -78,7 +77,7 @@ jobs:
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: check
+    needs: [check, routes-snapshot]
     runs-on: ubuntu-latest
     permissions:
       contents: read
