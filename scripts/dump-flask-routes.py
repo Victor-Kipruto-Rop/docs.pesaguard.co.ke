@@ -40,18 +40,9 @@ def main() -> int:
 
     # Keep the app's JSON logging out of the way of our own output.
     from pesaguard_backend_pipeline.canonical_app import app  # noqa: E402
+    from backend_routes import collect_route_registry, snapshot_routes  # noqa: E402
 
-    routes = []
-    for rule in app.url_map.iter_rules():
-        methods = sorted(m for m in rule.methods if m not in ("HEAD", "OPTIONS"))
-        routes.append(
-            {
-                "path": flask_to_openapi(rule.rule),
-                "methods": methods,
-                "endpoint": rule.endpoint,
-            }
-        )
-    routes.sort(key=lambda r: (r["path"], r["methods"]))
+    routes = snapshot_routes(collect_route_registry(app))
 
     try:
         commit = subprocess.check_output(
