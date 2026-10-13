@@ -38,7 +38,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -47,6 +47,7 @@
 <aside class="docs-sidebar" aria-label="Section navigation"><div class="docs-nav-group"><p>Concepts</p><ul>
       <li><a href="../concepts/">Overview</a></li>
       <li><a href="../concepts/architecture">Architecture</a></li>
+      <li><a href="../concepts/platform-architecture">Platform architecture</a></li>
       <li><a href="../concepts/reconciliation">Reconciliation</a></li>
       <li><a href="../concepts/transaction-lifecycle">Transaction lifecycle</a></li>
       <li><a href="../concepts/idempotency">Idempotency</a></li>
@@ -64,6 +65,7 @@
       <thead><tr><th>Concept</th><th>In one line</th></tr></thead>
       <tbody>
         <tr><td><a href="architecture">Architecture</a></td><td>Ingest, validate, reconcile, analyze, alert, resolve, report.</td></tr>
+        <tr><td><a href="platform-architecture">Platform architecture</a></td><td>How the Developer Platform, Core API, Dashboard, documentation, and backend boundaries fit together.</td></tr>
         <tr><td><a href="reconciliation">Reconciliation</a></td><td>Deterministic matching with exceptions instead of silence.</td></tr>
         <tr><td><a href="transaction-lifecycle">Transaction lifecycle</a></td><td>The states a payment moves through, and what each means.</td></tr>
         <tr><td><a href="idempotency">Idempotency</a></td><td>A retry never becomes a second financial record.</td></tr>
@@ -78,6 +80,7 @@
     <p>Every capability follows the same boundary sequence: authenticate the caller or verify the provider signature, resolve tenant identity, validate and normalize, enforce idempotency, persist the durable record and audit event in one transaction, publish through the outbox, then reconcile, notify, measure and expose a traceable result.</p>
     <div class="info-grid"><div class="info-card"><h3>Input</h3><p>Provider callbacks and API requests are authenticated, validated and normalized before they are trusted.</p></div><div class="info-card"><h3>Decision</h3><p>Matching, anomaly signals and human review produce explicit states and reasons rather than hidden guesses.</p></div><div class="info-card"><h3>Evidence</h3><p>Tenant context, event identity, request ids and audit records make outcomes explainable later.</p></div></div>
     <h2>Related</h2>
+    <p>For implementation access, visit <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a>. For endpoint paths, request and response schemas, and authentication requirements, use the <a href="../api-reference/">OpenAPI contract</a> for <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>.</p>
     <ul>
       <li><a href="../getting-started/">Getting started</a></li>
       <li><a href="../api/">API reference</a></li>
@@ -88,7 +91,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

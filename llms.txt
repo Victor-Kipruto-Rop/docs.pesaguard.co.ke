@@ -34,7 +34,8 @@ This documentation is a rolling set of guides. The OpenAPI document served by th
 
 - [Product](https://pesaguard.co.ke/)
 - [Developer Platform](https://developers.pesaguard.co.ke/)
+- [Platform architecture guide](https://docs.pesaguard.co.ke/concepts/platform-architecture)
 - [API origin](https://api.pesaguard.co.ke/)
-- [System status](https://status.pesaguard.victorkipruto.com/)
+- [System status](https://status.pesaguard.co.ke/)
 
 These links identify the intended product domains; this file does not assert DNS, deployment, uptime, or API reachability.
