@@ -5,10 +5,10 @@
 
 Inputs
   api-reference/openapi.base.json   hand-written summaries, descriptions, info
-  the backend checkout              routes come from the canonical Flask app's
-                                    url_map; parameters, request bodies, response
-                                    codes and permissions are read from each
-                                    handler's source with the ast module
+  the backend checkout              routes come from the canonical FastAPI app
+                                    and its mounted Flask applications; parameters,
+                                    request bodies, response codes and permissions
+                                    are read from handler source with the ast module
 
 Output
   api-reference/openapi.json        deterministic: same base + same backend
@@ -417,6 +417,14 @@ def build(base_spec, app):
 
     spec["tags"] = [{"name": t} for t in sorted(tags)]
     spec["paths"] = dict(sorted(spec["paths"].items()))
+
+    # The incident filter endpoint shares one Flask handler across GET and POST.
+    # Keep its method-specific response contract from openapi.base.json instead
+    # of publishing the generic multi-method 200 response for POST.
+    preset_post = spec["paths"].get("/incidents/filters/presets", {}).get("post")
+    if preset_post:
+        preset_post.setdefault("responses", {}).pop("200", None)
+
     return spec
 
 
@@ -429,16 +437,18 @@ def main():
     sys.path.insert(0, backend)
     os.environ.setdefault("JWT_SECRET_KEY", secrets.token_hex(32))
     from pesaguard_backend_pipeline.canonical_app import app  # noqa: E402
+    from backend_routes import collect_route_registry  # noqa: E402
 
     base = json.load(open(BASE, encoding="utf-8"))
-    spec = build(base, app)
+    registry = collect_route_registry(app)
+    spec = build(base, registry)
     try:
         commit = subprocess.check_output(["git", "-C", backend, "rev-parse", "HEAD"], text=True,
                                          stderr=subprocess.DEVNULL).strip()
     except Exception:
         commit = None
     spec["info"]["x-generated-from"] = {
-        "backend": "Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com", "commit": commit,
+        "backend": "Victor-Kipruto-Rop/api.pesaguard", "commit": commit,
         "generator": "scripts/generate-openapi.py"}
     with open(args.out, "w", encoding="utf-8") as fh:
         json.dump(spec, fh, indent=2)

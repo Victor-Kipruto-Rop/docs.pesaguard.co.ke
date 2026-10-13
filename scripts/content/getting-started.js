@@ -266,7 +266,7 @@ pages.push({
       ["<code>manage:all_tenants</code>", "Explicit cross-tenant administration; do not grant to ordinary integration credentials."],
     ]),
     B.h2("Issuing, rotating, revoking"),
-    B.p("The canonical dashboard app does not expose a public API-key creation route. Ask the deployment operator to provision a key with the tenant, role, supported scopes, expiry policy, owner, and environment recorded."),
+    B.p("The backend registers API-key lifecycle routes under /auth/api-keys, but the generated OpenAPI mirror is stale. Verify the deployed request schema, permissions, and self-service policy before using those routes; otherwise use the authorized operator workflow."),
     B.ol([
       "Request provisioning with the narrowest role and scopes, a finite expiry, and a named owner.",
       "Transfer the secret through an approved channel and store it in the integration's server-side secret manager.",

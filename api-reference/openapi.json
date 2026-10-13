@@ -3,13 +3,15 @@
   "info": {
     "title": "PesaGuard Dashboard & Reconciliation API",
     "version": "2.0.0",
-    "description": "Enterprise-grade operational telemetry and reconciliation endpoints. This file mirrors the specification served at /openapi.json by a running deployment; the live deployment is authoritative.",
+    "description": "Implementation-derived OpenAPI snapshot last generated from backend commit 8c50cad38e5176aec2513a6ef4584493364a1d42. It has not yet been successfully regenerated against the current backend main branch and may omit routes added since that commit. Do not treat this snapshot as a complete current route inventory; verify the deployed /openapi.json and wait for a successful docs sync before integrating.",
     "x-documentation": "https://docs.pesaguard.co.ke/api/",
     "x-generated-from": {
-      "backend": "Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com",
+      "backend": "Victor-Kipruto-Rop/api.pesaguard",
       "commit": "78f5d84fe4db00c9fb4c7c16179c9971a0008296",
       "generator": "scripts/generate-openapi.py"
-    }
+    },
+    "x-snapshot-status": "stale-pending-regeneration",
+    "x-snapshot-warning": "Implementation-derived OpenAPI snapshot last generated from backend commit 8c50cad38e5176aec2513a6ef4584493364a1d42. It has not yet been successfully regenerated against the current backend main branch and may omit routes added since that commit. Do not treat this snapshot as a complete current route inventory; verify the deployed /openapi.json and wait for a successful docs sync before integrating."
   },
   "servers": [
     {
@@ -5175,36 +5177,111 @@
         "tags": [
           "Incidents"
         ],
-        "summary": "Return the tenant's discrepancy/incident search filter presets",
-        "description": "Return the tenant's discrepancy/incident search filter presets. Three presets (critical_open, needs_review, all) always exist. POST adds or replaces one more, scoped to the caller's tenant, persisted in discrepancy_filter_presets -- it used to return 201 without saving anything at all.",
+        "summary": "List tenant discrepancy and incident filter presets",
         "responses": {
           "200": {
-            "description": "Success. This handler serves several methods on one route; per-method responses are not documented yet."
+            "description": "Tenant filter presets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "required": [
+                    "presets"
+                  ]
+                }
+              }
+            }
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "description": "Returns the built-in `critical_open`, `needs_review`, and `all` presets, overlaid with presets persisted for the resolved tenant. The current handler falls back to tenant id `default` when no tenant context is resolved; production callers must ensure an authenticated tenant context is present. This GET operation reads presets and does not create or update a custom preset.",
+        "x-required-permission": "read:discrepancies"
       },
       "post": {
         "operationId": "incident_filter_presets_post",
         "tags": [
           "Incidents"
         ],
-        "summary": "Return the tenant's discrepancy/incident search filter presets",
-        "description": "Return the tenant's discrepancy/incident search filter presets. Three presets (critical_open, needs_review, all) always exist. POST adds or replaces one more, scoped to the caller's tenant, persisted in discrepancy_filter_presets -- it used to return 201 without saving anything at all.",
+        "summary": "Create or replace a tenant filter preset",
         "responses": {
-          "200": {
-            "description": "Success. This handler serves several methods on one route; per-method responses are not documented yet."
+          "201": {
+            "description": "Preset persisted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "saved"
+                      ]
+                    },
+                    "presets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "presets"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
           "429": {
             "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "description": "Accepts an optional JSON object with optional `name` and `filters` fields. The name defaults to `custom_preset` when omitted or empty; a whitespace-only name is rejected after trimming. `filters` defaults to an empty object. The handler upserts by resolved tenant and preset name and returns HTTP 201 with `status: saved` and the merged preset map. If no tenant context is resolved, the current handler falls back to tenant id `default`. The route decorator requires `read:discrepancies`; when API authentication is required, the write path also checks `write:discrepancies`.",
+        "x-required-permission": "read:discrepancies",
+        "x-additional-required-permissions": [
+          "write:discrepancies"
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filters": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -17,7 +17,7 @@
  * Report-only by default (exit 0). Pass --strict to fail on any drift, which
  * is what CI should do once the URL contract is settled.
  *
- * Illustrative examples are excluded via IGNORE below.
+ * Only clearly marked illustrative endpoints are excluded via IGNORE below.
  *
  * Run: `node scripts/check-drift.js [--strict]`
  */
@@ -32,7 +32,6 @@ const IGNORE = [
   /^\/api\/v\d+\/example$/, // placeholder used to explain versioning
   /^\/webhooks\/pesaguard$/, // sample receiver endpoint on the customer's side
   /^\/openapi(\.contract)?\.json$/, // the spec documents themselves, served outside the API contract
-  /^\/auth\/login$/, // named on the Authentication page as absent from the canonical app (legacy variants only)
 ];
 
 const METHODS = ["get", "put", "post", "delete", "patch", "head", "options"];

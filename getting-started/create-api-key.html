@@ -40,7 +40,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a>
+    <a href="https://status.pesaguard.co.ke">Status</a>
   </nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
@@ -63,7 +63,7 @@
       <li><a href="../api/">API</a></li>
       <li><a href="../webhooks/">Webhooks</a></li>
       <li><a href="../security/">Security</a></li>
-      <li><a href="https://status.pesaguard.victorkipruto.com">Status</a></li>
+      <li><a href="https://status.pesaguard.co.ke">Status</a></li>
     </ul></div>
   </aside>
 
@@ -71,7 +71,7 @@
     <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Getting started</a><span aria-hidden="true">/</span><span>Create an API key</span></nav>
     <p class="docs-eyebrow">Getting started</p>
     <h1>Create an API key</h1>
-    <p class="docs-lede">API keys are provisioned through the deployment's authorized operator workflow, not a public self-serve endpoint in the canonical dashboard API. A key record is tenant-bound and carries a role, explicit scopes, active/revocation state, optional expiry, and last-used metadata.</p>
+    <p class="docs-lede">The backend registers API-key lifecycle routes under <code>/auth/api-keys</code>, but the checked-in OpenAPI mirror predates these mounted routes. Use the authorized operator workflow until the deployed contract confirms the endpoint, permissions, and tenant self-service policy. A key record is tenant-bound and carries a role, explicit scopes, active/revocation state, optional expiry, and last-used metadata.</p>
     <div class="api-hero"><div><strong>One integration, one credential</strong><p>Separate keys make ownership, rotation, incident response and usage review possible.</p></div><div class="api-hero-meta"><span>SCOPED</span><span>EXPIRING</span><span>AUDITABLE</span></div></div>
 
     <h2>What a credential carries</h2>
@@ -85,7 +85,7 @@
         <tr><td>Storage</td><td>The verifier looks up a SHA-256 digest rather than the submitted plaintext key. Protect the secret in transit and in operator tooling.</td></tr>
       </tbody>
     </table>
-    <h2>Issuance procedure</h2><ol><li>Ask the deployment operator to provision the key; the canonical dashboard API does not expose a public API-key creation route.</li><li>Document the integration owner, tenant, environment, required operations, and least-privilege role/scopes.</li><li>Set a finite expiry and rotation date in the provisioning policy; expiry is not mandatory in the underlying record.</li><li>Transfer the value through an approved secret-sharing or secret-management workflow and store it server-side.</li><li>Record the key identifier and owner, never the raw secret. Validate it with a read-only request in the intended tenant.</li></ol>
+    <h2>Issuance procedure</h2><p>The backend source registers key lifecycle routes under <code>/auth/api-keys</code>, including create, rotate and revoke operations. The checked-in OpenAPI mirror predates these mounted routes and does not yet provide a verified request/response or permission contract. Until the generated contract is refreshed and confirmed against the deployed revision, use the deployment operator's approved provisioning workflow rather than calling undocumented routes directly.</p><ol><li>Use the authorized provisioning workflow and confirm whether the target deployment permits tenant self-service; do not infer access from the existence of a route.</li><li>Document the integration owner, tenant, environment, required operations, and least-privilege role/scopes.</li><li>Set a finite expiry and rotation date in the provisioning policy; expiry is not mandatory in the underlying record.</li><li>Transfer the value through an approved secret-sharing or secret-management workflow and store it server-side.</li><li>Record the key identifier and owner, never the raw secret. Validate it with a read-only request in the intended tenant.</li></ol>
 
     <h2>Handling rules</h2>
     <ul>
@@ -97,8 +97,8 @@
     <h2>Rotation procedure</h2><p>Issue the replacement before revoking the current key, deploy it, observe successful traffic, then revoke the old key and verify failure. If compromise is suspected, revoke immediately and accept a controlled interruption rather than leaving an exposed key active.</p>
 
     <div class="callout" data-tone="warn">
-      <strong>Issuance is manual today</strong>
-      <p>There is no self-serve key rotation endpoint in the pilot. Ask the team that runs your deployment; treat the request like a production change, with the scope list written down first.</p>
+      <strong>Deployment policy must be verified</strong>
+      <p>The backend registers key lifecycle routes, but the published OpenAPI mirror is stale and route availability does not establish that self-service issuance or rotation is enabled for your tenant. Until the deployed contract and authorization policy are verified, ask the team that runs your deployment and record the requested scope list.</p>
     </div>
 
     <h2>Next</h2>
@@ -115,7 +115,7 @@
   <span>© 2026 PesaGuard</span>
   <nav aria-label="Footer">
     <a href="https://pesaguard.co.ke">Product</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a>
+    <a href="https://status.pesaguard.co.ke">Status</a>
     <a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a>
   </nav>
 </div></footer>

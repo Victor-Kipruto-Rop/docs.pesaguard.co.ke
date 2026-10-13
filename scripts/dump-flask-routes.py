@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Dump the route table of the canonical PesaGuard Flask app to JSON.
+"""Dump the route inventory of the canonical PesaGuard ASGI app to JSON.
 
-The output is the ground truth that check-drift.js compares the docs and
-openapi.json against. It records what the app that the backend Dockerfile
-starts (pesaguard_backend_pipeline.canonical_app) actually registers.
+The output is the ground truth that check-drift.js compares with the docs and
+OpenAPI. It includes direct FastAPI routes and Flask routes exposed through
+the WSGI mounts in pesaguard_backend_pipeline.canonical_app.
 
 Usage:
     python scripts/dump-flask-routes.py /path/to/backend-checkout \
         [--out api-reference/routes.snapshot.json]
 
 Needs the backend's Python dependencies installed. No database, broker or
-credentials are contacted: routes are read from app.url_map after import.
+credentials are contacted: routes are collected from the canonical FastAPI app, including its direct routes and routes exposed through mounted Flask WSGI apps.
 A throwaway JWT_SECRET_KEY is generated in-process when none is set, because
 the backend refuses to import without one.
 """
@@ -40,18 +40,9 @@ def main() -> int:
 
     # Keep the app's JSON logging out of the way of our own output.
     from pesaguard_backend_pipeline.canonical_app import app  # noqa: E402
+    from backend_routes import collect_route_registry, snapshot_routes  # noqa: E402
 
-    routes = []
-    for rule in app.url_map.iter_rules():
-        methods = sorted(m for m in rule.methods if m not in ("HEAD", "OPTIONS"))
-        routes.append(
-            {
-                "path": flask_to_openapi(rule.rule),
-                "methods": methods,
-                "endpoint": rule.endpoint,
-            }
-        )
-    routes.sort(key=lambda r: (r["path"], r["methods"]))
+    routes = snapshot_routes(collect_route_registry(app))
 
     try:
         commit = subprocess.check_output(
@@ -62,7 +53,7 @@ def main() -> int:
 
     snapshot = {
         "source": {
-            "repository": "Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com",
+            "repository": "Victor-Kipruto-Rop/api.pesaguard",
             "commit": commit,
             "entrypoint": "pesaguard_backend_pipeline.canonical_app:app",
         },

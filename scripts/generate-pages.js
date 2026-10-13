@@ -623,7 +623,7 @@ const pages = [
       { ul: [
         "Set a unique production <code>JWT_SECRET_KEY</code> of at least 32 bytes and keep signing keys in managed secret storage.",
         "Send credentials only over HTTPS; never put them in URLs, browser bundles, source control, screenshots, or logs.",
-        "Obtain API keys through the authorized deployment operator workflow; the canonical dashboard API does not expose a public key-creation route.",
+        "The backend registers API-key lifecycle routes under /auth/api-keys, but the generated OpenAPI mirror is stale. Verify the deployed request schema, permissions, and self-service policy before using those routes; otherwise use the authorized operator workflow.",
         "Use tenant and permission checks for each protected route. Health, documentation, and provider callback endpoints may have separate exposure rules.",
       ] },
       { p: "Missing, invalid, expired, or revoked credentials are rejected. If authentication state cannot be checked, protected operations fail unavailable rather than accepting an unverified identity. Confirm route-specific requirements against the deployment's <code>/openapi.json</code>." },

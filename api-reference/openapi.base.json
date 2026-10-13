@@ -3,7 +3,7 @@
   "info": {
     "title": "PesaGuard Dashboard & Reconciliation API",
     "version": "2.0.0",
-    "description": "Enterprise-grade operational telemetry and reconciliation endpoints. This file mirrors the specification served at /openapi.json by a running deployment; the live deployment is authoritative.",
+    "description": "PesaGuard API contract metadata and hand-maintained operation summaries for the implementation-derived route inventory. The deployed /openapi.json is authoritative for a specific environment; generated route coverage must be refreshed from the canonical backend before use.",
     "x-documentation": "https://docs.pesaguard.co.ke/api/"
   },
   "servers": [
@@ -359,6 +359,119 @@
         "responses": {
           "200": {
             "description": "CSV export"
+          }
+        }
+      }
+    },
+    "/incidents/filters/presets": {
+      "get": {
+        "tags": [
+          "Incidents"
+        ],
+        "summary": "List tenant discrepancy and incident filter presets",
+        "description": "Returns the built-in `critical_open`, `needs_review`, and `all` presets, overlaid with presets persisted for the resolved tenant. The current handler falls back to tenant id `default` when no tenant context is resolved; production callers must ensure an authenticated tenant context is present. This GET operation reads presets and does not create or update a custom preset.",
+        "x-required-permission": "read:discrepancies",
+        "responses": {
+          "200": {
+            "description": "Tenant filter presets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "required": [
+                    "presets"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Incidents"
+        ],
+        "summary": "Create or replace a tenant filter preset",
+        "description": "Accepts an optional JSON object with optional `name` and `filters` fields. The name defaults to `custom_preset` when omitted or empty; a whitespace-only name is rejected after trimming. `filters` defaults to an empty object. The handler upserts by resolved tenant and preset name and returns HTTP 201 with `status: saved` and the merged preset map. If no tenant context is resolved, the current handler falls back to tenant id `default`. The route decorator requires `read:discrepancies`; when API authentication is required, the write path also checks `write:discrepancies`.",
+        "x-required-permission": "read:discrepancies",
+        "x-additional-required-permissions": [
+          "write:discrepancies"
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filters": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Preset persisted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "saved"
+                      ]
+                    },
+                    "presets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "presets"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
