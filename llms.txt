@@ -51,3 +51,10 @@ These links identify the intended product domains; this file does not assert DNS
 - [Troubleshooting](https://docs.pesaguard.co.ke/guides/troubleshooting): diagnostics for HTTP, authentication, reconciliation and webhook failures.
 
 Platform links: [Developer Platform](https://developers.pesaguard.co.ke/), [Core API](https://api.pesaguard.co.ke/), [Customer Dashboard](https://app.pesaguard.co.ke/).
+
+
+## Customer and operational handbooks
+- [Customer Dashboard operations](https://docs.pesaguard.co.ke/guides/customer-dashboard-operations): transaction investigation, reconciliation exceptions, reports, roles and safe escalation.
+- [Data quality and ingestion](https://docs.pesaguard.co.ke/guides/data-quality-and-ingestion): source completeness, schema validation, normalization, duplicate handling and freshness monitoring.
+- [Risk alerts and fraud review](https://docs.pesaguard.co.ke/guides/risk-alerts-and-fraud-review): signal triage, evidence, false positives, escalation and auditability.
+- [M-Pesa integration guide](https://docs.pesaguard.co.ke/guides/mpesa-integration-guide): callback safety, idempotency, reconciliation and production testing.
