@@ -89,8 +89,11 @@ they are indexes, not an independent source of API behavior.
 
 The docs are static and stay that way: there is no docs backend. The API
 reference targets `https://api.pesaguard.co.ke` and is rebuilt from
-the canonical Flask app in `pesaguard_backend_pipeline` in the backend
-repository (`Victor-Kipruto-Rop/api.pesaguard`).
+the canonical ASGI entry point (`canonical_app:app`) in
+`pesaguard_backend_pipeline` in `Victor-Kipruto-Rop/api.pesaguard`. That entry
+point is FastAPI and mounts the dashboard and authentication Flask apps through
+WSGI; both the direct FastAPI routes and mounted Flask routes belong in the
+route inventory.
 
 ```
 backend push to main (backend routes, contracts, or dependency changes)
