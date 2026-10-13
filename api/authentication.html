@@ -61,7 +61,7 @@
     <h1>Authentication</h1>
     <p class="docs-lede">Protected API routes require a verified caller identity and apply tenant and permission checks according to their route policy. The checked-in OpenAPI contract defines bearer JWT authentication and a tenant API-key scheme. The security requirement on each operation is authoritative; the existence of a scheme does not mean every route accepts it. Dashboard user sessions and provider callbacks follow separate flows.</p>
 
-    <div class="callout callout-warning"><strong>Contract status.</strong> The checked-in OpenAPI document defines <code>bearerAuth</code> with JWT semantics. API-key creation, rotation and revocation are credential-management procedures; use the deployment's control plane or operator workflow for those actions rather than assuming undocumented public endpoints.</div>
+    <div class="callout callout-warning"><strong>Contract status.</strong> The backend registers API-key creation, rotation and revocation routes, but the checked-in OpenAPI snapshot predates recent authentication changes. Until the route/OpenAPI sync has been regenerated and checked against the deployed revision, use the authorized control-plane or operator workflow rather than calling undocumented lifecycle routes directly.</div>
 
     <h2>Authentication overview</h2>
     <p>Authentication happens before tenant authorization, request validation, idempotency handling and business processing. A request that cannot be authenticated must not be treated as an anonymous request, and a valid identity must not be confused with permission to access every resource.</p>
@@ -109,8 +109,77 @@
       <tr><td><code>exp</code></td><td>Expiry time</td><td>Reject after expiry, allowing only documented clock skew.</td></tr>
       <tr><td><code>scope</code></td><td>Allowed operations</td><td>Checked against the route and requested resource.</td></tr>
     </tbody></table>
-    <h3>Obtaining, refreshing and revoking a token <span class="status-pill" data-tone="planned"><i></i>Planned</span></h3>
-    <p>The canonical backend app does not register a login, token-refresh or logout route, so there is no public endpoint to call for these today. Older application variants in the backend repository define <code>POST /auth/login</code>, but the image entrypoint does not load them. Obtain access tokens or API keys from your PesaGuard operator, keep them in a server-side secret store, and expect <code>401</code> with <code>authentication_failed</code> once a token expires or is revoked. When a login route ships, this section will document its request and response.</p>
+    <h3>Obtaining, refreshing and revoking a token</h3>
+    <p>The current backend source registers login, refresh, logout, password-reset, session, MFA, WebAuthn and OIDC routes. The FastAPI entry point mounts the authentication Flask application at both <code>/auth</code> and <code>/api/v1/auth</code>, so the same handlers have unversioned and versioned aliases. The checked-in OpenAPI artifact is stale and does not yet describe all mounted routes; the route generator is being corrected to include them. Confirm the exact schema, permissions and responses in the deployed <code>/openapi.json</code> before production use.</p>
+    <p>Do not assume a route is absent because it is missing from the stale OpenAPI file. The code-level authentication route inventory is below; it is not a substitute for the deployed contract.</p>
+    <table><thead><tr><th>Method</th><th>Registered path</th></tr></thead><tbody>
+    <tr><td><code>GET</code></td><td><code>/auth/account/lockouts</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/account/unlock</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/admin/users/{user_id}/emergency-credential-rotation</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/admin/users/{user_id}/password-reset</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/api-keys</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/api-keys/{key_id}/revoke</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/api-keys/{key_id}/rotate</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/client-token</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/devices</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/devices/{device_id}/logout</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/devices/{device_id}/rename</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/devices/{device_id}/revoke</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/devices/{device_id}/trust</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/login</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/logout</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/logout-all</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/challenge</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/email/request</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/email/verify</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/enroll</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/enroll/verify</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/mfa/factors</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/factors/{factor_id}/revoke</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/mfa/policy</code></td></tr>
+    <tr><td><code>PUT</code></td><td><code>/auth/mfa/policy</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/recovery-codes/regenerate</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/reset/confirm</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/reset/request</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/verify</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/webauthn/enroll/options</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/webauthn/enroll/verify</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/webauthn/login/verify</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/webauthn/step-up/options</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/mfa/webauthn/step-up/verify</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/password-reset/confirm</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/password-reset/request</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/password/change</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/passwordless/challenge</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/passwordless/verify</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/refresh</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/register</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/revoke</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/revoke/device</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/revoke/refresh</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/revoke/user</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/security/global-revoke</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/service-credentials/{credential_id}/revoke</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/sessions</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sessions/{session_id}/renew</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sessions/{session_id}/revoke</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/sso/oidc/authorize</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/sso/oidc/callback</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sso/oidc/callback</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/sso/oidc/config</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sso/oidc/token</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sso/oidc/validate</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/sso/policy</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sso/policy</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sso/policy/review</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/sso/providers</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/sso/providers</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/users</code></td></tr>
+    <tr><td><code>GET</code></td><td><code>/auth/verify</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/verify-email</code></td></tr>
+    <tr><td><code>POST</code></td><td><code>/auth/verify-email/resend</code></td></tr>
+    </tbody></table>
+    <p>The versioned aliases are available under the <code>/api/v1/auth</code> mount. Use the deployed OpenAPI document for request bodies, response schemas, status codes and permissions; this table intentionally lists only code-registered paths.</p>
 
     <h2 id="authentication-headers">Authentication headers</h2>
     <h3>Authorization header</h3>
