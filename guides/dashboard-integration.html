@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customer Dashboard and Core API integration - PesaGuard docs</title>
+<meta name="description" content="Detailed guidance for connecting PesaGuard's customer Dashboard to the Core API without exposing secrets or bypassing tenant authorization.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/dashboard-integration">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Customer Dashboard and Core API integration - PesaGuard docs">
+<meta property="og:description" content="Detailed guidance for connecting PesaGuard's customer Dashboard to the Core API without exposing secrets or bypassing tenant authorization.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/dashboard-integration">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/guides/dashboard-integration">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="../concepts/">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="./">All developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Integration guides</p><ul>
+<li><a href="platform-lifecycle">Platform lifecycle</a></li><li><a href="api-authentication">API authentication</a></li><li><a href="dashboard-integration">Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live</a></li><li><a href="troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">Status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Guides</a><span aria-hidden="true">/</span><span>Customer Dashboard and Core API integration</span></nav>
+<p class="docs-eyebrow">Client architecture · Customer operations</p><h1>Customer Dashboard and Core API integration</h1><p class="docs-lede">The Customer Dashboard is an operational client, not a separate financial engine. It presents permitted records and submits user actions, while the Core API remains responsible for access checks, business rules and durable state changes.</p>
+<div class="callout"><strong>Contract-first rule:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for the developer workflows that are enabled for your account. Confirm exact methods, paths, security schemes, request fields and response schemas in the <a href="../api-reference/">published OpenAPI contract</a> before calling <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. A documented design or domain name does not prove a feature is deployed.</div>
+<h2 id="responsibility">1. Keep responsibilities explicit</h2>
+<ul><li><strong>Dashboard frontend:</strong> navigation, accessible forms, filters, tables, charts, status labels and client-side input feedback.</li><li><strong>Dashboard authentication layer:</strong> user session lifecycle, sign-in state and user experience for reauthentication.</li><li><strong>Core API:</strong> authoritative identity validation, tenant authorization, business validation, persistence and audit events.</li><li><strong>Workers and event services:</strong> long-running reconciliation, report generation and notification delivery when these are implemented as asynchronous jobs.</li><li><strong>Database:</strong> authoritative persisted records; it must not be accessed directly from untrusted browser code.</li></ul>
+<h2 id="request-path">2. Safe request path</h2>
+<ol><li>The user signs in through the deployed Dashboard authentication flow.</li><li>The frontend requests data using the session or token mechanism explicitly supported by the backend.</li><li>The API authenticates the user and resolves authorized tenant context server-side.</li><li>The API applies resource-level authorization and returns only permitted records.</li><li>For a mutation, the server validates the requested transition, persists the result and records the audit event.</li><li>The UI refreshes from the authoritative response rather than assuming its local optimistic state is final.</li></ol>
+<div class="callout"><strong>Never put a privileged API key in frontend code.</strong> Any value shipped to the browser can be inspected. If the Dashboard needs server-to-server credentials, keep them in a trusted server-side layer and expose only narrow, authenticated application endpoints.</div>
+<h2 id="tenant-isolation">3. Tenant isolation is mandatory</h2>
+<p>Every list, detail, export, report, background job, webhook configuration and mutation must be checked against the authenticated user's grants. Hiding another tenant's row in the UI is not security. Test direct requests that substitute another tenant's identifier, resource ID, report ID and export URL.</p>
+<ul><li>Derive tenant context from authenticated server-side identity where possible.</li><li>Where a tenant selector is part of the UX, validate that the user is a member of the selected tenant on every request.</li><li>Ensure background jobs carry immutable tenant context and revalidate authorization at enqueue time.</li><li>Use least-privilege roles for viewing, resolving exceptions, exporting and administering members.</li><li>Keep audit history tenant-scoped and prevent users from editing or deleting evidence outside the supported workflow.</li></ul>
+<h2 id="screen-contracts">4. Design screens around explicit data contracts</h2>
+<div class="table-wrap"><table><thead><tr><th>Screen</th><th>Read model</th><th>Mutations and safeguards</th></tr></thead><tbody><tr><td>Transaction list</td><td>Paginated transaction summaries with stable IDs, status, amount/currency and timestamps when supplied.</td><td>Filters and sorting validated server-side; do not assume client totals equal authoritative totals.</td></tr><tr><td>Transaction detail</td><td>Authorized transaction, source references, lifecycle events and available reconciliation result.</td><td>Use documented actions only; confirm high-impact actions and preserve audit evidence.</td></tr><tr><td>Reconciliation exceptions</td><td>Unmatched candidates, reason codes and source evidence actually returned by the API.</td><td>Resolution must be a server-side command with permission checks and a reason where required.</td></tr><tr><td>Risk alerts</td><td>Risk events and signals with severity, timestamps and evidence available in the contract.</td><td>A signal is not a definitive fraud finding; preserve review and disposition history.</td></tr><tr><td>Reports and exports</td><td>Server-generated or authorized paginated data for the chosen period.</td><td>Apply tenant, role, date-range and data minimization controls; audit sensitive exports.</td></tr><tr><td>Team and settings</td><td>Current user, membership, roles and allowed settings.</td><td>Use dedicated administrative permissions and reauthentication for sensitive actions when supported.</td></tr></tbody></table></div>
+<h2 id="loading-errors">5. Loading, empty, partial and error states</h2>
+<ul><li><strong>Loading:</strong> show a stable skeleton or progress state; prevent duplicate submission while a mutation is pending.</li><li><strong>Empty:</strong> distinguish “no records match these filters” from “no data has been ingested yet”.</li><li><strong>Partial:</strong> show which source or time range is incomplete rather than displaying a misleading zero.</li><li><strong>Unauthorized:</strong> clear stale client data and direct the user to reauthenticate or request access without revealing protected resource details.</li><li><strong>Retryable failure:</strong> show a clear retry action and preserve safe form input where appropriate.</li><li><strong>Mutation timeout:</strong> do not blindly repeat a financial mutation. Check its status using the documented workflow and idempotency semantics.</li></ul>
+<h2 id="pagination">6. Performance and pagination</h2>
+<p>Use server-side pagination, filters and sorting for large histories. Prefer stable cursor pagination if provided by the contract. Avoid fetching all transactions into browser memory, creating one API request per table row, or recalculating financial totals from an incomplete page. Cache only data that is safe to cache, and invalidate it after relevant mutations. Respect rate limits and cancellation where supported.</p>
+<h2 id="dashboard-security">7. Browser security and accessibility</h2>
+<ul><li>Use HTTPS and secure session cookie attributes when cookie sessions are used; implement CSRF protection for cookie-authenticated state-changing requests as appropriate.</li><li>Do not store long-lived privileged secrets in local storage.</li><li>Use a restrictive Content Security Policy and safe output encoding; do not render API-provided strings as trusted HTML.</li><li>Provide keyboard-accessible tables, clear focus states, accessible validation messages and non-color-only status indicators.</li><li>Mask sensitive values by default and avoid exposing full payment identifiers unless required by the user's role.</li></ul>
+<h2 id="verification">8. Integration test matrix</h2>
+<ul><li>Authorized user can view permitted records for their tenant.</li><li>User from a different tenant cannot read, update, export or infer the protected resource.</li><li>Viewer cannot perform administrator or exception-resolution actions.</li><li>Expired session and revoked credentials are handled without stale data leakage.</li><li>Duplicate form submission does not create duplicate financial records.</li><li>Timeout and retry behavior preserves the original operation identity.</li><li>Large date ranges and empty result sets remain responsive and accurate.</li><li>Audit history records sensitive operations and cannot be edited by ordinary users.</li></ul>
+<hr>
+<h2 id="related-resources">Related resources</h2>
+<ul><li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li><li><a href="api-authentication">API authentication and credential safety</a></li><li><a href="dashboard-integration">Customer Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live checklist</a></li><li><a href="troubleshooting">Troubleshooting guide</a></li></ul>
+<p class="docs-note">Accuracy boundary: examples in this guide explain integration patterns. They are not guarantees that a named route, event, header, scope, SDK, or environment is live. The deployed API and current OpenAPI contract are authoritative for supported operations.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/search.js" defer></script><script src="../js/navigation.js" defer></script><script src="../js/theme.js" defer></script><script src="../js/animations.js" defer></script>
+</body></html>
