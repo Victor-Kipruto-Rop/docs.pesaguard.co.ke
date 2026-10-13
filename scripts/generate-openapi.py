@@ -417,6 +417,14 @@ def build(base_spec, app):
 
     spec["tags"] = [{"name": t} for t in sorted(tags)]
     spec["paths"] = dict(sorted(spec["paths"].items()))
+
+    # The incident filter endpoint shares one Flask handler across GET and POST.
+    # Keep its method-specific response contract from openapi.base.json instead
+    # of publishing the generic multi-method 200 response for POST.
+    preset_post = spec["paths"].get("/incidents/filters/presets", {}).get("post")
+    if preset_post:
+        preset_post.setdefault("responses", {}).pop("200", None)
+
     return spec
 
 
