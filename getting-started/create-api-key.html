@@ -85,7 +85,7 @@
         <tr><td>Storage</td><td>The verifier looks up a SHA-256 digest rather than the submitted plaintext key. Protect the secret in transit and in operator tooling.</td></tr>
       </tbody>
     </table>
-    <h2>Issuance procedure</h2><ol><li>Ask the deployment operator to provision the key; the canonical dashboard API does not expose a public API-key creation route.</li><li>Document the integration owner, tenant, environment, required operations, and least-privilege role/scopes.</li><li>Set a finite expiry and rotation date in the provisioning policy; expiry is not mandatory in the underlying record.</li><li>Transfer the value through an approved secret-sharing or secret-management workflow and store it server-side.</li><li>Record the key identifier and owner, never the raw secret. Validate it with a read-only request in the intended tenant.</li></ol>
+    <h2>Issuance procedure</h2><p>The backend source registers key lifecycle routes under <code>/auth/api-keys</code>, including create, rotate and revoke operations. The checked-in OpenAPI mirror predates these mounted routes and does not yet provide a verified request/response or permission contract. Until the generated contract is refreshed and confirmed against the deployed revision, use the deployment operator's approved provisioning workflow rather than calling undocumented routes directly.</p><ol><li>Use the authorized provisioning workflow and confirm whether the target deployment permits tenant self-service; do not infer access from the existence of a route.</li><li>Document the integration owner, tenant, environment, required operations, and least-privilege role/scopes.</li><li>Set a finite expiry and rotation date in the provisioning policy; expiry is not mandatory in the underlying record.</li><li>Transfer the value through an approved secret-sharing or secret-management workflow and store it server-side.</li><li>Record the key identifier and owner, never the raw secret. Validate it with a read-only request in the intended tenant.</li></ol>
 
     <h2>Handling rules</h2>
     <ul>
@@ -97,8 +97,8 @@
     <h2>Rotation procedure</h2><p>Issue the replacement before revoking the current key, deploy it, observe successful traffic, then revoke the old key and verify failure. If compromise is suspected, revoke immediately and accept a controlled interruption rather than leaving an exposed key active.</p>
 
     <div class="callout" data-tone="warn">
-      <strong>Issuance is manual today</strong>
-      <p>There is no self-serve key rotation endpoint in the pilot. Ask the team that runs your deployment; treat the request like a production change, with the scope list written down first.</p>
+      <strong>Deployment policy must be verified</strong>
+      <p>The backend registers key lifecycle routes, but the published OpenAPI mirror is stale and route availability does not establish that self-service issuance or rotation is enabled for your tenant. Until the deployed contract and authorization policy are verified, ask the team that runs your deployment and record the requested scope list.</p>
     </div>
 
     <h2>Next</h2>
