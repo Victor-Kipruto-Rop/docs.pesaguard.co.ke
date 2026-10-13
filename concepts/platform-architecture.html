@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platform architecture and integration boundaries - PesaGuard Docs</title>
+<meta name="description" content="Detailed guide to how PesaGuard documentation, Developer Platform, Core API, customer Dashboard, and backend services work together, including trust boundaries and integration workflows.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/concepts/platform-architecture">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Platform architecture and integration boundaries - PesaGuard Docs">
+<meta property="og:description" content="How the Developer Platform, Core API, Dashboard, and documentation fit together.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/concepts/platform-architecture">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/concepts/platform-architecture">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="./">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="../sdks/">SDKs and clients</a></li><li><a href="../guides/">Developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Operate</p><ul><li><a href="./">Concepts</a></li><li><a href="../webhooks/">Webhooks</a></li><li><a href="../environments/">Environments</a></li><li><a href="../testing/">Testing</a></li></ul></div>
+<div class="docs-nav-group"><p>Protect &amp; maintain</p><ul><li><a href="../security/">Security</a></li><li><a href="../errors/">Errors</a></li><li><a href="../migration/">Migrations</a></li><li><a href="../changelog/">Changelog</a></li></ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API origin ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">System status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<p class="docs-eyebrow">Concepts · System architecture</p>
+<h1>How the PesaGuard platforms work together</h1>
+<p class="docs-lede">PesaGuard is one reconciliation product with separate user experiences and a shared, server-enforced business layer. Each domain has a distinct responsibility. This guide explains the boundaries, the request lifecycle, and how to build against the actual API contract without assuming that a planned capability is already live.</p>
+<div class="callout"><strong>Start here:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> to manage developer access where the relevant workflows are available; use <a href="../api-reference/">the published OpenAPI contract</a> to confirm operations and schemas; send API requests only to the documented <code>https://api.pesaguard.co.ke</code> origin. A link to a domain is not proof that DNS, authentication, or a particular endpoint is currently available.</div>
+
+<h2 id="responsibility-map">1. Responsibility map</h2>
+<div class="table-wrap"><table><thead><tr><th>Surface</th><th>Primary responsibility</th><th>What belongs there</th><th>What does not belong there</th></tr></thead><tbody>
+<tr><td><strong><a href="https://pesaguard.co.ke/">Public website</a></strong></td><td>Explain the product and guide prospective customers.</td><td>Product information, supported capabilities, contact, customer onboarding entry points.</td><td>Privileged transaction processing or secret API keys.</td></tr>
+<tr><td><strong><a href="https://app.pesaguard.co.ke/">Customer Dashboard</a></strong></td><td>Provide the business-facing operational workspace.</td><td>Authorized transaction views, reconciliation exceptions, alerts, reports, team and tenant settings.</td><td>Authoritative financial rules enforced only in browser code or direct database access from the browser.</td></tr>
+<tr><td><strong><a href="https://developers.pesaguard.co.ke/">Developer Platform</a></strong></td><td>Help external developers build and maintain integrations.</td><td>Developer onboarding, projects/environments where implemented, API credentials, sandbox tooling, webhook configuration, usage and production-access workflows.</td><td>Replacing the Core API's authorization checks or maintaining a separate source of truth for financial transactions.</td></tr>
+<tr><td><strong><a href="https://api.pesaguard.co.ke/">Core API</a></strong></td><td>Expose authenticated business operations and enforce the API contract.</td><td>Request validation, identity and tenant authorization, transaction operations, reconciliation, status, risk and reporting operations that are present in the contract.</td><td>Trusting caller-supplied tenant identifiers without authorization or assuming a key can access every operation.</td></tr>
+<tr><td><strong>This documentation site</strong></td><td>Explain supported interfaces and integration behavior.</td><td>Guides, API reference, schemas, examples, security guidance, errors, migration notes and changelog.</td><td>Issuing credentials, storing transaction state, or acting as an API proxy. The docs site is static and has no documentation backend.</td></tr>
+<tr><td><strong><a href="https://status.pesaguard.co.ke/">Status site</a></strong></td><td>Communicate service health and incidents.</td><td>Availability information and incident updates published by the status service.</td><td>Guaranteeing a request will succeed or replacing an integration's own monitoring.</td></tr>
+</tbody></table></div>
+
+<h2 id="architecture">2. Logical architecture</h2>
+<p>The following is the intended logical flow. The exact deployment topology, enabled services, and production readiness must be verified against the current repositories and deployed environment.</p>
+<pre><code>Developer's server-side application
+        │ HTTPS + scoped credential
+        ▼
+Developer Platform ── manages developer-facing access workflows
+        │
+        └──────────────► Core API: https://api.pesaguard.co.ke
+                               │
+Customer Dashboard ── session/API access ─┤
+                               ▼
+                    Authentication and authorization
+                               ▼
+                    Validated business operations
+                               ▼
+             Database + jobs/queues + event delivery
+                               │
+             ┌─────────────────┴────────────────┐
+             ▼                                  ▼
+       Dashboard views                    Webhook consumers
+       and reports                        (when configured)
+
+Documentation: https://docs.pesaguard.co.ke
+  explains the contract; it does not process the requests.</code></pre>
+<p>The Developer Platform and Dashboard are clients of backend capabilities. They can have their own frontend and account-management services, but transaction and reconciliation rules must remain enforced server-side. Do not create a second transaction database just to support a frontend.</p>
+
+<h2 id="developer-workflow">3. Developer integration lifecycle</h2>
+<ol>
+<li><strong>Read the contract.</strong> Start with <a href="../api-reference/">the OpenAPI reference</a>. Check the exact path, method, authentication requirement, request schema, response schema, and documented errors before writing code.</li>
+<li><strong>Open the Developer Platform.</strong> Visit <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for account and credential workflows. Availability of project management, key creation, sandbox tools, and production requests depends on what is actually enabled for your account.</li>
+<li><strong>Obtain a credential through the authorized process.</strong> Use the credential type and header specified by the endpoint. Do not assume every endpoint accepts the same credential or that every generated key has the same scope.</li>
+<li><strong>Choose the correct environment.</strong> Sandbox or staging data must remain isolated from production. Do not send live financial instructions to a test environment or test fixtures to production.</li>
+<li><strong>Make a minimal request.</strong> Use the examples in the endpoint documentation and send the request over HTTPS to the API origin and path specified by the contract.</li>
+<li><strong>Handle the result safely.</strong> Parse the documented response schema, preserve transaction identifiers, and distinguish request acceptance from final processing or settlement.</li>
+<li><strong>Subscribe to events when supported.</strong> If a webhook event is documented and enabled, verify its signature, deduplicate deliveries, acknowledge quickly, and make processing idempotent. Continue to support status queries where the contract requires them.</li>
+<li><strong>Validate before production.</strong> Test authorization failures, invalid input, duplicate submissions, timeouts, retries, webhook replay, and tenant isolation. Request production access through the approved process rather than assuming a sandbox credential can be upgraded automatically.</li>
+</ol>
+<p><a class="primary-btn" href="https://developers.pesaguard.co.ke/">Open Developer Platform ↗</a> <a class="secondary-btn" href="../getting-started/quickstart">Follow the quickstart →</a></p>
+
+<h2 id="request-lifecycle">4. What happens during an API request</h2>
+<ol>
+<li><strong>Transport:</strong> the client connects to the documented HTTPS API origin and sends the method, path, headers, and body required by the contract.</li>
+<li><strong>Authentication:</strong> the server validates the credential or session using the authentication scheme actually configured for that endpoint.</li>
+<li><strong>Authorization:</strong> the server evaluates the principal's permissions, environment, tenant association, resource ownership, and any required scopes.</li>
+<li><strong>Validation:</strong> input is checked for type, format, required fields, business invariants, and replay/idempotency conditions where applicable.</li>
+<li><strong>Execution:</strong> the authorized business operation is processed synchronously or queued if the contract defines asynchronous behavior.</li>
+<li><strong>Persistence and audit:</strong> the service records the authoritative state transition and security-relevant action using the backend's implemented controls.</li>
+<li><strong>Response:</strong> the API returns the documented status code, response schema, and request/trace identifier where provided.</li>
+<li><strong>Follow-up:</strong> the client may query a documented status resource or receive a configured webhook. It must not treat an HTTP success response as proof of settlement unless the response contract explicitly says so.</li>
+</ol>
+
+<h2 id="dashboard-flow">5. How the Customer Dashboard uses the Core API</h2>
+<p>The Dashboard is the business user's workspace; it is not a privileged shortcut around the API. A finance officer opens a transaction list, the frontend makes an authenticated request, and the backend returns only records that the signed-in user is allowed to see. When the user resolves an exception, the frontend submits a command; the server rechecks authorization and business rules, persists the outcome, and records the action.</p>
+<p>For this model to be safe:</p>
+<ul>
+<li>Every query and mutation must be scoped to the authenticated user's authorized tenant and resources.</li>
+<li>Never trust a tenant ID, role, amount, reconciliation outcome, or approval decision merely because the browser submitted it.</li>
+<li>Do not embed privileged server-to-server API secrets in browser JavaScript, HTML, source maps, or downloadable assets.</li>
+<li>Use the authentication flow actually implemented by the Dashboard and API; cookie-based sessions may require CSRF protection, while bearer-token flows require secure token storage and lifecycle controls.</li>
+<li>Display the difference between received, validated, matched, exception, failed, reversed, and settled states only when those states are defined by the product contract.</li>
+<li>Use server-side pagination and filtering for large transaction histories; avoid downloading an entire tenant ledger into the browser.</li>
+</ul>
+<p>See <a href="../concepts/reconciliation">Reconciliation concepts</a>, <a href="../security/authentication">Authentication</a>, and <a href="../guides/reconciliation/reconciliation-reports">Reconciliation reports</a>.</p>
+
+<h2 id="keys-and-scopes">6. API keys, scopes, and environments</h2>
+<p>An API key is a credential, not an implementation of authorization by itself. The server must validate the key and determine what it is allowed to do. A secure credential lifecycle includes controlled creation, one-time secret display where applicable, safe storage, narrow scopes, expiry where supported, last-used metadata, rotation, revocation, and audit records.</p>
+<ul>
+<li><strong>Sandbox:</strong> use synthetic or explicitly isolated test data. Sandbox credentials must not read or mutate production records.</li>
+<li><strong>Staging:</strong> use only when an isolated staging environment is actually provisioned. Do not describe staging as available simply because it appears in a design.</li>
+<li><strong>Production:</strong> access must be explicitly provisioned and limited to the approved project, tenant, scopes, and workload.</li>
+<li><strong>Rotation:</strong> create and deploy a replacement credential before revoking the old one when the supported workflow permits overlap; verify the replacement, then revoke the old credential.</li>
+<li><strong>Exposure:</strong> store secrets in a server-side environment or secrets manager. Never commit them, put them in query strings, paste them into support tickets, or expose them in frontend code.</li>
+</ul>
+<p>Use <a href="../getting-started/create-api-key">API key guidance</a>, <a href="../security/authentication">authentication guidance</a>, and <a href="../environments/">environment documentation</a>. The exact credential type and header must match the endpoint's OpenAPI security definition and current deployment.</p>
+
+<h2 id="transaction-and-reconciliation">7. Transaction and reconciliation data flow</h2>
+<p>A payment or ledger record enters through a supported integration or authorized API operation. The service validates its origin and shape, normalizes fields into the canonical model, applies duplicate/idempotency controls, and stores the transaction. Reconciliation then compares the available payment evidence with the expected transaction or ledger record using the matching rules configured for that workflow.</p>
+<p>A reconciliation outcome should be explainable. Preserve the source identifiers, matching criteria or reason codes where implemented, timestamps, amounts and currencies, and an audit trail of human overrides. An unmatched item is an exception to investigate; it is not by itself proof of fraud. A matched payment is not automatically proof that funds have settled. Settlement status must come from the relevant authoritative evidence.</p>
+<p>For implementation details, see <a href="../concepts/reconciliation">Reconciliation</a>, <a href="../getting-started/first-reconciliation">First reconciliation walkthrough</a>, and <a href="../guides/reconciliation/reconciliation-reports">Reconciliation reports</a>. Only describe M-Pesa, banks, POS, or other rails as available when their current integration is verified; label planned connectors clearly.</p>
+
+<h2 id="webhooks">8. Webhooks and asynchronous work</h2>
+<p>Webhooks let an integration learn that a supported event occurred without continuously polling. They are a delivery mechanism, not the source of truth: a consumer should verify the signature and timestamp where defined, reject invalid or stale signatures, deduplicate event IDs, persist the delivery before acknowledging, and process work asynchronously. Design for retries and duplicate delivery.</p>
+<p>For a long-running operation, follow the contract's documented job/status mechanism. A timeout does not necessarily mean the operation failed; before resubmitting a mutating request, follow the documented idempotency behavior and check the status where possible.</p>
+<p>See <a href="../webhooks/">Webhook documentation</a>, <a href="../webhooks/reconciliation-completed">reconciliation completion events</a>, and <a href="../errors/">Error handling</a>. Never invent an event name, signature header, retry schedule, or status endpoint that is not in the published contract.</p>
+
+<h2 id="source-of-truth">9. Which source is authoritative?</h2>
+<ul>
+<li><strong>API paths, methods, request/response schemas, and security schemes:</strong> the checked-in <a href="../api-reference/">OpenAPI contract</a>, cross-checked against the current deployed API contract when accessible.</li>
+<li><strong>Creating or managing developer credentials and integration projects:</strong> <a href="https://developers.pesaguard.co.ke/">Developer Platform</a>, subject to the features actually enabled.</li>
+<li><strong>Request execution and business rules:</strong> the server-side implementation behind <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>.</li>
+<li><strong>Customer-facing operations:</strong> the Dashboard at <a href="https://app.pesaguard.co.ke/">app.pesaguard.co.ke</a>, with access and mutations enforced by the backend.</li>
+<li><strong>Service incidents:</strong> <a href="https://status.pesaguard.co.ke/">status.pesaguard.co.ke</a>, if the status service is deployed and publishing current data.</li>
+<li><strong>Explanations and integration examples:</strong> this documentation site. If an example conflicts with the OpenAPI contract or actual API behavior, report it and follow the verified contract while the documentation is corrected.</li>
+</ul>
+
+<h2 id="production-readiness">10. Production integration checklist</h2>
+<ul>
+<li>Confirm the API origin, TLS certificate, DNS, and environment with the integration owner.</li>
+<li>Verify the exact endpoint and schema in OpenAPI; do not infer routes from a UI label or a guessed URL.</li>
+<li>Use a server-side secret store and least-privilege credentials.</li>
+<li>Test unauthorized, forbidden, invalid-input, rate-limited, duplicate, timeout, and server-error responses.</li>
+<li>Use idempotency and safe retry rules exactly as documented for each mutation.</li>
+<li>Implement webhook signature verification, deduplication, durable acknowledgement, and retry-safe processing where webhooks are available.</li>
+<li>Log request IDs and non-sensitive diagnostics; never log secrets or unnecessary financial/personal data.</li>
+<li>Validate tenant isolation with tests that prove one customer cannot access another customer's records.</li>
+<li>Test backup/restore and operational recovery separately from application happy-path tests.</li>
+<li>Confirm monitoring, incident contacts, key revocation, and production approval before sending live traffic.</li>
+<li>Run the repository's documentation and OpenAPI checks so examples and links do not drift from the published contract.</li>
+</ul>
+
+<h2 id="common-failures">11. Common integration mistakes</h2>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Likely causes to investigate</th><th>Safe next step</th></tr></thead><tbody>
+<tr><td>401 Unauthorized</td><td>Missing, expired, malformed, or revoked credential; wrong authentication scheme.</td><td>Check the endpoint's security definition and credential environment. Do not paste the secret into a bug report.</td></tr>
+<tr><td>403 Forbidden</td><td>Credential is recognized but lacks scope, role, tenant access, or production approval.</td><td>Review grants in the Developer Platform and request only the required access.</td></tr>
+<tr><td>404 Not Found</td><td>Wrong path, resource ID, environment, or intentionally concealed unauthorized resource.</td><td>Compare the path to OpenAPI and confirm the resource belongs to the authorized tenant.</td></tr>
+<tr><td>409 Conflict or duplicate result</td><td>Resource state conflict or idempotency/duplicate protection.</td><td>Read the documented error code and inspect the original operation before retrying.</td></tr>
+<tr><td>422 Validation failure</td><td>Missing field, invalid format, unsupported enum, or business-rule violation.</td><td>Validate against the schema and preserve the request ID for support.</td></tr>
+<tr><td>429 Too Many Requests</td><td>Rate limit or usage limit.</td><td>Follow any documented retry guidance and <code>Retry-After</code> header; use bounded backoff rather than immediate retry loops.</td></tr>
+<tr><td>Timeout or 5xx</td><td>Network issue, dependency failure, or transient server error.</td><td>Do not blindly repeat a mutation. Apply documented idempotency/status-check behavior and inspect status communications.</td></tr>
+<tr><td>Webhook missing or repeated</td><td>Endpoint unreachable, signature rejection, slow acknowledgement, or retry behavior.</td><td>Inspect delivery attempts, verify signatures, acknowledge promptly, and deduplicate by event identifier.</td></tr>
+</tbody></table></div>
+
+<h2 id="next-steps">12. Continue to the right surface</h2>
+<div class="info-grid">
+<div class="info-panel"><p class="home-panel-label">Build</p><h3>Developer Platform</h3><p>Manage the available developer onboarding and credential workflows.</p><a href="https://developers.pesaguard.co.ke/">Open developers.pesaguard.co.ke ↗</a></div>
+<div class="info-panel"><p class="home-panel-label">Integrate</p><h3>Core API contract</h3><p>Confirm exact endpoints, security requirements, and schemas before implementation.</p><a href="../api-reference/">Read the OpenAPI reference →</a><br><a href="https://api.pesaguard.co.ke/">Open api.pesaguard.co.ke ↗</a></div>
+<div class="info-panel"><p class="home-panel-label">Operate</p><h3>Customer Dashboard</h3><p>Use the business workspace for authorized operational monitoring and exception review.</p><a href="https://app.pesaguard.co.ke/">Open app.pesaguard.co.ke ↗</a></div>
+</div>
+<p class="docs-note">Accuracy note: This guide describes architecture boundaries and safe integration practices. It does not certify that any domain is reachable, that an endpoint is deployed, or that all listed product workflows are implemented. Verify current availability, endpoint behavior, and release state before relying on a capability in production.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/search.js" defer></script>
+<script src="../js/navigation.js" defer></script>
+<script src="../js/theme.js" defer></script>
+<script src="../js/animations.js" defer></script>
+</body></html>
