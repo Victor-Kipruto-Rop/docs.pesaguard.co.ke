@@ -8,7 +8,7 @@ The documentation describes the PesaGuard API and platform for developers and op
 - Intended product: `https://pesaguard.co.ke`
 - Intended Developer Platform: `https://developers.pesaguard.co.ke`
 - Intended API origin: `https://api.pesaguard.co.ke`
-- Intended status service: `https://status.pesaguard.victorkipruto.com`
+- Intended status service: `https://status.pesaguard.co.ke`
 - Checked-in OpenAPI contract: [`api-reference/openapi.json`](https://docs.pesaguard.co.ke/api-reference/openapi.json)
 - YAML contract: [`api-reference/openapi.yaml`](https://docs.pesaguard.co.ke/api-reference/openapi.yaml)
 - JSON schemas: [`schemas/`](https://docs.pesaguard.co.ke/schemas/)
@@ -83,3 +83,13 @@ Include the environment, endpoint (method and path), UTC timestamp, HTTP status,
 ## AI-assisted implementation
 
 Treat this file as an index, not an authority over a deployment's runtime contract. Consult the linked page and OpenAPI schema for the exact operation. If information is absent or uncertain, ask the operator; do not invent an endpoint, scope, sandbox behavior, payment outcome, uptime claim, or compliance status.
+
+
+## Platform architecture guide
+
+- [Detailed platform architecture](https://docs.pesaguard.co.ke/concepts/platform-architecture)
+- Developer access and credential workflows: https://developers.pesaguard.co.ke/
+- Core API origin and contract target: https://api.pesaguard.co.ke/
+- Customer Dashboard: https://app.pesaguard.co.ke/
+
+The guide documents responsibility boundaries and safe integration practices. It does not assert that a domain is reachable or that a planned capability is deployed. Confirm endpoint availability and request/response schemas against the published OpenAPI contract and target deployment.
