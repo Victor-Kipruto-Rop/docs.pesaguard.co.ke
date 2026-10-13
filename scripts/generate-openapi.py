@@ -438,7 +438,7 @@ def main():
     except Exception:
         commit = None
     spec["info"]["x-generated-from"] = {
-        "backend": "Victor-Kipruto-Rop/api.pesaguard.victorkipruto.com", "commit": commit,
+        "backend": "Victor-Kipruto-Rop/api.pesaguard", "commit": commit,
         "generator": "scripts/generate-openapi.py"}
     with open(args.out, "w", encoding="utf-8") as fh:
         json.dump(spec, fh, indent=2)
