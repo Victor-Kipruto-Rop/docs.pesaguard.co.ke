@@ -71,7 +71,7 @@
     <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Getting started</a><span aria-hidden="true">/</span><span>Create an API key</span></nav>
     <p class="docs-eyebrow">Getting started</p>
     <h1>Create an API key</h1>
-    <p class="docs-lede">API keys are provisioned through the deployment's authorized operator workflow, not a public self-serve endpoint in the canonical dashboard API. A key record is tenant-bound and carries a role, explicit scopes, active/revocation state, optional expiry, and last-used metadata.</p>
+    <p class="docs-lede">The backend registers API-key lifecycle routes under <code>/auth/api-keys</code>, but the checked-in OpenAPI mirror predates these mounted routes. Use the authorized operator workflow until the deployed contract confirms the endpoint, permissions, and tenant self-service policy. A key record is tenant-bound and carries a role, explicit scopes, active/revocation state, optional expiry, and last-used metadata.</p>
     <div class="api-hero"><div><strong>One integration, one credential</strong><p>Separate keys make ownership, rotation, incident response and usage review possible.</p></div><div class="api-hero-meta"><span>SCOPED</span><span>EXPIRING</span><span>AUDITABLE</span></div></div>
 
     <h2>What a credential carries</h2>
