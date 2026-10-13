@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Dump the route table of the canonical PesaGuard Flask app to JSON.
+"""Dump the route inventory of the canonical PesaGuard ASGI app to JSON.
 
-The output is the ground truth that check-drift.js compares the docs and
-openapi.json against. It records what the app that the backend Dockerfile
-starts (pesaguard_backend_pipeline.canonical_app) actually registers.
+The output is the ground truth that check-drift.js compares with the docs and
+OpenAPI. It includes direct FastAPI routes and Flask routes exposed through
+the WSGI mounts in pesaguard_backend_pipeline.canonical_app.
 
 Usage:
     python scripts/dump-flask-routes.py /path/to/backend-checkout \
