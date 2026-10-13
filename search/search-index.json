@@ -156,6 +156,12 @@
     "section": "Concepts"
   },
   {
+    "href": "/concepts/platform-architecture",
+    "title": "Platform architecture and integration boundaries - PesaGuard Docs",
+    "description": "Detailed guide to how PesaGuard documentation, Developer Platform, Core API, customer Dashboard, and backend services work together, including trust boundaries and integration workflows.",
+    "section": "Concepts · System architecture"
+  },
+  {
     "href": "/concepts/reconciliation",
     "title": "Concepts · Reconciliation - PesaGuard docs",
     "description": "How deterministic matching pairs provider events with internal records, and what happens to a difference.",
@@ -354,6 +360,12 @@
     "section": "Anomaly guides"
   },
   {
+    "href": "/guides/api-authentication",
+    "title": "API authentication and credential safety - PesaGuard docs",
+    "description": "Practical guidance for PesaGuard API credentials, tenant authorization, sandbox isolation, secret storage, rotation, and common authentication failures.",
+    "section": "Security · Identity and access"
+  },
+  {
     "href": "/guides/authentication/",
     "title": "Authentication guides - PesaGuard docs",
     "description": "Authentication guides for PesaGuard integrations.",
@@ -382,6 +394,12 @@
     "title": "Authentication guides · OAuth - PesaGuard docs",
     "description": "Not supported today. Service access uses scoped bearer tokens issued per deployment.",
     "section": "Authentication guides"
+  },
+  {
+    "href": "/guides/dashboard-integration",
+    "title": "Customer Dashboard and Core API integration - PesaGuard docs",
+    "description": "Detailed guidance for connecting PesaGuard's customer Dashboard to the Core API without exposing secrets or bypassing tenant authorization.",
+    "section": "Client architecture · Customer operations"
   },
   {
     "href": "/guides/integrations/",
@@ -418,6 +436,24 @@
     "title": "Point of sale",
     "description": "Point-of-sale terminal feeds are planned; no PesaGuard ingestion adapter is documented today.",
     "section": "Integration guides"
+  },
+  {
+    "href": "/guides/platform-lifecycle",
+    "title": "Platform lifecycle and architecture - PesaGuard docs",
+    "description": "Detailed lifecycle across PesaGuard developer access, API requests, customer Dashboard, reconciliation processing, events, and documentation.",
+    "section": "Architecture · System boundaries"
+  },
+  {
+    "href": "/guides/production-go-live",
+    "title": "Production go-live and release readiness - PesaGuard docs",
+    "description": "Evidence-based checklist for promoting a PesaGuard integration from sandbox to production, covering access, API contracts, reliability, security, monitoring and recovery.",
+    "section": "Operations · Production controls"
+  },
+  {
+    "href": "/guides/reconciliation-operations",
+    "title": "Reconciliation operations and exception handling - PesaGuard docs",
+    "description": "Operational guide to reconciliation inputs, normalization, matching, exceptions, auditability, settlement distinctions and safe exception resolution.",
+    "section": "Financial operations · Reconciliation"
   },
   {
     "href": "/guides/reconciliation/",
@@ -508,6 +544,18 @@
     "title": "Transaction guides · Transaction status - PesaGuard docs",
     "description": "See the lifecycle concept page for states and their preconditions.",
     "section": "Transaction guides"
+  },
+  {
+    "href": "/guides/troubleshooting",
+    "title": "Troubleshooting and integration diagnostics - PesaGuard docs",
+    "description": "Systematic diagnosis of PesaGuard authentication, validation, rate-limit, timeout, reconciliation, webhook and environment issues.",
+    "section": "Operations · Diagnostics"
+  },
+  {
+    "href": "/guides/webhook-engineering",
+    "title": "Webhook engineering and event consumers - PesaGuard docs",
+    "description": "A detailed guide to webhook verification, replay safety, idempotent consumers, delivery failures, retries, observability and event versioning.",
+    "section": "Integration patterns · Event delivery"
   },
   {
     "href": "/guides/webhooks/",
