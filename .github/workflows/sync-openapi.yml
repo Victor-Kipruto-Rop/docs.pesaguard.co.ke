@@ -7,7 +7,7 @@ name: Sync API reference from backend
 #
 # Triggers
 #   repository_dispatch  sent by the backend repo on every push to main
-#                        (see api repo: .github/workflows/notify-docs.yml)
+#                        (see backend repo: .github/workflows/sync-docs.yml)
 #   schedule             daily fallback, in case a dispatch was missed
 #   workflow_dispatch    manual run from the Actions tab
 #
@@ -64,7 +64,7 @@ jobs:
       - name: Regenerate route snapshot and OpenAPI spec
         env:
           # The backend refuses to import without these. No database is
-          # contacted: routes are read from the Flask url_map after import.
+          # contacted: routes are collected from FastAPI and its WSGI mounts.
           DATABASE_URL: sqlite:////tmp/pesaguard-docs-sync.db
           PESAGUARD_API_URL: https://api.pesaguard.co.ke
         run: |
