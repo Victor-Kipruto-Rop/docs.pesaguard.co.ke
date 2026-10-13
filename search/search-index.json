@@ -20,7 +20,7 @@
   {
     "href": "/api/authentication",
     "title": "API · Authentication - PesaGuard docs",
-    "description": "Bearer JWT authentication, the scope model, and what login returns in the design contract.",
+    "description": "Authentication route inventory, bearer JWT and API-key schemes, permission boundaries, and credential lifecycle.",
     "section": "API / Security boundary"
   },
   {
