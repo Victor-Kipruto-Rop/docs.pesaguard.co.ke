@@ -62,7 +62,7 @@ move the custom-domain DNS record to Cloudflare as part of the host cutover.
 
 ## API contract and checks
 
-`api-reference/openapi.json` is generated. Edit the hand-written parts (summaries, descriptions, info) in `api-reference/openapi.base.json`, then rebuild:
+`api-reference/openapi.json` is generated. Edit the hand-written parts (summaries, descriptions, info) in `api-reference/openapi.base.json`, then rebuild. `api-reference/openapi.yaml` is a JSON-compatible YAML mirror of the same canonical contract; the parity check fails if the downloads diverge:
 
 ```sh
 # needs the backend checkout and its Python dependencies
@@ -72,9 +72,9 @@ python scripts/generate-openapi.py  ..     # api-reference/openapi.json
 
 Checks (Node only, no dependencies):
 
-- `npm run check` validates links, metadata and the OpenAPI structure.
+- `npm run check` validates links, metadata, OpenAPI structure, and exact JSON/YAML contract parity.
 - `npm run check:drift` compares the docs and the spec with the backend's real routes.
-- `npm run check:strict` fails on warnings and drift too.
+- `npm run check:openapi` validates OpenAPI structure and JSON/YAML parity.\n- `npm run check:strict` fails on warnings and drift too.
 
 AI-assistant indexes are published at `llms.txt` and `llms-full.txt`. They
 repeat the same contract and environment caveats as the human-readable pages;
