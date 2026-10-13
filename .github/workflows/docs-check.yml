@@ -124,3 +124,15 @@ jobs:
           npx --yes wrangler@4 pages deploy "$RUNNER_TEMP/docs-site" \
             --project-name=docs-pesaguard \
             --branch=main
+
+      - name: Verify production routes after deployment
+        env:
+          SITE_ORIGIN: https://docs.pesaguard.co.ke
+        run: |
+          set -euo pipefail
+          for route in / /getting-started/quickstart /api-reference/openapi.json /api-reference/openapi.yaml /llms.txt /sitemap.xml; do
+            echo "Checking ${SITE_ORIGIN}${route}"
+            curl --fail --silent --show-error --location \
+              --retry 6 --retry-all-errors --retry-delay 10 \
+              --output /dev/null "${SITE_ORIGIN}${route}"
+          done

@@ -31,6 +31,7 @@ def _strip_snapshot(doc):
 
 FILES = {
     "api-reference/openapi.json": _strip_openapi,
+    "api-reference/openapi.yaml": _strip_openapi,
     "api-reference/routes.snapshot.json": _strip_snapshot,
 }
 
