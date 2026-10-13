@@ -1,33 +1,18 @@
 {
-  "$comment": "Illustrative request/response pair for the write path. Field names follow the canonical transaction schema; confirm against your deployment's OpenAPI document before use.",
-  "request": {
-    "method": "POST",
-    "path": "/api/v1/transactions",
-    "headers": { "Authorization": "Bearer <token>", "Content-Type": "application/json" },
-    "body": {
-      "reference": "TXN-8F3A",
-      "amount": 5000,
-      "currency": "KES",
-      "channel": "mpesa",
-      "occurred_at": "2026-09-19T10:21:28Z"
-    }
-  },
-  "responses": {
-    "202": {
-      "status": "accepted",
-      "transaction_id": "txn_8f31",
-      "idempotent": false
+  "$comment": "No transaction-creation endpoint is present in the current checked-in OpenAPI contract. This file intentionally contains no executable POST example. Use only operations listed in the deployed OpenAPI document.",
+  "documented_read_operations": [
+    {
+      "method": "GET",
+      "path": "/api/v1/customers/{tenant_id}/transactions",
+      "permission": "read:discrepancies",
+      "notes": "The contract documents an optional since query parameter."
     },
-    "409": {
-      "error": { "code": "DUPLICATE_EVENT", "message": "Duplicate under idempotency.", "request_id": "<uuid>" }
-    },
-    "422": {
-      "error": {
-        "code": "VALIDATION_FAILED",
-        "message": "Request failed validation.",
-        "request_id": "<uuid>",
-        "details": [{ "field": "currency", "reason": "unsupported currency" }]
-      }
+    {
+      "method": "GET",
+      "path": "/api/v1/customers/{tenant_id}/transactions/{trans_id}",
+      "permission": "read:discrepancies",
+      "notes": "The contract summary describes the transaction record, raw payload and matching internal ledger record; inspect the deployed schema before relying on specific response fields."
     }
-  }
+  ],
+  "important": "These entries summarize the checked-in contract; they are not a substitute for the OpenAPI document served by the target deployment."
 }

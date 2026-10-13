@@ -38,7 +38,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -59,7 +59,8 @@
     <pre><code>curl --fail-with-body \
   -H "X-API-Key: $PESAGUARD_API_KEY" \
   -H "Accept: application/json" \
-  "https://api.pesaguard.co.ke/api/v1/transactions"</code></pre>
+  "$PESAGUARD_API_URL/tenant/current"</code></pre>
+    <p>This example assumes the key is provisioned for the <code>GET /tenant/current</code> operation and has the required <code>read:settings</code> permission. Use the exact scheme and permissions documented for the operation you call.</p>
     <h2>Issue and store keys safely</h2>
     <ul>
       <li>Create a distinct credential for each environment, application, and integration so an incident can be contained without taking unrelated clients offline.</li>
@@ -92,7 +93,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

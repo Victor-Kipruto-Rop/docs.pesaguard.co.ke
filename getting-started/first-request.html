@@ -40,7 +40,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a>
+    <a href="https://status.pesaguard.co.ke">Status</a>
   </nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
@@ -63,7 +63,7 @@
       <li><a href="../api/">API</a></li>
       <li><a href="../webhooks/">Webhooks</a></li>
       <li><a href="../security/">Security</a></li>
-      <li><a href="https://status.pesaguard.victorkipruto.com">Status</a></li>
+      <li><a href="https://status.pesaguard.co.ke">Status</a></li>
     </ul></div>
   </aside>
 
@@ -71,29 +71,17 @@
     <nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Getting started</a><span aria-hidden="true">/</span><span>First request</span></nav>
     <p class="docs-eyebrow">Getting started</p>
     <h1>First authenticated request</h1>
-    <p class="docs-lede">PesaGuard uses bearer authentication. Every request carries a token; every token carries a scope, an expiry and the tenant it belongs to.</p>
-    <div class="api-hero"><div><strong>Prove identity before business logic</strong><p>The first protected request confirms URL, credentials, tenant context and scope in one small operation.</p></div><div class="api-hero-meta"><span>BEARER</span><span>TENANT</span><span>SCOPE</span></div></div>
+    <p class="docs-lede">Authentication is operation-specific. The current OpenAPI contract supports bearer JWT authentication and an <code>X-API-Key</code> header for provisioned tenant keys. Check the security requirement for the exact operation before sending credentials; not every endpoint has the same authentication requirement.</p>
+    <div class="api-hero"><div><strong>Prove identity before business logic</strong><p>The first protected request confirms the target URL, supported credential, tenant context and required permission.</p></div><div class="api-hero-meta"><span>AUTHENTICATION</span><span>TENANT</span><span>PERMISSION</span></div></div>
 
     <h2>The header</h2>
     <div class="code-head"><span class="method">AUTH</span><code>Authorization</code></div>
     <pre class="docs-code" data-lang="http"><code>Authorization: Bearer &lt;token&gt;</code></pre>
-    <p>
-      The backend validates the token's issuer, audience and tenant claims where applicable.
-      Tokens are issued per deployment by the team that runs it: see
-      <a href="create-api-key">Create an API key</a> for what you receive.
-    </p>
+    <p>Use this header only for an operation whose OpenAPI security requirement includes <code>bearerAuth</code>. The current contract defines this as an HTTP bearer token formatted as a JWT. For operations that use <code>apiKeyAuth</code>, the contract names the <code>X-API-Key</code> header and documents provisioned tenant keys using a supported <code>pk_</code> or <code>pgk_</code> format; it is used when no <code>Authorization</code> header is sent. Do not send either credential from browser code or expose it in logs. See <a href="create-api-key">Create an API key</a> and the <a href="../api-reference/">OpenAPI contract</a>.</p>
 
-    <h2>Scopes decide what a token may do</h2>
-    <p>Permissions are expressed as resource-oriented scopes, for example:</p>
-    <ul>
-      <li><code>dashboard:read</code>: operational telemetry</li>
-      <li><code>transactions:read</code> / <code>transactions:write</code> / <code>transactions:export</code></li>
-      <li><code>reconciliation:read</code> / <code>reconciliation:create</code></li>
-      <li><code>anomalies:read</code> / <code>anomalies:investigate</code></li>
-      <li><code>integrations:read</code> / <code>integrations:manage</code></li>
-      <li><code>audit:read</code>, <code>settings:read</code>, <code>settings:write</code></li>
-    </ul>
-    <p>A token grants exactly the scopes it was issued for. Anything else returns <code>403</code>; see <a href="../api/errors">Errors</a>.</p>
+    <h2>Permissions are operation-specific</h2>
+    <p>The checked-in OpenAPI contract documents a required permission for operations where it is known. Examples include <code>read:settings</code> for <code>GET /tenant/current</code>, <code>read:discrepancies</code> for the customer transaction read routes, and <code>manage:organizations</code> for organization creation. These are examples from the current contract, not a complete list of permissions and not a promise that a credential can access every route.</p>
+    <p>A valid credential can still lack the required permission or tenant access. The contract commonly documents <code>401</code> for unauthenticated requests and <code>403</code> for insufficient permission or tenant access; check each operation’s responses and the <a href="../api/errors">Errors</a> guide.</p>
     <h2>Complete request example</h2><pre class="docs-code" data-lang="bash"><code>curl --fail-with-body "$PESAGUARD_API_URL/tenant/current" \
   -H "Authorization: Bearer $PESAGUARD_ACCESS_TOKEN" \
   -H "Accept: application/json"</code></pre>
@@ -125,7 +113,7 @@
   <span>© 2026 PesaGuard</span>
   <nav aria-label="Footer">
     <a href="https://pesaguard.co.ke">Product</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a>
+    <a href="https://status.pesaguard.co.ke">Status</a>
     <a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a>
   </nav>
 </div></footer>

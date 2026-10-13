@@ -38,7 +38,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -51,11 +51,11 @@
     <h2>Bearer access tokens</h2>
     <p>Protected endpoints accept a token in the standard <code>Authorization: Bearer &lt;token&gt;</code> header. The verifier checks the JWT signature with the configured signing key, requires the configured issuer and audience, validates expiry and not-before timestamps, and requires identity, tenant, token type, authorization-version, scope, and token-ID claims. The accepted algorithm is pinned by the backend; the algorithm is not selected from an untrusted token header.</p>
     <p>Access-token lifetime is configurable from 1 to 15 minutes and defaults to 15 minutes. Key IDs support verification against configured keys while a signing-key rotation is in progress. The token ID is checked against revocation state, and user tokens are also checked against current account and session state. Machine-principal tokens are checked against the current identity status, tenant and authorization version.</p>
-    <h3>Request example</h3>
+    <h3>Request example</h3><p>This example assumes the credential has the <code>read:settings</code> permission required by <code>GET /tenant/current</code>. For another route, use the authentication scheme and permission documented for that operation.</p>
     <pre><code>curl --fail-with-body \
   -H "Authorization: Bearer $PESAGUARD_ACCESS_TOKEN" \
   -H "Accept: application/json" \
-  "https://api.pesaguard.co.ke/api/v1/transactions"</code></pre>
+  "$PESAGUARD_API_URL/tenant/current"</code></pre>
     <p>Keep access tokens in process memory where practical; never place them in a URL, browser history, source control, screenshots, or logs. Send them only over HTTPS and only to the intended API origin.</p>
     <h2>API-key authentication</h2>
     <p>Where an endpoint supports API keys, send the key in <code>X-API-Key</code>. Keys are tenant-bound and resolved using a SHA-256 digest. Their records include a role, an explicit scope list, an active/revoked state, optional expiry, and last-used time. The verifier intersects the permissions associated with the role and the key's explicit scopes; having a key does not grant every permission in the role.</p>
@@ -87,7 +87,7 @@
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>

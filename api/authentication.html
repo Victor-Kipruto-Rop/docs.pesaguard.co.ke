@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API · Authentication - PesaGuard docs</title>
-<meta name="description" content="Bearer JWT authentication, the scope model, and what login returns in the design contract.">
+<meta name="description" content="Bearer JWT and tenant API-key authentication, route-specific security requirements, permissions, and credential lifecycle.">
 <link rel="canonical" href="https://docs.pesaguard.co.ke/api/authentication">
   <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PesaGuard docs">
 <meta property="og:title" content="API · Authentication - PesaGuard docs">
-<meta property="og:description" content="Bearer JWT authentication, the scope model, and what login returns in the design contract.">
+<meta property="og:description" content="Bearer JWT and tenant API-key authentication, route-specific security requirements, permissions, and credential lifecycle.">
 <meta property="og:url" content="https://docs.pesaguard.co.ke/api/authentication">
 <meta property="og:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="API · Authentication - PesaGuard docs">
-<meta name="twitter:description" content="Bearer JWT authentication, the scope model, and what login returns in the design contract.">
+<meta name="twitter:description" content="Bearer JWT and tenant API-key authentication, route-specific security requirements, permissions, and credential lifecycle.">
 <meta name="twitter:image" content="https://docs.pesaguard.co.ke/assets/brand/og-image.jpg">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
 <link rel="stylesheet" href="../css/variables.css">
@@ -38,7 +38,7 @@
     <a href="../api/">API</a>
     <a href="../webhooks/">Webhooks</a>
     <a href="../security/">Security</a>
-    <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+    <a href="https://status.pesaguard.co.ke">Status</a></nav>
   <button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
 </div></header>
 
@@ -59,7 +59,7 @@
           <span>Authentication</span></nav>
     <p class="docs-eyebrow">API / Security boundary</p>
     <h1>Authentication</h1>
-    <p class="docs-lede">Protected API routes require a verified caller identity and apply tenant and permission checks according to their route policy. PesaGuard uses bearer JWTs and, on routes that support the credential guard, tenant-bound API keys. Dashboard user sessions and provider callbacks follow separate flows.</p>
+    <p class="docs-lede">Protected API routes require a verified caller identity and apply tenant and permission checks according to their route policy. The checked-in OpenAPI contract defines bearer JWT authentication and a tenant API-key scheme. The security requirement on each operation is authoritative; the existence of a scheme does not mean every route accepts it. Dashboard user sessions and provider callbacks follow separate flows.</p>
 
     <div class="callout callout-warning"><strong>Contract status.</strong> The checked-in OpenAPI document defines <code>bearerAuth</code> with JWT semantics. API-key creation, rotation and revocation are credential-management procedures; use the deployment's control plane or operator workflow for those actions rather than assuming undocumented public endpoints.</div>
 
@@ -80,17 +80,13 @@
 
     <h2>API keys</h2>
     <p>An API key is a machine credential intended for a specific integration or service account. Treat its entire value as secret. The backend record can carry a role, explicit scopes, tenant, active/revoked state, optional expiry, and last-used time; set an expiry as a provisioning policy because the data model permits keys without one.</p>
-    <h3>API key types</h3>
-    <table><thead><tr><th>Type</th><th>Use</th><th>Boundary</th></tr></thead><tbody>
-      <tr><td>Sandbox key</td><td>Development and integration testing</td><td>Sandbox data and endpoints only.</td></tr>
-      <tr><td>Production key</td><td>Live transaction and reconciliation workloads</td><td>Production tenant and production controls.</td></tr>
-      <tr><td>Service-account key</td><td>Non-human workload with a defined owner</td><td>One workload, one owner, least-privilege scopes.</td></tr>
-      <tr><td>Test key</td><td>Automated tests and failure scenarios</td><td>Short lifetime, disposable data, no production access.</td></tr>
-    </tbody></table>
+    <h3>Environment and ownership boundaries</h3>
+    <p>The OpenAPI contract defines authentication schemes; it does not guarantee that self-service sandbox issuance, production-key issuance, or cross-environment promotion is enabled for every account. Where separate environments are provisioned, use distinct credentials and data, and confirm the allowed environment through the authorized operator workflow. Do not infer environment or permission from a key prefix.</p>
+    <p>For non-human workloads, assign a named owner, a single integration purpose, and the narrowest supported access. Disposable test credentials and data must not have production access.</p>
     <h3>API key format</h3>
     <p>Use the key identifier to identify a credential and the secret to authenticate it. A typical provisioned key has a non-secret prefix and a high-entropy secret:</p>
     <pre class="docs-code" data-lang="http"><code>X-API-Key: pk_&lt;secret&gt;</code></pre>
-    <p>The API accepts <code>pk_</code> and <code>pgk_</code> key formats for compatibility; Developer Platform-synchronized keys use <code>pgk_</code>. The backend looks up the key by its SHA-256 hash and accepts only active keys. An unknown, expired or revoked key returns <code>401</code> with <code>invalid_api_key</code>. Never infer environment or tenant access from a prefix alone; validate the credential with the server.</p>
+    <p>The checked-in OpenAPI contract describes provisioned tenant keys using supported <code>pk_</code> or <code>pgk_</code> formats. A prefix is only a format hint; do not infer environment, tenant, permissions, or provisioning source from it. Confirm the credential workflow with the deployment operator. The backend looks up the key by its SHA-256 hash and accepts only active keys. An unknown, expired or revoked key returns <code>401</code> with <code>invalid_api_key</code>. Never infer environment or tenant access from a prefix alone; validate the credential with the server.</p>
     <h3>Creating, viewing, rotating and revoking keys</h3>
     <ol>
       <li>Request a key for one integration and record its owner, environment, scopes, and expiry. Secret-display and recovery behavior depend on the authorized provisioning workflow; do not assume a public API route exists.</li>
@@ -99,7 +95,7 @@
       <li>Revoke immediately when a key is exposed, unused, mis-scoped, or owned by a departing service. Verify that the revoked key fails authentication.</li>
     </ol>
     <h3>API key expiration, permissions and scopes</h3>
-    <p>Give every key an expiry that matches the workload. A key should carry only the scopes it needs, such as <code>dashboard:read</code>, <code>transactions:read</code>, <code>transactions:write</code>, <code>reconciliation:read</code> or <code>reconciliation:write</code>. Separate read and write credentials when practical. A valid key with an insufficient scope must receive <code>403</code>, not a misleading <code>401</code>.</p>
+    <p>Set an expiry through the authorized provisioning process where the key record and policy support it. The checked-in OpenAPI contract documents operation-level permission identifiers such as <code>read:settings</code>, <code>read:discrepancies</code> and <code>manage:organizations</code>; these are not a complete list and should not be replaced with guessed labels such as <code>transactions:read</code>. A valid credential may still be denied for insufficient permission or tenant access; check the specific operation's documented <code>401</code> and <code>403</code> responses.</p>
 
     <h2>Bearer authentication</h2>
     <p>The OpenAPI contract declares HTTP bearer authentication with <code>bearerFormat: JWT</code>. Send the access token on every protected request. Do not send it as a query parameter or in a custom header unless the deployment explicitly documents that compatibility behavior.</p>
@@ -137,7 +133,7 @@
       <tr><td>Production</td><td>Production credentials</td><td>Require approval, monitoring, rotation and restricted access.</td></tr>
       <tr><td>Test automation</td><td>Short-lived test API keys</td><td>Provision per suite or environment and revoke after use.</td></tr>
     </tbody></table>
-    <p>Never promote a sandbox key to production or copy production secrets into a local <code>.env</code> file that may be committed. Environment migration requires issuing a new credential in the destination environment and validating access before cutover.</p>
+    <p>Do not assume a credential can be promoted across environments. Where the deployment provides separate environments, provision a destination-specific credential through the authorized workflow and validate access before cutover. Never commit secrets or copy production credentials into source-controlled files.</p>
 
     <h2>Authentication request examples</h2>
     <h3>cURL</h3>
@@ -288,7 +284,7 @@ response.raise_for_status()</code></pre>
 
 <footer class="docs-footer"><div class="docs-footer-inner">
   <span>© 2026 PesaGuard</span>
-  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.victorkipruto.com">Status</a></nav>
+  <nav aria-label="Footer"><a href="https://github.com/Victor-Kipruto-Rop/pesaguard">Source</a> <a href="https://status.pesaguard.co.ke">Status</a></nav>
 </div></footer>
 
 <script src="../js/app.js" defer></script>
