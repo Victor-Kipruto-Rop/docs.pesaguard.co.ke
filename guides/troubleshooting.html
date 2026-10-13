@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting and integration diagnostics - PesaGuard docs</title>
+<meta name="description" content="Systematic diagnosis of PesaGuard authentication, validation, rate-limit, timeout, reconciliation, webhook and environment issues.">
+<link rel="canonical" href="https://docs.pesaguard.co.ke/guides/troubleshooting">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="PesaGuard docs">
+<meta property="og:title" content="Troubleshooting and integration diagnostics - PesaGuard docs">
+<meta property="og:description" content="Systematic diagnosis of PesaGuard authentication, validation, rate-limit, timeout, reconciliation, webhook and environment issues.">
+<meta property="og:url" content="https://docs.pesaguard.co.ke/guides/troubleshooting">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/favicon.svg">
+<link rel="stylesheet" href="../css/variables.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/navigation.css">
+<link rel="stylesheet" href="../css/content.css">
+<link rel="stylesheet" href="../css/code.css">
+<link rel="stylesheet" href="../css/search.css">
+<link rel="stylesheet" href="../css/animations.css">
+<link rel="stylesheet" href="../css/responsive.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important;}</style></noscript>
+</head>
+<body data-path="/guides/troubleshooting">
+<a class="visually-hidden" href="#main">Skip to content</a>
+<header class="docs-header"><div class="docs-header-inner">
+<a class="docs-brand" href="../"><img src="../assets/brand/favicon.svg" alt="" width="26" height="26">PesaGuard <small>Docs</small></a>
+<div class="docs-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search documentation…" aria-label="Search documentation"><kbd>Ctrl K</kbd><button type="button" class="docs-search-close" aria-label="Close search">✕</button></div>
+<nav class="docs-header-links" aria-label="Primary" id="primary-nav">
+<a href="../getting-started/">Getting started</a><a href="../concepts/">Concepts</a><a href="../api/">API</a><a href="../webhooks/">Webhooks</a><a href="../security/">Security</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a>
+</nav>
+<button class="docs-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+</div></header>
+<main id="main"><div class="docs-shell">
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+<div class="docs-nav-group"><p>Documentation</p><ul><li><a href="../">Overview</a></li><li><a href="../search/">Search all docs</a></li></ul></div>
+<div class="docs-nav-group"><p>Build</p><ul><li><a href="../getting-started/">Getting started</a></li><li><a href="../api-reference/">OpenAPI contract</a></li><li><a href="../api/">API guides</a></li><li><a href="./">All developer guides</a></li></ul></div>
+<div class="docs-nav-group"><p>Integration guides</p><ul>
+<li><a href="platform-lifecycle">Platform lifecycle</a></li><li><a href="api-authentication">API authentication</a></li><li><a href="dashboard-integration">Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live</a></li><li><a href="troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="docs-nav-group"><p>Platform links</p><ul><li><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a></li><li><a href="https://api.pesaguard.co.ke/">Core API ↗</a></li><li><a href="https://app.pesaguard.co.ke/">Customer Dashboard ↗</a></li><li><a href="https://status.pesaguard.co.ke/">Status ↗</a></li></ul></div>
+</aside>
+<article class="docs-article">
+<nav class="docs-crumbs" aria-label="Breadcrumb"><a href="../">Docs</a><span aria-hidden="true">/</span><a href="./">Guides</a><span aria-hidden="true">/</span><span>Troubleshooting and integration diagnostics</span></nav>
+<p class="docs-eyebrow">Operations · Diagnostics</p><h1>Troubleshooting and integration diagnostics</h1><p class="docs-lede">Troubleshoot from evidence: preserve request IDs, inspect the documented error schema, identify which layer failed, and avoid unsafe retries. This guide is a diagnostic method, not a substitute for endpoint-specific behavior in the live contract.</p>
+<div class="callout"><strong>Contract-first rule:</strong> use <a href="https://developers.pesaguard.co.ke/">developers.pesaguard.co.ke</a> for the developer workflows that are enabled for your account. Confirm exact methods, paths, security schemes, request fields and response schemas in the <a href="../api-reference/">published OpenAPI contract</a> before calling <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a>. A documented design or domain name does not prove a feature is deployed.</div>
+<h2 id="diagnostic-order">1. Diagnose in a consistent order</h2>
+<ol><li>Record the approximate timestamp, environment, HTTP method, documented path, response status and request/correlation ID, if provided.</li><li>Remove secrets and sensitive personal/financial values from diagnostic material before sharing it.</li><li>Check whether the failure is transport/TLS, authentication, authorization, request validation, business-state conflict, rate limiting, downstream processing or webhook delivery.</li><li>Compare the request to the exact operation in <a href="../api-reference/">the OpenAPI reference</a>.</li><li>Check current incidents at <a href="https://status.pesaguard.co.ke/">the status site</a>, but verify the issue from your own logs as well.</li><li>Before retrying a mutation, establish whether the original operation may already have succeeded.</li></ol>
+<h2 id="http">2. HTTP status guide</h2>
+<div class="table-wrap"><table><thead><tr><th>Response</th><th>Likely meaning</th><th>Recommended response</th></tr></thead><tbody><tr><td>400</td><td>Malformed request or invalid syntax.</td><td>Inspect the documented error body and fix the request; unchanged retry is not useful.</td></tr><tr><td>401</td><td>Credential missing, invalid, expired or wrong scheme.</td><td>Check environment and security definition; never print the secret to debug it.</td></tr><tr><td>403</td><td>Insufficient scope, role, tenant grant or production approval.</td><td>Review access through the supported Developer Platform workflow.</td></tr><tr><td>404</td><td>Wrong route/resource, wrong environment, or concealed unauthorized resource.</td><td>Check the exact OpenAPI path and authorized resource context.</td></tr><tr><td>409</td><td>Conflict, duplicate or invalid state transition.</td><td>Inspect the original operation and current state before retrying.</td></tr><tr><td>422</td><td>Schema or business validation failure where used by the contract.</td><td>Compare fields, formats, units, currency and allowed values with the schema.</td></tr><tr><td>429</td><td>Rate/usage limit.</td><td>Respect documented headers and retry guidance; use bounded backoff with jitter.</td></tr><tr><td>5xx</td><td>Server or dependency failure.</td><td>Capture request ID, check status and avoid unsafe mutation retries.</td></tr><tr><td>Timeout/no response</td><td>Network failure or ambiguous processing result.</td><td>Check documented status/idempotency flow before resubmission.</td></tr></tbody></table></div>
+<h2 id="dns-tls">3. DNS, TLS and connection failures</h2>
+<ul><li>Confirm the hostname is the intended environment and the DNS record resolves from the client network.</li><li>Verify certificate hostname, validity period and certificate chain; do not disable TLS verification as a workaround.</li><li>Check proxy/firewall rules, outbound HTTPS access, DNS cache and system clock.</li><li>Set connect and read timeouts appropriate to the operation; do not make unbounded requests.</li><li>Do not assume the root of <a href="https://api.pesaguard.co.ke/">api.pesaguard.co.ke</a> is a health endpoint. Use the documented health path for the target deployment.</li></ul>
+<h2 id="auth">4. Authentication and permissions</h2>
+<p>Check that the credential belongs to the correct environment and is active. Confirm the documented authentication scheme and exact header format. If authentication succeeds but authorization fails, review the project's scope, tenant membership, resource ownership and production approval. Manage enabled credential workflows through <a href="https://developers.pesaguard.co.ke/">the Developer Platform</a>; do not try random headers or another tenant's identifiers.</p>
+<h2 id="payload">5. Validation and business-state problems</h2>
+<ul><li>Compare the JSON property names and types against the schema; distinguish omitted fields from explicit nulls.</li><li>Check timestamps, timezone, money units, currency and identifier normalization.</li><li>Check whether the resource is in a state that allows the requested transition.</li><li>Do not assume that a syntactically valid transaction is eligible to match or settle.</li><li>Use a synthetic fixture to reproduce the failure; never alter live financial data solely to make a test pass.</li></ul>
+<h2 id="timeout">6. Timeout, retry and duplicate behavior</h2>
+<p>A timeout means the client did not receive a result in time; it does not prove the server did not complete the operation. For mutations, first use the documented idempotency key or status lookup if available. Avoid parallel retries with new idempotency keys. For reads, retry only within a bounded policy and respect rate limits.</p>
+<h2 id="reconciliation">7. Reconciliation differences</h2>
+<ul><li>Confirm both source feeds cover the same business period and timezone.</li><li>Check source completeness, ingestion lag and pagination before comparing totals.</li><li>Compare currency and amount units, transaction type, reference normalization and duplicate treatment.</li><li>Inspect exception reason codes and candidate evidence; do not infer fraud from a mismatch alone.</li><li>Keep settlement confirmation separate from a reconciliation match.</li><li>When replaying data, preserve source IDs and use idempotent ingestion.</li></ul>
+<h2 id="webhook">8. Webhook failures</h2>
+<ul><li>Confirm the receiver is reachable over HTTPS and returns the documented acknowledgement within the expected timeout.</li><li>Verify signature calculation against the raw body and documented headers.</li><li>Check server clock if signed timestamps are used.</li><li>Inspect duplicate-event handling and durable storage errors.</li><li>Review the configured event subscription and the sender's actual delivery logs if available.</li><li>Use the documented replay workflow and ensure replay cannot repeat a downstream financial effect.</li></ul>
+<h2 id="support-bundle">9. Build a safe support bundle</h2>
+<p>Include environment, UTC timestamp, method and path, HTTP status, request ID, sanitized response body, minimal redacted reproduction, expected versus actual behavior, and whether a retry was attempted. Remove bearer tokens, API keys, webhook secrets, personal identifiers and full payment payloads. Never include database dumps or production credentials in a support ticket.</p>
+<h2 id="escalation">10. Escalation</h2>
+<p>First check the relevant guide and <a href="../api-reference/">API contract</a>, then review the <a href="https://status.pesaguard.co.ke/">status page</a>. If escalation is necessary, use the support/contact channel published by PesaGuard and send only the safe support bundle. A domain being linked from documentation does not guarantee that its current deployment is reachable.</p>
+<hr>
+<h2 id="related-resources">Related resources</h2>
+<ul><li><a href="platform-lifecycle">Platform lifecycle and architecture</a></li><li><a href="api-authentication">API authentication and credential safety</a></li><li><a href="dashboard-integration">Customer Dashboard integration</a></li><li><a href="reconciliation-operations">Reconciliation operations</a></li><li><a href="webhook-engineering">Webhook engineering</a></li><li><a href="production-go-live">Production go-live checklist</a></li><li><a href="troubleshooting">Troubleshooting guide</a></li></ul>
+<p class="docs-note">Accuracy boundary: examples in this guide explain integration patterns. They are not guarantees that a named route, event, header, scope, SDK, or environment is live. The deployed API and current OpenAPI contract are authoritative for supported operations.</p>
+</article></div></main>
+<footer class="docs-footer"><div class="docs-footer-inner"><span>© 2026 PesaGuard · Documentation</span><nav aria-label="Footer"><a href="../">Docs home</a><a href="../api-reference/">API reference</a><a href="https://developers.pesaguard.co.ke/">Developer Platform ↗</a><a href="https://api.pesaguard.co.ke/">Core API ↗</a><a href="https://pesaguard.co.ke/">PesaGuard ↗</a></nav></div></footer>
+<script src="../js/search.js" defer></script><script src="../js/navigation.js" defer></script><script src="../js/theme.js" defer></script><script src="../js/animations.js" defer></script>
+</body></html>
